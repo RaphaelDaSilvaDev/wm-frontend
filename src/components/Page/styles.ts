@@ -8,5 +8,5 @@ export const Container = styled.div`
   justify-content: center;
   align-self: flex-end;
 
-  overflow-y: auto;
+  overflow-y: hidden;
 `;
