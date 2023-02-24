@@ -1,14 +1,5 @@
+import { ManagerProps } from "./interfaces";
 import * as S from "./styles";
-
-interface ManagerProps {
-  header: string[];
-  body: {
-    plate: JSX.Element;
-    model: JSX.Element;
-    client: JSX.Element;
-  }[];
-  options?: JSX.Element;
-}
 
 export function Manager({ header, body, options }: ManagerProps) {
   return (

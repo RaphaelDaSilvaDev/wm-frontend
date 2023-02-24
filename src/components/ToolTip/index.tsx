@@ -1,28 +1,50 @@
 import { DotsThreeVertical } from "phosphor-react";
-import * as S from "./styles";
+import { hideAll } from "tippy.js";
 
-interface TooltipProps {
-  items: JSX.Element[];
-}
+import { TooltipProps } from "./interfaces";
+import * as S from "./styles";
 
 export function ToolTip({ items }: TooltipProps) {
   return (
     <S.TippyContent
+      className="tooltip"
       content={
         <>
-          {items.map((item, index) => (
-            <S.Item key={index}>
-              <span>{item}</span>
-            </S.Item>
-          ))}
+          {items.map((item, index) => {
+            return item.divider ? (
+              <>
+                <S.Divider />
+                <S.Item
+                  key={index}
+                  onClick={() => {
+                    item.onClick();
+                    hideAll();
+                  }}
+                >
+                  {item.element}
+                </S.Item>
+              </>
+            ) : (
+              <S.Item
+                key={index}
+                onClick={() => {
+                  item.onClick();
+                  hideAll();
+                }}
+              >
+                {item.element}
+              </S.Item>
+            );
+          })}
         </>
       }
       placement="left"
       duration={[200, 200]}
       arrow={false}
       allowHTML
-      trigger="click"
+      trigger="focus"
       interactive={true}
+      ignoreAttributes={true}
     >
       <DotsThreeVertical />
     </S.TippyContent>

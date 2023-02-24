@@ -1,125 +1,76 @@
+import { useEffect, useState } from "react";
+import ReactLoading from "react-loading";
+
+import { header } from "./header";
+
 import { Page } from "../../components/Page";
 import { Manager } from "../../components/Manager";
 import { ToolTip } from "../../components/ToolTip";
+import { Modal } from "../../components/Modal";
+import { getAllServices } from "./services";
+import { IManagerShow, IServiceRequest } from "./interface";
+import { Parse } from "./parser";
 
 export function Home() {
-  const header = ["placa do veículo", "modelo", "cliente"];
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const body = [
+  const [servicesRequest, setServicesRequest] = useState<IServiceRequest[]>([]);
+  const [servicesManager, setServicesManager] = useState<IManagerShow[]>([]);
+
+  const items = [
     {
-      plate: <span>ABC-1234</span>,
-      model: <span>Uno</span>,
-      client: <span>Ronaldo</span>,
+      element: <span>AAA</span>,
+      onClick: () => setModalOpen(true),
     },
     {
-      plate: <span>ABC-1235</span>,
-      model: <span>Palio</span>,
-      client: <span>Fernando</span>,
+      element: <span>BBB</span>,
+      onClick: () => setModalOpen(true),
     },
     {
-      plate: <span>ABC-1284</span>,
-      model: <span>Civic</span>,
-      client: <span>Pedro</span>,
-    },
-    {
-      plate: <span>ABC-1234</span>,
-      model: <span>Uno</span>,
-      client: <span>Ronaldo</span>,
-    },
-    {
-      plate: <span>ABC-1235</span>,
-      model: <span>Palio</span>,
-      client: <span>Fernando</span>,
-    },
-    {
-      plate: <span>ABC-1284</span>,
-      model: <span>Civic</span>,
-      client: <span>Pedro</span>,
-    },
-    {
-      plate: <span>ABC-1234</span>,
-      model: <span>Uno</span>,
-      client: <span>Ronaldo</span>,
-    },
-    {
-      plate: <span>ABC-1235</span>,
-      model: <span>Palio</span>,
-      client: <span>Fernando</span>,
-    },
-    {
-      plate: <span>ABC-1284</span>,
-      model: <span>Civic</span>,
-      client: <span>Pedro</span>,
-    },
-    {
-      plate: <span>ABC-1234</span>,
-      model: <span>Uno</span>,
-      client: <span>Ronaldo</span>,
-    },
-    {
-      plate: <span>ABC-1235</span>,
-      model: <span>Palio</span>,
-      client: <span>Fernando</span>,
-    },
-    {
-      plate: <span>ABC-1284</span>,
-      model: <span>Civic</span>,
-      client: <span>Pedro</span>,
-    },
-    {
-      plate: <span>ABC-1234</span>,
-      model: <span>Uno</span>,
-      client: <span>Ronaldo</span>,
-    },
-    {
-      plate: <span>ABC-1235</span>,
-      model: <span>Palio</span>,
-      client: <span>Fernando</span>,
-    },
-    {
-      plate: <span>ABC-1284</span>,
-      model: <span>Civic</span>,
-      client: <span>Pedro</span>,
-    },
-    {
-      plate: <span>ABC-1234</span>,
-      model: <span>Uno</span>,
-      client: <span>Ronaldo</span>,
-    },
-    {
-      plate: <span>ABC-1235</span>,
-      model: <span>Palio</span>,
-      client: <span>Fernando</span>,
-    },
-    {
-      plate: <span>ABC-1284</span>,
-      model: <span>Civic</span>,
-      client: <span>Pedro</span>,
-    },
-    {
-      plate: <span>ABC-1234</span>,
-      model: <span>Uno</span>,
-      client: <span>Ronaldo</span>,
-    },
-    {
-      plate: <span>ABC-1235</span>,
-      model: <span>Palio</span>,
-      client: <span>Fernando</span>,
-    },
-    {
-      plate: <span>ABC-1284</span>,
-      model: <span>Civic</span>,
-      client: <span>Pedro</span>,
+      element: <span>CCC</span>,
+      onClick: () => setModalOpen(true),
+      divider: true,
     },
   ];
 
-  const items = [<span>AAA</span>, <span>BBB</span>, <span>CCC</span>];
-
   const options = <ToolTip items={items} />;
+
+  async function loadData() {
+    setLoading(true);
+    try {
+      const request = await getAllServices();
+      setServicesRequest(request);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    setServicesManager(Parse(servicesRequest));
+  }, [servicesRequest]);
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   return (
     <Page>
-      <Manager header={header} body={body} options={options} />
+      {loading ? (
+        <ReactLoading type="spin" color="#000" />
+      ) : (
+        <>
+          <Manager header={header} body={servicesManager} options={options} />
+          <Modal
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            title="Adicionar Serviço"
+            content="Serviço"
+          />
+        </>
+      )}
     </Page>
   );
 }

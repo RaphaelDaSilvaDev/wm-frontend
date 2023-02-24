@@ -41,3 +41,10 @@ export const Item = styled.div`
     transition: background-color 175ms;
   }
 `;
+
+export const Divider = styled.hr`
+  width: 100%;
+  height: 1px;
+  background-color: ${(props) => props.theme.border};
+  border: none;
+`;

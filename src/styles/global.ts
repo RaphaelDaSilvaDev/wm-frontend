@@ -65,4 +65,33 @@ export const GlobalStyles = createGlobalStyle`
     font-family: 'Lato', sans-serif;
     color: ${(props) => props.theme.textPrimary};
   }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #00000060;
+
+    z-index: 1000;
+  }
+
+  .modal-content {
+    width: 90%;
+    max-width: 75rem;
+    background-color: ${(props) => props.theme.background};
+    border-radius: 4px;
+
+    border: none;
+    outline: none;
+    box-shadow: none;
+
+    overflow: hidden;
+  }
 `;
