@@ -4,18 +4,19 @@ import { hideAll } from "tippy.js";
 import { TooltipProps } from "./interfaces";
 import * as S from "./styles";
 
-export function ToolTip({ items }: TooltipProps) {
+export function ToolTip({ items, elements }: TooltipProps) {
   return (
     <S.TippyContent
       className="tooltip"
       content={
         <>
-          {items.map((item, index) => {
+          {items(elements).map((item, i) => {
             return item.divider ? (
               <>
                 <S.Divider />
                 <S.Item
-                  key={index}
+                  disabled={item.rules.some((rule) => rule === true)}
+                  key={i}
                   onClick={() => {
                     item.onClick();
                     hideAll();
@@ -26,7 +27,8 @@ export function ToolTip({ items }: TooltipProps) {
               </>
             ) : (
               <S.Item
-                key={index}
+                disabled={item.rules.some((rule) => rule === true)}
+                key={i}
                 onClick={() => {
                   item.onClick();
                   hideAll();

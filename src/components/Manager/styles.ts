@@ -5,7 +5,8 @@ export const Container = styled.div`
   height: 100%;
 
   border: 1px solid ${(props) => props.theme.border};
-  border-radius: 4px;
+  border-radius: 0 0 4px 4px;
+  overflow: hidden;
 `;
 
 export const Table = styled.table`
@@ -14,8 +15,6 @@ export const Table = styled.table`
   padding: 0;
   margin: 0;
   border-spacing: 0;
-
-  overflow: hidden;
 `;
 
 export const TableHead = styled.tr`
@@ -71,4 +70,20 @@ export const TableRowItem = styled.td`
 export const Option = styled.div`
   width: 3.2rem;
   cursor: pointer;
+`;
+
+export const LoadingContainer = styled.div`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > div {
+    width: 2.4rem !important;
+    height: 2.4rem !important;
+
+    fill: ${(props) => props.theme.primary} !important;
+  }
 `;

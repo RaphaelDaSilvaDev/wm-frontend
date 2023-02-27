@@ -1,5 +1,5 @@
 export interface IServiceRequest {
-  id: string | null;
+  id: string;
   client_name: string | null;
   client_phone: string | null;
   vehicle_plate: string | null;
@@ -18,6 +18,7 @@ interface User {
 }
 
 export interface IManagerShow {
+  id: string;
   plate: JSX.Element;
   model: JSX.Element;
   client: JSX.Element;
@@ -25,4 +26,12 @@ export interface IManagerShow {
   delivery_date: JSX.Element;
   responsible: JSX.Element;
   status: JSX.Element;
+  status_value: string;
+}
+
+export interface IDropDown {
+  element: JSX.Element;
+  onClick: () => void;
+  divider?: boolean;
+  rules: [boolean] | [];
 }
