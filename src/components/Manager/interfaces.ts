@@ -1,5 +1,14 @@
+import { IDropDown } from "../../pages/Home/interface";
+import { TooltipProps } from "../ToolTip/interfaces";
+
 export interface ManagerProps {
-  header: string[];
+  header: IHeaderManagerProps[];
   body: {}[];
-  options?: JSX.Element;
+  options: (item: any) => IDropDown[];
+  loading?: boolean;
+}
+
+export interface IHeaderManagerProps {
+  title: string;
+  key: string;
 }

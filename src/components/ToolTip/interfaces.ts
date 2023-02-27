@@ -1,7 +1,6 @@
+import { IDropDown } from "../../pages/Home/interface";
+
 export interface TooltipProps {
-  items: {
-    element: JSX.Element;
-    onClick: () => void;
-    divider?: boolean;
-  }[];
+  items: (item: any) => IDropDown[];
+  elements: {};
 }

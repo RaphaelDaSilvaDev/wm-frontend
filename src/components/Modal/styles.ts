@@ -76,3 +76,19 @@ export const Button = styled.button<ButtonProps>`
     font-size: 1.8rem;
   }
 `;
+
+export const LoadingContainer = styled.div`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > div {
+    width: 2.4rem !important;
+    height: 2.4rem !important;
+
+    fill: ${(props) => props.theme.primary} !important;
+  }
+`;

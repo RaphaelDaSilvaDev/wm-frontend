@@ -2,7 +2,7 @@ import Tippy from "@tippyjs/react";
 import styled from "styled-components";
 
 export const TippyContent = styled(Tippy)`
-  width: 19.8rem !important;
+  width: 26rem !important;
   transition-duration: 200ms;
   background-color: ${(props) => props.theme.white};
   border: 1px solid ${(props) => props.theme.border};
@@ -20,15 +20,21 @@ export const Content = styled.div`
   background-color: ${(props) => props.theme.white};
 `;
 
-export const Item = styled.div`
+export const Item = styled.button`
   width: 100%;
-  max-width: 19.8rem !important;
+  max-width: 26rem !important;
+
+  background-color: ${(props) => props.theme.white};
+
+  box-shadow: none;
+  outline: none;
+  border: none;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 0.8rem;
 
   cursor: pointer;
 
@@ -36,9 +42,14 @@ export const Item = styled.div`
     color: ${(props) => props.theme.textPrimary};
   }
 
-  :hover {
+  :hover:not(:disabled) {
     background-color: ${(props) => props.theme.background};
     transition: background-color 175ms;
+  }
+
+  :disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 `;
 

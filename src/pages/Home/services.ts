@@ -5,3 +5,12 @@ export async function getAllServices() {
 
   return data;
 }
+
+export async function toggleStatus(
+  id: string,
+  status: "pending" | "working" | "finished" | "delivered"
+) {
+  const payload = { status };
+
+  const { data } = await api.patch(`/service/status/${id}`, payload);
+}

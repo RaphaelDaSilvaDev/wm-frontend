@@ -1,18 +1,12 @@
 import ReactModal from "react-modal";
+import { IModalProps } from "./interface";
 
 import * as S from "./styles";
 
-interface ModalProps {
-  modalOpen: boolean;
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  title: string;
-  content: string | JSX.Element;
-}
-
-export function Modal({ modalOpen, setModalOpen, content, title }: ModalProps) {
+export function Modal({ setModalOpen, content, title, confirmButtonText }: IModalProps) {
   return (
     <ReactModal
-      isOpen={modalOpen}
+      isOpen={true}
       contentLabel="Label Example"
       overlayClassName="modal-overlay"
       className="modal-content"
@@ -22,11 +16,11 @@ export function Modal({ modalOpen, setModalOpen, content, title }: ModalProps) {
       </S.Header>
       <S.Content>{content}</S.Content>
       <S.Footer>
-        <S.Button styleBnt="secondary" onClick={() => setModalOpen(false)}>
+        <S.Button styleBnt="secondary" onClick={() => setModalOpen(<></>)}>
           <span>Cancelar</span>
         </S.Button>
-        <S.Button styleBnt="primary" onClick={() => setModalOpen(false)}>
-          <span>Adicionar</span>
+        <S.Button type="submit" form="managerService" styleBnt="primary">
+          <span>{confirmButtonText}</span>
         </S.Button>
       </S.Footer>
     </ReactModal>
