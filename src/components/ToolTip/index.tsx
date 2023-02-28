@@ -3,6 +3,7 @@ import { hideAll } from "tippy.js";
 
 import { TooltipProps } from "./interfaces";
 import * as S from "./styles";
+import "tippy.js/dist/tippy.css";
 
 export function ToolTip({ items, elements }: TooltipProps) {
   return (
@@ -44,7 +45,7 @@ export function ToolTip({ items, elements }: TooltipProps) {
       duration={[200, 200]}
       arrow={false}
       allowHTML
-      trigger="focus"
+      trigger="click"
       interactive={true}
       ignoreAttributes={true}
     >

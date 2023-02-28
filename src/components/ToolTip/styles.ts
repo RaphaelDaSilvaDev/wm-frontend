@@ -38,6 +38,12 @@ export const Item = styled.button`
 
   cursor: pointer;
 
+  :focus {
+    box-shadow: none;
+    outline: none;
+    border: none;
+  }
+
   & > span {
     color: ${(props) => props.theme.textPrimary};
   }
@@ -48,8 +54,11 @@ export const Item = styled.button`
   }
 
   :disabled {
-    opacity: 0.6;
+    opacity: 0.8;
     cursor: not-allowed;
+    & > span {
+      opacity: 0.6;
+    }
   }
 `;
 

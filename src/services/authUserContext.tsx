@@ -1,6 +1,6 @@
 import { createContext, ReactNode } from "react";
 import { useCookies } from "react-cookie";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { AuthToken } from "./authToken";
 
 interface AuthUserInterface {
