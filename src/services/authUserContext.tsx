@@ -8,12 +8,14 @@ interface AuthUserInterface {
     token: string;
     user: {
       name: string;
-      email: string;
+      username: string;
       isAdmin: string;
+      id: string;
     };
   };
 
   handleSignOut(): void;
+  setCookies: (name: "user", value: any) => void;
 }
 
 export const AuthUserContext = createContext({} as AuthUserInterface);
@@ -42,6 +44,7 @@ export function AuthUserProvider({ children }: Props) {
       value={{
         info,
         handleSignOut,
+        setCookies,
       }}
     >
       {children}
