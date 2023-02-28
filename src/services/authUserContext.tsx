@@ -9,7 +9,7 @@ interface AuthUserInterface {
     user: {
       name: string;
       username: string;
-      isAdmin: string;
+      permission: string;
       id: string;
     };
   };

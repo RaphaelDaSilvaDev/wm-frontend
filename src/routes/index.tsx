@@ -3,6 +3,7 @@ import { HeaderLayout } from "../layout/HeaderLayout";
 import { Home } from "../pages/Home";
 import { Login } from "../pages/Login";
 import { Users } from "../pages/Users";
+import { AuthAdminRoute } from "./authAdminRouter";
 import { AuthRoute } from "./authRoute";
 
 export function Routes() {
@@ -22,9 +23,9 @@ export function Routes() {
           <Route
             path="/users"
             element={
-              <AuthRoute>
+              <AuthAdminRoute>
                 <Users />
-              </AuthRoute>
+              </AuthAdminRoute>
             }
           />
         </Route>

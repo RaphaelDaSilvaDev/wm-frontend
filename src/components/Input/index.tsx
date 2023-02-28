@@ -1,4 +1,5 @@
 import { useFormContext } from "react-hook-form";
+import ReactInputMask from "react-input-mask";
 import * as S from "./styles";
 
 export interface InputProps {
@@ -7,6 +8,7 @@ export interface InputProps {
   registerText: string;
   hasError: boolean;
   disabled?: boolean;
+  mask?: string | (string | RegExp)[];
 }
 
 export function Input({
@@ -15,13 +17,26 @@ export function Input({
   registerText,
   type = "text",
   disabled = false,
+  mask,
 }: InputProps) {
-  const { register } = useFormContext();
-
-  return (
+  const { register, watch } = useFormContext();
+  const text = watch(registerText);
+  return mask === undefined ? (
     <S.Input
       id={registerText}
       hasError={hasError}
+      type={type}
+      step="any"
+      disabled={disabled}
+      placeholder={placeholder}
+      {...register(registerText, { valueAsNumber: type === "number" ? true : false })}
+    />
+  ) : (
+    <S.MaskInput
+      id={registerText}
+      mask={mask}
+      hasError={hasError}
+      value={text ? text.toUpperCase() : ""}
       type={type}
       step="any"
       disabled={disabled}

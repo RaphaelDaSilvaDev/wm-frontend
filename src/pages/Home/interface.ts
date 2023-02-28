@@ -14,6 +14,7 @@ export interface IServiceRequest {
 }
 
 interface User {
+  id: string;
   name: string;
 }
 
@@ -24,6 +25,7 @@ export interface IManagerShow {
   client: JSX.Element;
   entry_date: JSX.Element;
   delivery_date: JSX.Element;
+  responsible_id: string;
   responsible: JSX.Element;
   status: JSX.Element;
   status_value: string;
@@ -33,5 +35,5 @@ export interface IDropDown {
   element: JSX.Element;
   onClick: () => void;
   divider?: boolean;
-  rules: [boolean] | [];
+  rules: boolean[] | [];
 }

@@ -18,6 +18,7 @@ export function Parse(data: IServiceRequest[]): IManagerShow[] {
         </span>
       ),
       responsible: <span>{service.user.name}</span>,
+      responsible_id: service.user.id,
       status: <Bullet color={status[service.status].color} content={status[service.status].name} />,
       status_value: service.status,
     };

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 import { header } from "./header";
 
@@ -9,8 +9,10 @@ import { IDropDown, IManagerShow, IServiceRequest } from "./interface";
 import { Parse } from "./parser";
 import { ManagerModal } from "./components/Modal";
 import { ToolBar } from "../../components/ToolBar";
+import { AuthUserContext } from "../../services/authUserContext";
 
 export function Home() {
+  const { info } = useContext(AuthUserContext);
   const [modal, setModal] = useState<JSX.Element>(<></>);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -27,7 +29,10 @@ export function Home() {
           await toggleStatus(item.id, "pending");
           reload();
         },
-        rules: [item.status_value === "pending"],
+        rules: [
+          item.status_value === "pending",
+          item.responsible_id !== info.user.id && info.user.permission !== "master",
+        ],
       },
       {
         element: <span>Mover para Em Andamento</span>,
@@ -35,7 +40,10 @@ export function Home() {
           await toggleStatus(item.id, "working");
           reload();
         },
-        rules: [item.status_value === "working"],
+        rules: [
+          item.status_value === "working",
+          item.responsible_id !== info.user.id && info.user.permission !== "master",
+        ],
       },
       {
         element: <span>Mover para Finalizado</span>,
@@ -43,7 +51,10 @@ export function Home() {
           await toggleStatus(item.id, "finished");
           reload();
         },
-        rules: [item.status_value === "finished"],
+        rules: [
+          item.status_value === "finished",
+          item.responsible_id !== info.user.id && info.user.permission !== "master",
+        ],
       },
       {
         element: <span>Mover para Entregue</span>,
@@ -51,7 +62,10 @@ export function Home() {
           await toggleStatus(item.id, "delivered");
           reload();
         },
-        rules: [item.status_value === "delivered"],
+        rules: [
+          item.status_value === "delivered",
+          item.responsible_id !== info.user.id && info.user.permission !== "master",
+        ],
       },
       {
         element: <span>Gerenciar Serviço</span>,
@@ -59,7 +73,7 @@ export function Home() {
           setModal(<ManagerModal setModalOpen={setModal} id={item.id} reload={reload} />);
         },
         divider: true,
-        rules: [],
+        rules: [item.responsible_id !== info.user.id && info.user.permission !== "master"],
       },
     ];
   };

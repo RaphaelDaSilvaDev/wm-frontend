@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Input } from "../../../../components/Input";
 import { Modal } from "../../../../components/Modal";
@@ -12,6 +12,8 @@ import ReactLoading from "react-loading";
 import * as S from "./styles";
 import { TextArea } from "../../../../components/TextArea";
 import { ToastStyle } from "../../../../components/Toast";
+import { AuthUserContext } from "../../../../services/authUserContext";
+import ReactInputMask from "react-input-mask";
 
 interface IManagerModalProps {
   id?: string;
@@ -25,6 +27,7 @@ interface IResponsible {
 }
 
 export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
+  const { info } = useContext(AuthUserContext);
   const [loading, setLoading] = useState({ loadingData: false, submitted: false });
   const [service, setService] = useState<IServiceRequest>();
   const [users, setUsers] = useState<IUser[]>([]);
@@ -54,11 +57,13 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
   }
 
   async function LoadUsers() {
-    try {
-      const response = await getAllUsers();
-      setUsers(response);
-    } catch (error) {
-      console.log(error);
+    if (info.user.permission === "master") {
+      try {
+        const response = await getAllUsers();
+        setUsers(response);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
@@ -99,22 +104,23 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
   }
 
   useEffect(() => {
-    method.reset({
-      delivery_date: service?.delivery
-        ? format(new Date(service.delivery ? service.delivery : ""), "Pp", { locale: ptBR })
-        : "",
-      name: service?.client_name ? service.client_name : "",
-      observation: service?.observation ? service.observation : "",
-      phone: service?.client_phone ? service.client_phone : "",
-      responsible: service?.user.name ? service.user.name : "",
-      value: service?.price ? service.price : 0,
-      vehicle_model: service?.vehicle_model ? service.vehicle_model : "",
-      vehicle_plate: service?.vehicle_plate ? service.vehicle_plate : "",
-    });
-    setResponsible({
-      value: service?.user.id ? service.user.id : "",
-      label: service?.user.name ? service.user.name : "",
-    });
+    if (service) {
+      method.reset({
+        delivery_date: service?.delivery
+          ? format(new Date(service.delivery ? service.delivery : ""), "Pp", { locale: ptBR })
+          : "",
+        name: service?.client_name ? service.client_name : "",
+        observation: service?.observation ? service.observation : "",
+        phone: service?.client_phone ? service.client_phone : "",
+        value: service?.price ? service.price : 0,
+        vehicle_model: service?.vehicle_model ? service.vehicle_model : "",
+        vehicle_plate: service?.vehicle_plate ? service.vehicle_plate : "",
+      });
+      setResponsible({
+        value: service?.user.id ? service.user.id : null,
+        label: service?.user.name ? service.user.name : null,
+      });
+    }
   }, [service]);
 
   useEffect(() => {
@@ -168,11 +174,13 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
                 </S.Row>
                 <S.Row>
                   <label htmlFor="phone">Telefone</label>
+
                   <Input
                     hasError={method.formState.errors.phone?.message ? true : false}
                     placeholder="Telefone"
                     registerText="phone"
                     disabled={id ? true : false}
+                    mask="(99) 9 9999-9999"
                   />
                 </S.Row>
               </S.InputContent>
@@ -185,6 +193,7 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
                     placeholder="Placa"
                     registerText="vehicle_plate"
                     disabled={id ? true : false}
+                    mask="aaa-9*99"
                   />
                 </S.Row>
                 <S.Row>
@@ -213,6 +222,7 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
                     hasError={method.formState.errors.delivery_date?.message ? true : false}
                     placeholder="Data para entrega"
                     registerText="delivery_date"
+                    mask="99/99/9999, 99:99"
                   />
                 </S.Row>
                 <S.Row>
@@ -225,21 +235,23 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
                   />
                 </S.Row>
               </S.InputContent>
-
-              <S.InputContent>
-                <S.Row>
-                  <label htmlFor="responsible">Responsável</label>
-                  <S.InputSelect
-                    className="react-select-container"
-                    classNamePrefix="react-select"
-                    options={options}
-                    isClearable={false}
-                    placeholder="Selecione o responsável"
-                    onChange={(e) => setResponsible(e)}
-                    maxMenuHeight={80}
-                  />
-                </S.Row>
-              </S.InputContent>
+              {info.user.permission === "master" && (
+                <S.InputContent>
+                  <S.Row>
+                    <label htmlFor="responsible">Responsável</label>
+                    <S.InputSelect
+                      className="react-select-container"
+                      classNamePrefix="react-select"
+                      options={options}
+                      isClearable={false}
+                      placeholder="Selecione o responsável"
+                      onChange={(e) => setResponsible(e)}
+                      value={responsible ? responsible : null}
+                      maxMenuHeight={80}
+                    />
+                  </S.Row>
+                </S.InputContent>
+              )}
             </S.Container>
           </FormProvider>
         )

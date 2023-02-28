@@ -8,11 +8,13 @@ export const pages = [
     path: "/",
     icon: <Wrench size={32} />,
     text: <span>Serviços</span>,
+    permission: "all",
   },
   {
     name: "Usuários",
     path: "/users",
     icon: <Users size={32} />,
     text: <span>Usuários</span>,
+    permission: "master",
   },
 ];
