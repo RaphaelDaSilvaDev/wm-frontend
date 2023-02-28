@@ -42,7 +42,7 @@ export function ToolTip({ items, elements }: TooltipProps) {
         </>
       }
       placement="left"
-      duration={[200, 200]}
+      duration={[0, 0]}
       arrow={false}
       allowHTML
       trigger="click"

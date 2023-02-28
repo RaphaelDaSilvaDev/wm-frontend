@@ -1,21 +1,19 @@
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { CaretDown, SignOut, UserGear, UserPlus } from "phosphor-react";
-
-import { Wrapper } from "../../layout/Wrapper";
+import { CaretDown } from "phosphor-react";
 
 import { AuthToken } from "../../services/authToken";
 import { AuthUserContext } from "../../services/authUserContext";
-
-import UserSVG from "../../assets/user.svg";
 import * as S from "./styles";
-import { IPages, pages } from "../../utils/pages";
+import { pages } from "../../utils/pages";
+import { ManagerUserModal } from "./components/UserModal";
 
 export function Header() {
   const { pathname } = useLocation();
   const navigation = useNavigate();
   const { info, handleSignOut } = useContext(AuthUserContext);
 
+  const [modal, setModal] = useState<JSX.Element>(<></>);
   const [title, setTitle] = useState<string | undefined>("");
 
   useEffect(() => {
@@ -35,12 +33,37 @@ export function Header() {
     <S.Container>
       <S.Content>
         <span>{title}</span>
-        <S.UserInfo onClick={() => navigation("/")}>
-          <span>{info?.user?.name}</span>
-          <img src={UserSVG} />
-          <CaretDown size={22} />
-        </S.UserInfo>
+        <S.TippyContent
+          className="tooltip"
+          placement="bottom-end"
+          duration={[0, 0]}
+          arrow={false}
+          allowHTML
+          trigger="click"
+          interactive={true}
+          ignoreAttributes={true}
+          content={
+            <>
+              <S.Item
+                onClick={() => {
+                  setModal(
+                    <ManagerUserModal setModalOpen={setModal} user={info.user} token={info.token} />
+                  );
+                }}
+              >
+                Meus Dados
+              </S.Item>
+              <S.Item onClick={handleSignOut}>Sair</S.Item>
+            </>
+          }
+        >
+          <S.UserInfo>
+            <span>{info?.user?.name}</span>
+            <CaretDown size={22} />
+          </S.UserInfo>
+        </S.TippyContent>
       </S.Content>
+      {modal}
     </S.Container>
   );
 }
