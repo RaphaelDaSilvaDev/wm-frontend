@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { header } from "./header";
 
@@ -64,17 +64,17 @@ export function Home() {
     ];
   };
 
-  async function loadData() {
+  const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const request = await getAllServices();
+      const request = await getAllServices(search);
       setServicesRequest(request);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
-  }
+  }, [search]);
 
   function reload() {
     loadData();
@@ -86,7 +86,7 @@ export function Home() {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [loadData]);
 
   return (
     <Page>

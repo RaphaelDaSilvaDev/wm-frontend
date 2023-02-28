@@ -1,7 +1,11 @@
 import { api } from "../../services/axios";
 
-export async function getAllServices() {
-  const { data } = await api.get("/service");
+export async function getAllServices(search: string) {
+  const params: any = {};
+
+  if (search) params.search = search;
+
+  const { data } = await api.get("/service", { params });
 
   return data;
 }
