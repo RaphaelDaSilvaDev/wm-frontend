@@ -136,9 +136,11 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
 
   const options =
     users.length !== 0
-      ? users.map((user) => {
-          return { value: user.id, label: user.name };
-        })
+      ? users
+          .map((user) => {
+            return user.status === true && { value: user.id, label: user.name };
+          })
+          .filter((u) => u !== false)
       : [];
 
   return (
@@ -153,7 +155,7 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
           </S.LoadingContainer>
         ) : (
           <FormProvider {...method}>
-            <S.Container id="managerService" onSubmit={method.handleSubmit(onSubmit)}>
+            <S.Container id="formModal" onSubmit={method.handleSubmit(onSubmit)}>
               <S.InputContent>
                 <S.Row>
                   <label htmlFor="name">Cliente</label>
@@ -231,11 +233,10 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
                     className="react-select-container"
                     classNamePrefix="react-select"
                     options={options}
-                    isSearchable={false}
                     isClearable={false}
                     placeholder="Selecione o responsável"
                     onChange={(e) => setResponsible(e)}
-                    value={responsible}
+                    maxMenuHeight={80}
                   />
                 </S.Row>
               </S.InputContent>

@@ -24,6 +24,7 @@ export interface IUser {
   id: string | null;
   name: string | null;
   username: string | null;
+  status: boolean;
 }
 
 export interface IServiceCreate {
