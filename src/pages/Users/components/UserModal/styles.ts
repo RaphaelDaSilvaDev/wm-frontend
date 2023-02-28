@@ -53,15 +53,9 @@ export const InputSelect = styled(Select)`
   background-color: ${(props) => props.theme.white};
   border-radius: 4px;
   border: none;
+
   & > .react-select__control {
     height: 100%;
-    overflow-y: auto;
-
-    .react-select__input {
-      :focus {
-        box-shadow: none;
-      }
-    }
   }
 
   ::placeholder {

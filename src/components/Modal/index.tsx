@@ -19,7 +19,7 @@ export function Modal({ setModalOpen, content, title, confirmButtonText }: IModa
         <S.Button styleBnt="secondary" onClick={() => setModalOpen(<></>)}>
           <span>Cancelar</span>
         </S.Button>
-        <S.Button type="submit" form="managerService" styleBnt="primary">
+        <S.Button type="submit" form="formModal" styleBnt="primary">
           <span>{confirmButtonText}</span>
         </S.Button>
       </S.Footer>
