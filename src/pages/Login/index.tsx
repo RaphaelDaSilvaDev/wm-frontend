@@ -60,6 +60,8 @@ export function Login() {
     }
   }
 
+  console.log(method.getValues());
+
   useEffect(() => {
     const values = Object.values(method.formState.errors);
     values.map((value) => {
