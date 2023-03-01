@@ -21,6 +21,8 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
 
+  position: relative;
+
   @media screen and (max-width: 768px) {
     width: 100%;
     border-radius: 0;
@@ -65,4 +67,48 @@ export const InputContent = styled.div`
 export const Error = styled.span`
   color: red;
   align-self: center;
+`;
+
+export const LoadingContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > div {
+    width: 2.4rem !important;
+    height: 2.4rem !important;
+
+    fill: ${(props) => props.theme.primary} !important;
+  }
+`;
+
+export const Footer = styled.div`
+  position: absolute;
+  width: 100%;
+  height: fit-content;
+
+  display: none;
+  visibility: hidden;
+
+  bottom: 0;
+
+  padding: 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > span {
+    text-align: center;
+    color: ${(props) => props.theme.primary};
+    font-size: 1.8rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: block;
+    visibility: visible;
+  }
 `;

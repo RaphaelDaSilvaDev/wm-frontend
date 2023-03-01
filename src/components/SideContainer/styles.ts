@@ -15,8 +15,8 @@ export const Container = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
+
+  padding: 2rem;
 
   background: url(${Banner}) no-repeat center / cover;
 
@@ -24,6 +24,33 @@ export const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+
+  position: relative;
+`;
+
+export const LogoContainer = styled.div`
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  z-index: 999;
+
+  & > img {
+    width: 6.4rem;
+    height: 6.4rem;
+
+    border-radius: 100%;
+    object-fit: cover;
+
+    background-color: white;
+  }
+
+  & > span {
+    color: ${(props) => props.theme.white};
+    font-size: 4.8rem;
   }
 `;
 
@@ -48,5 +75,33 @@ export const ArrowDown = styled.div`
 
   @media screen and (max-width: 768px) {
     display: block;
+  }
+`;
+
+export const Footer = styled.div`
+  position: absolute;
+  width: 100%;
+  height: fit-content;
+
+  display: block;
+  visibility: visible;
+
+  bottom: 0;
+
+  padding: 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > span {
+    text-align: center;
+    color: ${(props) => props.theme.white};
+    font-size: 1.8rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: none;
+    visibility: hidden;
   }
 `;

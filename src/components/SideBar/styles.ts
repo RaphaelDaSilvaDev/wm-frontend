@@ -46,6 +46,9 @@ export const Logo = styled.div`
 
   & > span {
     color: ${(props) => props.theme.white};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 
