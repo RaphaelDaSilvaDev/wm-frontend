@@ -51,9 +51,11 @@ export function Header() {
                   );
                 }}
               >
-                Meus Dados
+                <span>Meus Dados</span>
               </S.Item>
-              <S.Item onClick={handleSignOut}>Sair</S.Item>
+              <S.Item onClick={handleSignOut}>
+                <span>Sair</span>
+              </S.Item>
             </>
           }
         >

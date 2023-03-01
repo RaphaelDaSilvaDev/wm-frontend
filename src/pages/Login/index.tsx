@@ -21,6 +21,7 @@ export function Login() {
   const navigation = useNavigate();
 
   const [loadingButton, setLoadingButton] = useState<boolean>(false);
+  const subdomain = window.location.host.split(".")[0];
 
   const method = useForm<loginSchemaType>({
     resolver: zodResolver(loginSchema),
@@ -59,8 +60,6 @@ export function Login() {
       setLoadingButton(false);
     }
   }
-
-  console.log(method.getValues());
 
   useEffect(() => {
     const values = Object.values(method.formState.errors);

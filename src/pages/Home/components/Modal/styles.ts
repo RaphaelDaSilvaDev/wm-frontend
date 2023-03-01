@@ -3,11 +3,13 @@ import styled, { css } from "styled-components";
 
 export const Container = styled.form`
   width: 100%;
-  height: 100%;
+  height: fit-content;
 
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  padding-bottom: 2rem;
 `;
 
 export const Row = styled.div`
@@ -27,7 +29,8 @@ export const Row = styled.div`
 
 export const InputContent = styled.div`
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
   gap: 0.8rem;
 `;
 

@@ -14,6 +14,7 @@ import { TextArea } from "../../../../components/TextArea";
 import { ToastStyle } from "../../../../components/Toast";
 import { AuthUserContext } from "../../../../services/authUserContext";
 import ReactInputMask from "react-input-mask";
+import axios from "axios";
 
 interface IManagerModalProps {
   id?: string;
@@ -47,7 +48,10 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
         const request = await getService(id);
         setService(request);
       } catch (error) {
-        console.log(error);
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
       } finally {
         setLoading((prev) => {
           return { loadingData: false, submitted: prev.submitted };
@@ -62,7 +66,10 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
         const response = await getAllUsers();
         setUsers(response);
       } catch (error) {
-        console.log(error);
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
       }
     }
   }
@@ -77,10 +84,14 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
       values.id = id;
       try {
         await updateService(values);
+        ToastStyle({ message: "Editado com sucesso", styleToast: "success" });
         setModalOpen(<></>);
         reload();
       } catch (error) {
-        console.log(error);
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
       } finally {
         setLoading((prev) => {
           return { loadingData: prev.loadingData, submitted: false };
@@ -91,10 +102,14 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
       values.responsible = responsible?.value ? responsible.value : values.responsible;
       try {
         await createService(values);
+        ToastStyle({ message: "Adicionado com sucesso", styleToast: "success" });
         setModalOpen(<></>);
         reload();
       } catch (error) {
-        console.log(error);
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
       } finally {
         setLoading((prev) => {
           return { loadingData: prev.loadingData, submitted: false };
@@ -207,7 +222,7 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
                 </S.Row>
               </S.InputContent>
               <S.Row>
-                <label htmlFor="observation">Modelo</label>
+                <label htmlFor="observation">Observação</label>
                 <TextArea
                   hasError={method.formState.errors.observation?.message ? true : false}
                   placeholder="Observação"
@@ -247,7 +262,8 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
                       placeholder="Selecione o responsável"
                       onChange={(e) => setResponsible(e)}
                       value={responsible ? responsible : null}
-                      maxMenuHeight={80}
+                      menuPosition="absolute"
+                      menuPlacement="top"
                     />
                   </S.Row>
                 </S.InputContent>

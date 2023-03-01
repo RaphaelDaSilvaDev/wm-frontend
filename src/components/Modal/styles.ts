@@ -21,6 +21,9 @@ export const Header = styled.div`
 
 export const Content = styled.div`
   width: 100%;
+  height: fit-content;
+  max-height: calc(100vh - 16rem - 7.2rem - 7.2rem);
+  overflow-y: auto;
   display: flex;
   padding: 2rem;
 `;

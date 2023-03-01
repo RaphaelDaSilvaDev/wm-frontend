@@ -10,6 +10,8 @@ import { Parse } from "./parser";
 import { ManagerModal } from "./components/Modal";
 import { ToolBar } from "../../components/ToolBar";
 import { AuthUserContext } from "../../services/authUserContext";
+import axios from "axios";
+import { ToastStyle } from "../../components/Toast";
 
 export function Home() {
   const { info } = useContext(AuthUserContext);
@@ -26,8 +28,16 @@ export function Home() {
       {
         element: <span>Mover para Pendente</span>,
         onClick: async () => {
-          await toggleStatus(item.id, "pending");
-          reload();
+          try {
+            await toggleStatus(item.id, "pending");
+            ToastStyle({ message: "Alterado com sucesso", styleToast: "success" });
+            reload();
+          } catch (error) {
+            if (axios.isAxiosError(error)) {
+              console.log(error.message);
+              ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+            }
+          }
         },
         rules: [
           item.status_value === "pending",
@@ -37,8 +47,16 @@ export function Home() {
       {
         element: <span>Mover para Em Andamento</span>,
         onClick: async () => {
-          await toggleStatus(item.id, "working");
-          reload();
+          try {
+            await toggleStatus(item.id, "working");
+            ToastStyle({ message: "Alterado com sucesso", styleToast: "success" });
+            reload();
+          } catch (error) {
+            if (axios.isAxiosError(error)) {
+              console.log(error.message);
+              ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+            }
+          }
         },
         rules: [
           item.status_value === "working",
@@ -48,8 +66,16 @@ export function Home() {
       {
         element: <span>Mover para Finalizado</span>,
         onClick: async () => {
-          await toggleStatus(item.id, "finished");
-          reload();
+          try {
+            await toggleStatus(item.id, "finished");
+            ToastStyle({ message: "Alterado com sucesso", styleToast: "success" });
+            reload();
+          } catch (error) {
+            if (axios.isAxiosError(error)) {
+              console.log(error.message);
+              ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+            }
+          }
         },
         rules: [
           item.status_value === "finished",
@@ -59,8 +85,16 @@ export function Home() {
       {
         element: <span>Mover para Entregue</span>,
         onClick: async () => {
-          await toggleStatus(item.id, "delivered");
-          reload();
+          try {
+            await toggleStatus(item.id, "delivered");
+            ToastStyle({ message: "Alterado com sucesso", styleToast: "success" });
+            reload();
+          } catch (error) {
+            if (axios.isAxiosError(error)) {
+              console.log(error.message);
+              ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+            }
+          }
         },
         rules: [
           item.status_value === "delivered",
@@ -84,7 +118,10 @@ export function Home() {
       const request = await getAllServices(search);
       setServicesRequest(request);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
     } finally {
       setLoading(false);
     }
