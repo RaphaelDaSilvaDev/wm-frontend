@@ -36,6 +36,11 @@ export const UserInfo = styled.div`
   user-select: none;
 
   cursor: pointer;
+
+  & > span {
+    font-size: 2.4rem;
+    color: ${(props) => props.theme.textPrimary};
+  }
 `;
 
 export const TippyContent = styled(Tippy)`

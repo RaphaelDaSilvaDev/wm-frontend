@@ -1,6 +1,8 @@
+import axios from "axios";
 import { createContext, ReactNode } from "react";
 import { useCookies } from "react-cookie";
 import { Navigate } from "react-router-dom";
+import { ToastStyle } from "../components/Toast";
 import { AuthToken } from "./authToken";
 
 interface AuthUserInterface {
@@ -35,7 +37,10 @@ export function AuthUserProvider({ children }: Props) {
       AuthToken(undefined);
       return <Navigate to="/login" />;
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
     }
   }
 

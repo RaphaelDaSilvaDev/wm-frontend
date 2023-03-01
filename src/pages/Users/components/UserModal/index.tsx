@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Input } from "../../../../components/Input";
@@ -36,7 +37,10 @@ export function ManagerUserModal({ reload, setModalOpen, id }: IManagerModalProp
         const request = await getUser(id);
         setUser(request);
       } catch (error) {
-        console.log(error);
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
       } finally {
         setLoading((prev) => {
           return { loadingData: false, submitted: prev.submitted };
@@ -54,10 +58,14 @@ export function ManagerUserModal({ reload, setModalOpen, id }: IManagerModalProp
       values.id = id;
       try {
         await updateUser(values);
+        ToastStyle({ message: "Editado com sucesso", styleToast: "success" });
         setModalOpen(<></>);
         reload();
       } catch (error) {
-        console.log(error);
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
       } finally {
         setLoading((prev) => {
           return { loadingData: prev.loadingData, submitted: false };
@@ -67,10 +75,14 @@ export function ManagerUserModal({ reload, setModalOpen, id }: IManagerModalProp
       const values: IUserCreate = method.getValues();
       try {
         await createUser(values);
+        ToastStyle({ message: "Adicionado com sucesso", styleToast: "success" });
         setModalOpen(<></>);
         reload();
       } catch (error) {
-        console.log(error);
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
       } finally {
         setLoading((prev) => {
           return { loadingData: prev.loadingData, submitted: false };

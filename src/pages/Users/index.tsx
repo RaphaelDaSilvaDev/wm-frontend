@@ -1,6 +1,8 @@
+import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { Manager } from "../../components/Manager";
 import { Page } from "../../components/Page";
+import { ToastStyle } from "../../components/Toast";
 import { ToolBar } from "../../components/ToolBar";
 import { IDropDown } from "../Home/interface";
 import { ManagerUserModal } from "./components/UserModal";
@@ -23,16 +25,32 @@ export function Users() {
       {
         element: <span>Ativar usuário</span>,
         onClick: async () => {
-          await toogleUserStatus(item.id);
-          reload();
+          try {
+            await toogleUserStatus(item.id);
+            ToastStyle({ message: "Alterado com sucesso", styleToast: "success" });
+            reload();
+          } catch (error) {
+            if (axios.isAxiosError(error)) {
+              console.log(error.message);
+              ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+            }
+          }
         },
         rules: [item.status_value === true],
       },
       {
         element: <span>Inativar usuário</span>,
         onClick: async () => {
-          await toogleUserStatus(item.id);
-          reload();
+          try {
+            await toogleUserStatus(item.id);
+            ToastStyle({ message: "Alterado com sucesso", styleToast: "success" });
+            reload();
+          } catch (error) {
+            if (axios.isAxiosError(error)) {
+              console.log(error.message);
+              ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+            }
+          }
         },
         rules: [item.status_value === false],
       },
@@ -53,7 +71,10 @@ export function Users() {
       const request = await getAllUsers(search);
       setUsersRequest(request);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
     } finally {
       setLoading(false);
     }

@@ -9,17 +9,27 @@ export const Container = styled.div`
   overflow: hidden;
 `;
 
+export const TableOverflow = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+`;
+
 export const Table = styled.table`
   width: 100%;
   height: 100%;
   padding: 0;
   margin: 0;
   border-spacing: 0;
+
+  table-layout: fixed;
+  overflow-wrap: break-word;
 `;
 
 export const TableHead = styled.tr`
   width: 100%;
-
+  min-width: 105rem;
   display: flex;
   align-items: center;
 
@@ -37,14 +47,16 @@ export const TableHeadItem = styled.th`
 
 export const TableBody = styled.div`
   width: 100%;
-  height: 100%;
+  min-width: 105rem;
+  height: calc(100vh - 25rem);
 
   overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 export const TableRow = styled.tr`
   width: 100%;
-
+  min-width: 105rem;
   overflow-y: auto;
 
   display: flex;
@@ -86,4 +98,13 @@ export const LoadingContainer = styled.div`
 
     fill: ${(props) => props.theme.primary} !important;
   }
+`;
+
+export const Empty = styled.div`
+  width: calc(100vw - 7.2rem - 5.2rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 2rem;
 `;

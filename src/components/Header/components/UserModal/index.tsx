@@ -17,7 +17,7 @@ interface IManagerModalProps {
   user: {
     name: string;
     username: string;
-    isAdmin: string;
+    permission: string;
     id: string;
   };
   setModalOpen: React.Dispatch<React.SetStateAction<JSX.Element>>;
