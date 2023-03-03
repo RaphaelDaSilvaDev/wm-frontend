@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import { createContext, ReactNode } from "react";
 import { useCookies } from "react-cookie";
 import { Navigate } from "react-router-dom";
@@ -34,7 +35,9 @@ export function AuthUserProvider({ children }: Props) {
   function handleSignOut() {
     try {
       removeCookies("user");
-      AuthToken(undefined);
+      Cookies.remove("client");
+      Cookies.remove("clientCode");
+      AuthToken(undefined, undefined);
       return <Navigate to="/login" />;
     } catch (error) {
       if (axios.isAxiosError(error)) {

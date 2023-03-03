@@ -21,13 +21,11 @@ import ReactLoading from "react-loading";
 import { getClientService } from "./service";
 
 export function Login() {
-  const firstRender = useRef(true);
   const navigation = useNavigate();
 
   const [loadingButton, setLoadingButton] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [client, setClient] = useState<IClientRequest>();
-  const subdomain = window.location.host.split(".")[0];
 
   const method = useForm<loginSchemaType>({
     resolver: zodResolver(loginSchema),
@@ -38,32 +36,33 @@ export function Login() {
     },
   });
 
-  const [cookies, setCookies] = useCookies(["user", "client"]);
+  const [cookies, setCookies] = useCookies(["user", "client", "clientCode"]);
 
   async function getClient() {
-    setLoading(true);
-
+    setLoadingButton(true);
+    const clientCode = method.watch("clientCode");
     try {
-      const request = await getClientService(subdomain);
+      const request = await getClientService(clientCode);
       setClient(request);
       setCookies("client", request, { path: "/" });
+      getAuth();
     } catch (error) {
+      setLoadingButton(false);
       if (axios.isAxiosError(error)) {
         console.log(error.message);
         ToastStyle({ message: error.response?.data.message, styleToast: "error" });
       }
-    } finally {
-      setLoading(false);
     }
   }
 
-  async function handleLogin() {
-    setLoadingButton(true);
+  async function getAuth() {
     const username = method.watch("username");
     const password = method.watch("password");
+    const clientCode = method.watch("clientCode");
     const body = {
       username,
       password,
+      clientCode,
     };
 
     try {
@@ -71,7 +70,8 @@ export function Login() {
       if (response.status === 200) {
         const { data } = response;
         setCookies("user", data, { path: "/" });
-        AuthToken(data.token);
+        setCookies("clientCode", data.clientCode, { path: "/" });
+        AuthToken(data.token, clientCode);
         navigation("/");
       }
     } catch (error) {
@@ -84,6 +84,10 @@ export function Login() {
     }
   }
 
+  async function handleLogin() {
+    getClient();
+  }
+
   useEffect(() => {
     const values = Object.values(method.formState.errors);
     values.map((value) => {
@@ -94,30 +98,9 @@ export function Login() {
     });
   }, [method.formState.errors]);
 
-  useEffect(() => {
-    if (client !== undefined) {
-      if (client === null) {
-        navigation("/not-found");
-      } else {
-        let link = document.querySelector("link[rel~='icon']");
-        if (!link) {
-          link = document.createElement("link");
-          link.rel = "icon";
-          document.getElementsByTagName("head")[0].appendChild(link);
-        }
-        link.href = client.avatar;
-        document.title = client.name;
-      }
-    }
-  }, [client]);
-
-  useEffect(() => {
-    getClient();
-  }, []);
-
   return (
     <S.Main>
-      {loading || !client ? (
+      {loading ? (
         <S.LoadingContainer>
           <ReactLoading type="spin" />
         </S.LoadingContainer>
@@ -128,6 +111,15 @@ export function Login() {
             <FormProvider {...method}>
               <S.Content onSubmit={method.handleSubmit(handleLogin)}>
                 <h1>Dados de Acesso</h1>
+                <S.InputContent>
+                  <label htmlFor="clientCode">Conta</label>
+                  <Input
+                    hasError={method.formState.errors.clientCode?.message ? true : false}
+                    placeholder="Digite a conta da Oficina"
+                    registerText="clientCode"
+                  />
+                </S.InputContent>
+
                 <S.InputContent>
                   <label htmlFor="username">Usuário</label>
                   <Input

@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { useCookies } from "react-cookie";
 import { useJwt } from "react-jwt";
 import { Navigate } from "react-router-dom";
@@ -15,7 +16,9 @@ export function AuthAdminRoute({ children }: AuthRouteProps) {
 
   if (isExpired) {
     removeCookies("user");
-    AuthToken(undefined);
+    Cookies.remove("client");
+    Cookies.remove("clientCode");
+    AuthToken(undefined, undefined);
   }
 
   if (!cookies.user) {
