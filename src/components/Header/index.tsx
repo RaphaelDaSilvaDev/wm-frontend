@@ -7,6 +7,7 @@ import { AuthUserContext } from "../../services/authUserContext";
 import * as S from "./styles";
 import { pages } from "../../utils/pages";
 import { ManagerUserModal } from "./components/UserModal";
+import Cookies from "js-cookie";
 
 export function Header() {
   const { pathname } = useLocation();
@@ -26,7 +27,11 @@ export function Header() {
       return navigation("/login");
     }
 
-    AuthToken(info.token);
+    const clientCode = Cookies.get("clientCode");
+    if (!clientCode) {
+      return navigation("/login");
+    }
+    AuthToken(info.token, clientCode);
   }, []);
 
   return (
