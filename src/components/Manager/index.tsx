@@ -9,10 +9,10 @@ export function Manager({ header, body, options, loading }: ManagerProps) {
       <S.Table>
         <S.TableOverflow>
           <S.TableHead>
+            {options && <S.Option />}
             {header.map((item) => (
               <S.TableHeadItem key={item.title}>{item.title}</S.TableHeadItem>
             ))}
-            {options && <S.Option />}
           </S.TableHead>
           <S.TableBody>
             {loading ? (
@@ -24,15 +24,21 @@ export function Manager({ header, body, options, loading }: ManagerProps) {
                 <span>Nenhum registro encontrado</span>
               </S.Empty>
             ) : (
-              body.map((elements) => (
-                <S.TableRow>
+              body.map((elements, index) => (
+                <S.TableRow key={index}>
+                  {options && (
+                    <S.ToolTip>
+                      <ToolTip items={options} elements={elements} />
+                    </S.ToolTip>
+                  )}
                   {Object.entries(elements).map((element) =>
                     header.map(
                       (item) =>
-                        element[0] === item.key && <S.TableRowItem>{element[1]}</S.TableRowItem>
+                        element[0] === item.key && (
+                          <S.TableRowItem key={item.key}>{element[1]}</S.TableRowItem>
+                        )
                     )
                   )}
-                  {options && <ToolTip items={options} elements={elements} />}
                 </S.TableRow>
               ))
             )}

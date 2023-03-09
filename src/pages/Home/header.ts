@@ -3,27 +3,23 @@ import { IHeaderManagerProps } from "../../components/Manager/interfaces";
 export const header: IHeaderManagerProps[] = [
   {
     key: "plate",
-    title: "Placa do Veículo",
+    title: "Placa",
   },
   {
-    key: "model",
-    title: "Modelo",
+    key: "vehicle",
+    title: "Veículo",
   },
   {
     key: "client",
     title: "Cliente",
   },
   {
-    key: "entry_date",
-    title: "Data da Entrada",
+    key: "responsible",
+    title: "Responsável",
   },
   {
     key: "delivery_date",
     title: "Data da Entrega",
-  },
-  {
-    key: "responsible",
-    title: "Responsável",
   },
   {
     key: "status",

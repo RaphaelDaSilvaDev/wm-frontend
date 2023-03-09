@@ -12,7 +12,7 @@ export async function getAllServices(search: string) {
 
 export async function toggleStatus(
   id: string,
-  status: "pending" | "working" | "finished" | "delivered"
+  status: "pending" | "approved" | "denied" | "delivered"
 ) {
   const payload = { status };
 

@@ -1,4 +1,5 @@
-import styled, { css } from "styled-components";
+import Select from "react-select";
+import styled from "styled-components";
 
 export const Row = styled.div`
   width: 100%;
@@ -15,24 +16,22 @@ export const Row = styled.div`
   }
 `;
 
-interface hasError {
-  hasError: boolean;
-}
-
-export const Input = styled.textarea<hasError>`
+export const InputSelect = styled(Select)`
   width: 100%;
-  height: 10rem;
+  height: 5.6rem;
   background-color: ${(props) => props.theme.white};
-  padding: 1.5rem 2rem;
   border-radius: 4px;
   border: none;
-  resize: none;
+  & > .react-select__control {
+    height: 100%;
+    overflow-y: auto;
 
-  ${(props) =>
-    props.hasError &&
-    css`
-      box-shadow: 0 0 0 2px ${(props) => props.theme.danger};
-    `}
+    .react-select__input {
+      :focus {
+        box-shadow: none;
+      }
+    }
+  }
 
   ::placeholder {
     color: ${(props) => props.theme.placeholder};

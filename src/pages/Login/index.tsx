@@ -44,7 +44,14 @@ export function Login() {
     try {
       const request = await getClientService(clientCode);
       setClient(request);
-      setCookies("client", request, { path: "/" });
+      const showClient = {
+        avatar: request?.avatar,
+        clientCode: request.requestCode,
+        name: request.name,
+        paymentDate: request.paymentDate,
+        paymentValue: request.paymentValue,
+      };
+      setCookies("client", showClient, { path: "/" });
       getAuth();
     } catch (error) {
       setLoadingButton(false);
