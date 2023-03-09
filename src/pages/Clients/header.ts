@@ -6,15 +6,19 @@ export const headerUsers: IHeaderManagerProps[] = [
     title: "Nome",
   },
   {
-    key: "username",
-    title: "Usuário",
+    key: "address",
+    title: "Endereço",
   },
   {
-    key: "createdAt",
-    title: "Criado em",
+    key: "phone",
+    title: "Telefone",
   },
   {
-    key: "status",
-    title: "Status",
+    key: "cellPhone",
+    title: "Celular",
+  },
+  {
+    key: "email",
+    title: "Email",
   },
 ];

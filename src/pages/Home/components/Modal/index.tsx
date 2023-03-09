@@ -7,7 +7,7 @@ import { Input } from "../../../../components/Input";
 import { Modal } from "../../../../components/Modal";
 import { IServiceCreate, IServiceRequest, IServiceUpdate, IUser } from "./interfaces";
 import { managerServiceSchema, managerServiceSchemaType } from "./schema";
-import { createService, getAllUsers, getService, updateService } from "./services";
+import { createService, getAllUsers, updateService } from "./services";
 import ReactLoading from "react-loading";
 import * as S from "./styles";
 import { TextArea } from "../../../../components/TextArea";
@@ -45,8 +45,8 @@ export function ManagerModal({ setModalOpen, id, reload }: IManagerModalProps) {
         return { loadingData: true, submitted: prev.submitted };
       });
       try {
-        const request = await getService(id);
-        setService(request);
+        //const request = await getService(id);
+        // setService(request);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log(error.message);

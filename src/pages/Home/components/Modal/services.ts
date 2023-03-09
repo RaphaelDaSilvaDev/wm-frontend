@@ -2,12 +2,6 @@ import { api } from "../../../../services/axios";
 import { format, formatISO, parseISO } from "date-fns";
 import { IServiceCreate, IServiceUpdate } from "./interfaces";
 
-export async function getService(id: string) {
-  const { data } = await api.get(`/service/${id}`);
-
-  return data;
-}
-
 export async function getAllUsers() {
   const { data } = await api.get(`/user`);
 

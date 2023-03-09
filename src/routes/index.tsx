@@ -3,10 +3,14 @@ import { HeaderLayout } from "../layout/HeaderLayout";
 import { Home } from "../pages/Home";
 import { Login } from "../pages/Login";
 import { NotFound } from "../pages/NotFound";
+import { Product } from "../pages/Product";
+import { Settings } from "../pages/Settings";
 import { UserNotFound } from "../pages/UserNotFound";
-import { Users } from "../pages/Users";
+import { Client } from "../pages/Clients";
 import { AuthAdminRoute } from "./authAdminRouter";
 import { AuthRoute } from "./authRoute";
+import { Vehicles } from "../pages/Vehicles";
+import { CreateService } from "../pages/Home/components/CreateService";
 
 export function Routes() {
   return (
@@ -23,10 +27,42 @@ export function Routes() {
             }
           />
           <Route
-            path="/users"
+            path="/service"
+            element={
+              <AuthRoute>
+                <CreateService />
+              </AuthRoute>
+            }
+          />
+          <Route
+            path="/clients"
             element={
               <AuthAdminRoute>
-                <Users />
+                <Client />
+              </AuthAdminRoute>
+            }
+          />
+          <Route
+            path="/vehicles"
+            element={
+              <AuthAdminRoute>
+                <Vehicles />
+              </AuthAdminRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <AuthAdminRoute>
+                <Settings />
+              </AuthAdminRoute>
+            }
+          />
+          <Route
+            path="/products"
+            element={
+              <AuthAdminRoute>
+                <Product />
               </AuthAdminRoute>
             }
           />

@@ -35,14 +35,14 @@ export const TableHead = styled.tr`
 
   padding-block: 2rem;
   padding-inline: 1.5rem;
-  background-color: ${(props) => props.theme.white};
+  background-color: transparent;
   border-bottom: 1px solid ${(props) => props.theme.border};
 `;
 
 export const TableHeadItem = styled.th`
   flex: 1;
   font-size: 1.8rem;
-  font-weight: 400;
+  font-weight: 800;
 `;
 
 export const TableBody = styled.div`
@@ -107,4 +107,8 @@ export const Empty = styled.div`
   justify-content: center;
 
   margin-top: 2rem;
+`;
+
+export const ToolTip = styled.div`
+  width: 3.2rem;
 `;

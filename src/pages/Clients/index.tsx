@@ -7,52 +7,31 @@ import { ToolBar } from "../../components/ToolBar";
 import { IDropDown } from "../Home/interface";
 import { ManagerUserModal } from "./components/UserModal";
 import { headerUsers } from "./header";
-import { IManagerShowUser, IUsersRequest } from "./interfaces";
-import { ParseUsers } from "./parser";
-import { getAllUsers, toogleUserStatus } from "./services";
+import { IClientRequest, IManagerShowClient } from "./interfaces";
 
-export function Users() {
+import { ParseUsers } from "./parser";
+import { getAllClients } from "./services";
+
+export function Client() {
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>("");
 
-  const [usersRequest, setUsersRequest] = useState<IUsersRequest[]>([]);
-  const [usersManager, setUsersManager] = useState<IManagerShowUser[]>([]);
+  const [usersRequest, setUsersRequest] = useState<IClientRequest[]>([]);
+  const [usersManager, setUsersManager] = useState<IManagerShowClient[]>([]);
 
   const [modal, setModal] = useState<JSX.Element>(<></>);
 
-  const items = (item: IManagerShowUser): IDropDown[] => {
+  const items = (item: IManagerShowClient): IDropDown[] => {
     return [
       {
         element: <span>Ativar usuário</span>,
-        onClick: async () => {
-          try {
-            await toogleUserStatus(item.id);
-            ToastStyle({ message: "Alterado com sucesso", styleToast: "success" });
-            reload();
-          } catch (error) {
-            if (axios.isAxiosError(error)) {
-              console.log(error.message);
-              ToastStyle({ message: error.response?.data.message, styleToast: "error" });
-            }
-          }
-        },
-        rules: [item.status_value === true],
+        onClick: async () => {},
+        rules: [],
       },
       {
         element: <span>Inativar usuário</span>,
-        onClick: async () => {
-          try {
-            await toogleUserStatus(item.id);
-            ToastStyle({ message: "Alterado com sucesso", styleToast: "success" });
-            reload();
-          } catch (error) {
-            if (axios.isAxiosError(error)) {
-              console.log(error.message);
-              ToastStyle({ message: error.response?.data.message, styleToast: "error" });
-            }
-          }
-        },
-        rules: [item.status_value === false],
+        onClick: async () => {},
+        rules: [],
       },
       {
         element: <span>Gerenciar usuário</span>,
@@ -68,7 +47,7 @@ export function Users() {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const request = await getAllUsers(search);
+      const request = await getAllClients(search);
       setUsersRequest(request);
     } catch (error) {
       if (axios.isAxiosError(error)) {

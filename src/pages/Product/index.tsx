@@ -1,0 +1,71 @@
+import { useEffect, useState } from "react";
+import { Manager } from "../../components/Manager";
+import { Page } from "../../components/Page";
+import { ToolBar } from "../../components/ToolBar";
+import { IDropDown } from "../Home/interface";
+import { productsHeader } from "./header";
+import { IProductsRequest, ProductToManager } from "./interfaces";
+import { ProductParse } from "./parse";
+import { GetProductsService } from "./services";
+
+export function Product() {
+  const [data, setData] = useState<IProductsRequest[]>([]);
+  const [dataToManager, setDataToManager] = useState<ProductToManager[]>([]);
+  const [search, setSearch] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const options = (item: any): IDropDown[] => [
+    {
+      element: <></>,
+      onClick: () => {},
+      rules: [],
+    },
+    {
+      element: <></>,
+      onClick: () => {},
+      rules: [],
+    },
+    {
+      element: <></>,
+      onClick: () => {},
+      rules: [],
+    },
+    {
+      element: <></>,
+      onClick: () => {},
+      rules: [],
+    },
+  ];
+
+  async function getData() {
+    setLoading(true);
+    try {
+      const response = await GetProductsService();
+      setData(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    setDataToManager(ProductParse(data));
+  }, [data]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  return (
+    <Page>
+      <ToolBar
+        buttonText="Adicionar Produto"
+        buttonOnClick={() => {}}
+        searchPlaceHolder="Pesquisar Produto"
+        searchState={setSearch}
+      />
+      <Manager header={productsHeader} body={dataToManager} options={options} loading={loading} />
+    </Page>
+  );
+}
