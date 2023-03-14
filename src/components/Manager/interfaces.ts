@@ -4,7 +4,7 @@ import { TooltipProps } from "../ToolTip/interfaces";
 export interface ManagerProps {
   header: IHeaderManagerProps[];
   body: {}[];
-  options: (item: any) => IDropDown[];
+  options?: (item: any) => IDropDown[];
   loading?: boolean;
 }
 

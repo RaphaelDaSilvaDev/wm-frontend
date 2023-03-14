@@ -9,9 +9,17 @@ interface InputSelectProps {
   value: any;
   placeHolder: string;
   label?: string;
+  disabled?: boolean;
 }
 
-export function InputSelect({ setValue, options, value, label, placeHolder }: InputSelectProps) {
+export function InputSelect({
+  setValue,
+  options,
+  value,
+  label,
+  placeHolder,
+  disabled = false,
+}: InputSelectProps) {
   return (
     <S.Row>
       {label && <label htmlFor={label}>{label}</label>}
@@ -25,6 +33,7 @@ export function InputSelect({ setValue, options, value, label, placeHolder }: In
         onChange={(e) => setValue(e)}
         value={value ? value : null}
         menuPosition="absolute"
+        isDisabled={disabled}
       />
     </S.Row>
   );

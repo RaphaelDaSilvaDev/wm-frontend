@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Manager } from "../../components/Manager";
 import { Page } from "../../components/Page";
 import { ToastStyle } from "../../components/Toast";
@@ -13,6 +14,7 @@ import { ParseUsers } from "./parser";
 import { getAllClients } from "./services";
 
 export function Client() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>("");
 
@@ -75,9 +77,7 @@ export function Client() {
     <Page>
       <ToolBar
         buttonText="Adicionar Usuário"
-        buttonOnClick={() => {
-          setModal(<ManagerUserModal reload={reload} setModalOpen={setModal} />);
-        }}
+        buttonOnClick={() => navigate("/clients/create")}
         searchPlaceHolder="Pesquisar Usuário"
         searchState={setSearch}
       />

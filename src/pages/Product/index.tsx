@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate, useNavigation } from "react-router-dom";
 import { Manager } from "../../components/Manager";
 import { Page } from "../../components/Page";
 import { ToolBar } from "../../components/ToolBar";
@@ -9,6 +10,7 @@ import { ProductParse } from "./parse";
 import { GetProductsService } from "./services";
 
 export function Product() {
+  const navigate = useNavigate();
   const [data, setData] = useState<IProductsRequest[]>([]);
   const [dataToManager, setDataToManager] = useState<ProductToManager[]>([]);
   const [search, setSearch] = useState<string>("");
@@ -61,7 +63,7 @@ export function Product() {
     <Page>
       <ToolBar
         buttonText="Adicionar Produto"
-        buttonOnClick={() => {}}
+        buttonOnClick={() => navigate("/products/create")}
         searchPlaceHolder="Pesquisar Produto"
         searchState={setSearch}
       />

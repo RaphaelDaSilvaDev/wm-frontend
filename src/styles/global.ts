@@ -84,7 +84,7 @@ export const GlobalStyles = createGlobalStyle`
 
   .modal-content {
     width: 90%;
-    max-width: 75rem;
+    max-width: calc(100vw - 20rem);
     height: fit-content;
     max-height: calc(100vh - 16rem);
     background-color: ${(props) => props.theme.background};

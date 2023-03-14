@@ -37,4 +37,8 @@ export const Input = styled.textarea<hasError>`
   ::placeholder {
     color: ${(props) => props.theme.placeholder};
   }
+
+  :disabled {
+    opacity: 0.6;
+  }
 `;

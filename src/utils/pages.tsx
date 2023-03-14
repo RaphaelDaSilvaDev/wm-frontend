@@ -21,8 +21,15 @@ export const pages = [
     name: "Produtos",
     path: "/products",
     icon: <Package size={32} />,
-    text: <span>Ajustes</span>,
+    text: <span>Produtos</span>,
     permission: "master",
+  },
+  {
+    name: "Produtos",
+    path: "/products/create",
+    icon: <Package size={32} />,
+    text: <span>Produtos</span>,
+    permission: "none",
   },
   {
     name: "Clientes",
@@ -30,6 +37,13 @@ export const pages = [
     icon: <Users size={32} />,
     text: <span>Clientes</span>,
     permission: "master",
+  },
+  {
+    name: "Clientes",
+    path: "/clients/create",
+    icon: <Users size={32} />,
+    text: <span>Clientes</span>,
+    permission: "none",
   },
   {
     name: "Veículos",

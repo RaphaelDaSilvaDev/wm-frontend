@@ -46,3 +46,26 @@ export interface IServiceRequest {
     brand: string;
   };
 }
+
+export interface IServiceProductRequest {
+  id: string;
+  quantity: number;
+  product: {
+    id: string;
+    name: string;
+    brand: string;
+    valueToBuy: number;
+    description: string;
+  };
+}
+
+export interface IServiceProductToManager {
+  id: string;
+  amount: number;
+  quantity: JSX.Element;
+  product: JSX.Element;
+  responsible: JSX.Element;
+  value: JSX.Element;
+  total: JSX.Element;
+  status: JSX.Element;
+}
