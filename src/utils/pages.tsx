@@ -53,6 +53,13 @@ export const pages = [
     permission: "master",
   },
   {
+    name: "Veículos",
+    path: "/vehicles/create",
+    icon: <Car size={32} />,
+    text: <span>Veículos</span>,
+    permission: "none",
+  },
+  {
     name: "Ajustes",
     path: "/settings",
     icon: <Gear size={32} />,

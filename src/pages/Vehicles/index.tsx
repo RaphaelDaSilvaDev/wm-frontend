@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Manager } from "../../components/Manager";
 import { Page } from "../../components/Page";
 import { ToolBar } from "../../components/ToolBar";
@@ -9,6 +10,7 @@ import { VehicleParse } from "./parse";
 import { GetVehicleServie } from "./services";
 
 export function Vehicles() {
+  const navigate = useNavigate();
   const [data, setData] = useState<IVehicleRequest[]>([]);
   const [dataToManager, setDataToManaget] = useState<IVehicleToManager[]>([]);
   const [search, setSearch] = useState<string>("");
@@ -45,7 +47,7 @@ export function Vehicles() {
   return (
     <Page>
       <ToolBar
-        buttonOnClick={() => {}}
+        buttonOnClick={() => navigate("/vehicles/create")}
         buttonText="Adicionar Veículo"
         searchPlaceHolder="Pesquisar Veículo"
         searchState={setSearch}
