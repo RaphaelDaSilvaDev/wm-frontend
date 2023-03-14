@@ -13,6 +13,7 @@ import { Vehicles } from "../pages/Vehicles";
 import { CreateService } from "../pages/Home/components/CreateService";
 import { CreateProduct } from "../pages/Product/components/CreateProduct";
 import { CreateUserPage } from "../pages/Clients/components/CreateUser";
+import { CreateVehicle } from "../pages/Vehicles/components/CreateVehicle";
 
 export function Routes() {
   return (
@@ -57,6 +58,14 @@ export function Routes() {
             element={
               <AuthAdminRoute>
                 <Vehicles />
+              </AuthAdminRoute>
+            }
+          />
+          <Route
+            path="/vehicles/create"
+            element={
+              <AuthAdminRoute>
+                <CreateVehicle />
               </AuthAdminRoute>
             }
           />
