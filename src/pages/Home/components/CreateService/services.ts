@@ -25,3 +25,9 @@ export async function getService(id: string) {
 
   return data;
 }
+
+export async function getServiceProduct(id: string) {
+  const { data } = await api.get(`/service-product/${id}`);
+
+  return data;
+}

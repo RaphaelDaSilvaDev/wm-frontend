@@ -6,9 +6,16 @@ export interface InputProps {
   registerText: string;
   hasError: boolean;
   label?: string;
+  disabled?: boolean;
 }
 
-export function TextArea({ hasError, placeholder, registerText, label }: InputProps) {
+export function TextArea({
+  hasError,
+  placeholder,
+  registerText,
+  label,
+  disabled = false,
+}: InputProps) {
   const { register } = useFormContext();
   return (
     <S.Row>
@@ -18,6 +25,7 @@ export function TextArea({ hasError, placeholder, registerText, label }: InputPr
         hasError={hasError}
         placeholder={placeholder}
         {...register(registerText)}
+        disabled={disabled}
       />
     </S.Row>
   );

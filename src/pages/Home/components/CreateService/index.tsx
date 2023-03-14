@@ -5,15 +5,34 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { InputSelect } from "../../../../components/InputSelect";
 import { InputLabel } from "../../../../components/InputWithLabel";
+import { Manager } from "../../../../components/Manager";
 import { Page } from "../../../../components/Page";
 import { TextArea } from "../../../../components/TextArea";
+import { ToolBar } from "../../../../components/ToolBar";
 import { IClientRequest } from "../../../Clients/interfaces";
 import { getAllClients } from "../../../Clients/services";
 import { IVehicleRequest } from "../../../Vehicles/interfaces";
+import { IDropDown } from "../../interface";
+import { AddProduct } from "../AddProduct";
 import { createService } from "../Modal/services";
-import { ICreateService, IResponsible, IResponsibleRequest, IServiceRequest } from "./interfaces";
+import { ProductHeader } from "./header";
+import {
+  ICreateService,
+  IResponsible,
+  IResponsibleRequest,
+  IServiceProductRequest,
+  IServiceProductToManager,
+  IServiceRequest,
+} from "./interfaces";
+import { ProductParse } from "./parse";
 import { ServiceSchema, ServiceSchemaType } from "./schemas";
-import { AddService, GetResponsible, getService, GetVehicleByClientService } from "./services";
+import {
+  AddService,
+  GetResponsible,
+  getService,
+  getServiceProduct,
+  GetVehicleByClientService,
+} from "./services";
 
 import * as S from "./styles";
 
@@ -27,6 +46,8 @@ export function CreateService() {
 
   const id = location.state?.id;
 
+  const [searchProduct, setSearchProduct] = useState<string>("");
+
   const [client, setClient] = useState<IResponsible>();
   const [clients, setClients] = useState<IClientRequest[]>([]);
   const [responsible, setResponsible] = useState<IResponsible>();
@@ -34,13 +55,20 @@ export function CreateService() {
   const [vehicle, setVehicle] = useState<IResponsible>();
   const [vehicles, setVehicles] = useState<IVehicleRequest[]>([]);
 
+  const [serviceProduct, setServiceProduct] = useState<IServiceProductRequest[]>([]);
+  const [serviceProductToManager, setServiceProductToManager] = useState<
+    IServiceProductToManager[]
+  >([]);
+
   const [service, setService] = useState<IServiceRequest>();
+  const [serviceModal, setServiceModal] = useState<JSX.Element>(<></>);
 
   const [loadClient, setLoadClient] = useState<boolean>(false);
   const [loadResponsible, setLoadResponsible] = useState<boolean>(false);
   const [loadVehicle, setLoadVehicle] = useState<boolean>(false);
   const [loadSubmit, setLoadSubmit] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingProducts, setLoadingProducts] = useState<boolean>(false);
 
   async function loadingService() {
     if (id) {
@@ -52,6 +80,20 @@ export function CreateService() {
         console.log(error);
       } finally {
         setLoading(false);
+      }
+    }
+  }
+
+  async function loadingServiceProduct() {
+    if (id) {
+      setLoadingProducts(true);
+      try {
+        const response = await getServiceProduct(id);
+        setServiceProduct(response);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoadingProducts(false);
       }
     }
   }
@@ -126,6 +168,22 @@ export function CreateService() {
     }
   }
 
+  const items = (item: any): IDropDown[] => {
+    return [
+      {
+        element: <span>Gerenciar Serviço</span>,
+        onClick: () => {
+          navigation("/service", { state: { id: item.id } });
+        },
+        rules: [],
+      },
+    ];
+  };
+
+  useEffect(() => {
+    setServiceProductToManager(ProductParse(serviceProduct));
+  }, [serviceProduct]);
+
   useEffect(() => {
     if (service) {
       methods.reset({
@@ -152,6 +210,7 @@ export function CreateService() {
 
   useEffect(() => {
     loadingService();
+    loadingServiceProduct();
     getResponsible();
     getClient();
   }, []);
@@ -194,6 +253,7 @@ export function CreateService() {
                 setValue={setClient}
                 value={client}
                 label="Cliente"
+                disabled={id ? true : false}
                 placeHolder="Selecione o Cliente"
               />
 
@@ -202,6 +262,7 @@ export function CreateService() {
                 setValue={setVehicle}
                 value={vehicle}
                 label="Veículo"
+                disabled={id ? true : false}
                 placeHolder="Selecione o Veículo"
               />
             </S.LinesWithSpace>
@@ -248,17 +309,48 @@ export function CreateService() {
                 placeholder="Insira a observação do cliente"
                 registerText="client_observation"
                 label="Observação do cliente"
+                disabled={id ? true : false}
               />
             </S.Lines>
 
-            <S.Lines>
-              <TextArea
-                hasError={methods.formState.errors.responsible_observation?.message ? true : false}
-                placeholder="Insira a observação do responsável"
-                registerText="responsible_observation"
-                label="Observação do Responsável"
-              />
-            </S.Lines>
+            {id && (
+              <>
+                <S.Lines>
+                  <TextArea
+                    hasError={
+                      methods.formState.errors.responsible_observation?.message ? true : false
+                    }
+                    placeholder="Insira a observação do responsável"
+                    registerText="responsible_observation"
+                    label="Observação do Responsável"
+                  />
+                </S.Lines>
+                <S.Row>
+                  <label>Produtos e Serviços</label>
+                  <S.ProductManager>
+                    <ToolBar
+                      buttonText="Adicionar Produto"
+                      buttonOnClick={() =>
+                        setServiceModal(
+                          <AddProduct
+                            setModalOpen={setServiceModal}
+                            setServiceProduct={setServiceProductToManager}
+                          />
+                        )
+                      }
+                      searchPlaceHolder="Pesquisar Produto"
+                      searchState={setSearchProduct}
+                    />
+                    <Manager
+                      body={serviceProductToManager}
+                      header={ProductHeader}
+                      options={items}
+                      loading={loadingProducts}
+                    />
+                  </S.ProductManager>
+                </S.Row>
+              </>
+            )}
           </S.Body>
         </FormProvider>
         <S.Footer>
@@ -275,6 +367,7 @@ export function CreateService() {
           </S.Button>
         </S.Footer>
       </S.Container>
+      {serviceModal}
     </Page>
   );
 }

@@ -36,4 +36,8 @@ export const InputSelect = styled(Select)`
   ::placeholder {
     color: ${(props) => props.theme.placeholder};
   }
+
+  :disabled {
+    opacity: 0.6;
+  }
 `;

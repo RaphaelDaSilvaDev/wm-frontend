@@ -11,6 +11,8 @@ import { AuthAdminRoute } from "./authAdminRouter";
 import { AuthRoute } from "./authRoute";
 import { Vehicles } from "../pages/Vehicles";
 import { CreateService } from "../pages/Home/components/CreateService";
+import { CreateProduct } from "../pages/Product/components/CreateProduct";
+import { CreateUserPage } from "../pages/Clients/components/CreateUser";
 
 export function Routes() {
   return (
@@ -43,6 +45,14 @@ export function Routes() {
             }
           />
           <Route
+            path="/clients/create"
+            element={
+              <AuthAdminRoute>
+                <CreateUserPage />
+              </AuthAdminRoute>
+            }
+          />
+          <Route
             path="/vehicles"
             element={
               <AuthAdminRoute>
@@ -63,6 +73,14 @@ export function Routes() {
             element={
               <AuthAdminRoute>
                 <Product />
+              </AuthAdminRoute>
+            }
+          />
+          <Route
+            path="/products/create"
+            element={
+              <AuthAdminRoute>
+                <CreateProduct />
               </AuthAdminRoute>
             }
           />

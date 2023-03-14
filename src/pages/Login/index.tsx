@@ -146,7 +146,7 @@ export function Login() {
                   />
                 </S.InputContent>
 
-                <Button text="Entrar" loading={loadingButton} />
+                <Button type="submit" text="Entrar" loading={loadingButton} />
               </S.Content>
             </FormProvider>
             <S.Footer>
