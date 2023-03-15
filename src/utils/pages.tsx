@@ -63,6 +63,7 @@ export const pages = [
     name: "Ajustes",
     icon: <Gear size={32} />,
     text: <span>Ajustes</span>,
+    path: "/settings",
     permission: "master",
     options: [
       {

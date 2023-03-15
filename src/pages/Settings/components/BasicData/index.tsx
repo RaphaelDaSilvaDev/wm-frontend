@@ -16,7 +16,6 @@ export function BasicData() {
   });
 
   const [data, setData] = useState<IBasicDataRequest>();
-  const [openAcordion, setOpenAcordion] = useState<boolean>(false);
 
   async function GetData() {
     const clientCode = Cookies.get("clientCode");
@@ -55,11 +54,8 @@ export function BasicData() {
     <S.Container>
       <S.Header>
         <span>Dados da Empresa</span>
-        <div onClick={() => setOpenAcordion((prev) => !prev)}>
-          {openAcordion ? <CaretUp size={18} /> : <CaretDown size={18} />}
-        </div>
       </S.Header>
-      {openAcordion && (
+      {
         <>
           <FormProvider {...methods}>
             <S.Body id="BasicDataUpdate" onSubmit={methods.handleSubmit(handleOnSubmit)}>
@@ -167,7 +163,7 @@ export function BasicData() {
             </S.Button>
           </S.Footer>
         </>
-      )}
+      }
     </S.Container>
   );
 }

@@ -4,7 +4,7 @@ import { Home } from "../pages/Home";
 import { Login } from "../pages/Login";
 import { NotFound } from "../pages/NotFound";
 import { Product } from "../pages/Product";
-import { Settings } from "../pages/Settings";
+import { Settings } from "../pages/Settings/EditAccount";
 import { UserNotFound } from "../pages/UserNotFound";
 import { Client } from "../pages/Clients";
 import { AuthAdminRoute } from "./authAdminRouter";

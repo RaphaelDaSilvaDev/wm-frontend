@@ -3,6 +3,7 @@ export interface MultiOptionsProps {
     name: string;
     icon: JSX.Element;
     text: JSX.Element;
+    path: string;
     permission: string;
     options: {
       name: string;

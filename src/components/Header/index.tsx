@@ -18,7 +18,11 @@ export function Header() {
   const [title, setTitle] = useState<string | undefined>("");
 
   useEffect(() => {
-    const page = pages.find((page) => page.path === pathname);
+    const page = pages.find((page) =>
+      page.options === undefined
+        ? page.path === pathname
+        : page.options && page.options.find((o) => o.path === pathname)
+    );
     setTitle(page?.name);
   }, [pathname]);
 
