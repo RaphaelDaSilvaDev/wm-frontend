@@ -1,22 +1,15 @@
 import { Route } from "react-router-dom";
-import { Settings } from "../../pages/Settings";
+import { SettingsCategory } from "../../pages/Settings/Category";
+import { SettingsEditAccount } from "../../pages/Settings/EditAccount";
 import { AuthAdminRoute } from "../authAdminRouter";
 
 export const settingsRoutes = (
   <>
     <Route
-      path="/settings"
-      element={
-        <AuthAdminRoute>
-          <Settings />
-        </AuthAdminRoute>
-      }
-    />
-    <Route
       path="/settings/account"
       element={
         <AuthAdminRoute>
-          <Settings />
+          <SettingsEditAccount />
         </AuthAdminRoute>
       }
     />
@@ -24,7 +17,7 @@ export const settingsRoutes = (
       path="/settings/categories"
       element={
         <AuthAdminRoute>
-          <Settings />
+          <SettingsCategory />
         </AuthAdminRoute>
       }
     />

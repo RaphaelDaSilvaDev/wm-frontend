@@ -40,7 +40,7 @@ export function SideBar() {
           <S.Options>
             {pages.map((page) => {
               return (page.permission === "all" || page.permission === info.user.permission) &&
-                page.path !== undefined ? (
+                page.options === undefined ? (
                 <S.Option
                   key={page.name}
                   isSelected={path.pathname === page.path}
