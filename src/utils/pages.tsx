@@ -1,4 +1,4 @@
-import { Car, Gear, Package, Users, Wrench } from "phosphor-react";
+import { Car, Gear, IdentificationCard, Package, Tag, Users, Wrench } from "phosphor-react";
 
 export type IPages = "service" | "users";
 
@@ -61,9 +61,24 @@ export const pages = [
   },
   {
     name: "Ajustes",
-    path: "/settings",
     icon: <Gear size={32} />,
     text: <span>Ajustes</span>,
     permission: "master",
+    options: [
+      {
+        name: "Dados da Conta",
+        path: "/settings/account",
+        icon: <IdentificationCard size={32} />,
+        text: <span>Ajustes</span>,
+        permission: "master",
+      },
+      {
+        name: "Categorias",
+        path: "/settings/categories",
+        icon: <Tag size={32} />,
+        text: <span>Ajustes</span>,
+        permission: "master",
+      },
+    ],
   },
 ];
