@@ -14,6 +14,11 @@ import { CreateService } from "../pages/Home/components/CreateService";
 import { CreateProduct } from "../pages/Product/components/CreateProduct";
 import { CreateUserPage } from "../pages/Clients/components/CreateUser";
 import { CreateVehicle } from "../pages/Vehicles/components/CreateVehicle";
+import { serviceRoutes } from "./services";
+import { clientsRoutes } from "./clients";
+import { vehiclesRoutes } from "./vehicles";
+import { productsRoutes } from "./products";
+import { settingsRoutes } from "./settings";
 
 export function Routes() {
   return (
@@ -21,78 +26,11 @@ export function Routes() {
       <RoutesReact>
         <Route path="login" element={<Login />} />
         <Route path="/" element={<HeaderLayout />}>
-          <Route
-            path="/"
-            element={
-              <AuthRoute>
-                <Home />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/service"
-            element={
-              <AuthRoute>
-                <CreateService />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path="/clients"
-            element={
-              <AuthAdminRoute>
-                <Client />
-              </AuthAdminRoute>
-            }
-          />
-          <Route
-            path="/clients/create"
-            element={
-              <AuthAdminRoute>
-                <CreateUserPage />
-              </AuthAdminRoute>
-            }
-          />
-          <Route
-            path="/vehicles"
-            element={
-              <AuthAdminRoute>
-                <Vehicles />
-              </AuthAdminRoute>
-            }
-          />
-          <Route
-            path="/vehicles/create"
-            element={
-              <AuthAdminRoute>
-                <CreateVehicle />
-              </AuthAdminRoute>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <AuthAdminRoute>
-                <Settings />
-              </AuthAdminRoute>
-            }
-          />
-          <Route
-            path="/products"
-            element={
-              <AuthAdminRoute>
-                <Product />
-              </AuthAdminRoute>
-            }
-          />
-          <Route
-            path="/products/create"
-            element={
-              <AuthAdminRoute>
-                <CreateProduct />
-              </AuthAdminRoute>
-            }
-          />
+          {serviceRoutes}
+          {clientsRoutes}
+          {vehiclesRoutes}
+          {productsRoutes}
+          {settingsRoutes}
         </Route>
         <Route path="*" element={<NotFound />} />
         <Route path="/not-found" element={<UserNotFound />} />

@@ -7,6 +7,7 @@ import { pages } from "../../utils/pages";
 import { AuthUserContext } from "../../services/authUserContext";
 import { useCookies } from "react-cookie";
 import { IClientRequest } from "../../pages/Login/interfaces";
+import { MultipleOptions } from "./components/MultipleOptions";
 
 export function SideBar() {
   const path = useLocation();
@@ -32,23 +33,24 @@ export function SideBar() {
       {info && info.user && (
         <S.Container open={open}>
           <S.Logo onClick={() => setOpen((prev) => !prev)}>
-            <img src={client?.avatar} />
+            <img src={client?.avatar ? client.avatar : ""} />
             <span>{client?.name}</span>
           </S.Logo>
 
           <S.Options>
             {pages.map((page) => {
-              return (
-                (page.permission === "all" || page.permission === info.user.permission) && (
-                  <S.Option
-                    key={page.name}
-                    isSelected={path.pathname === page.path}
-                    onClick={() => navigateTo(page.path)}
-                  >
-                    {page.icon}
-                    {page.text}
-                  </S.Option>
-                )
+              return (page.permission === "all" || page.permission === info.user.permission) &&
+                page.path !== undefined ? (
+                <S.Option
+                  key={page.name}
+                  isSelected={path.pathname === page.path}
+                  onClick={() => navigateTo(page.path)}
+                >
+                  {page.icon}
+                  {page.text}
+                </S.Option>
+              ) : (
+                page.options && <MultipleOptions page={page} isOpen={open} setIsOpen={setOpen} />
               );
             })}
           </S.Options>
