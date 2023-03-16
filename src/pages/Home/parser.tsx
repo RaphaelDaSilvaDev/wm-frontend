@@ -1,6 +1,7 @@
 import axios from "axios";
 import { differenceInSeconds, format, formatDistanceToNow } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
+import { Pencil } from "phosphor-react";
 import { Square } from "../../components/Square";
 import { ToastStyle } from "../../components/Toast";
 import { StatusToolTip } from "./components/ToolTip";
@@ -10,7 +11,11 @@ import { toggleStatus } from "./services";
 
 import * as S from "./styles";
 
-export function Parse(data: IServiceRequest[], reload: () => void): IManagerShow[] {
+export function Parse(
+  data: IServiceRequest[],
+  reload: () => void,
+  handleEditService: (item: string) => void
+): IManagerShow[] {
   return data.map((service) => {
     const dateFromNow = differenceInSeconds(new Date(service.delivery), new Date());
 
@@ -85,6 +90,11 @@ export function Parse(data: IServiceRequest[], reload: () => void): IManagerShow
 
     return {
       id: service.id,
+      edit: (
+        <S.ToolTip onClick={() => handleEditService(service.id)}>
+          <Pencil />
+        </S.ToolTip>
+      ),
       plate: <span>{service.vehicle.plate}</span>,
       vehicle: <span>{service.vehicle.brand + " - " + service.vehicle.model}</span>,
       client: <span>{service.client.name}</span>,

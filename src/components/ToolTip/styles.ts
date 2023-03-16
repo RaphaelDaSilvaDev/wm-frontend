@@ -10,6 +10,8 @@ export const TippyContent = styled(Tippy)`
   .tippy-content {
     padding: 0;
   }
+
+  overflow: hidden;
 `;
 
 export const Content = styled.div`

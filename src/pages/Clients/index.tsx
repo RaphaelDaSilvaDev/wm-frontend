@@ -22,28 +22,9 @@ export function Client() {
 
   const [modal, setModal] = useState<JSX.Element>(<></>);
 
-  const items = (item: IManagerShowClient): IDropDown[] => {
-    return [
-      {
-        element: <span>Ativar usuário</span>,
-        onClick: async () => {},
-        rules: [],
-      },
-      {
-        element: <span>Inativar usuário</span>,
-        onClick: async () => {},
-        rules: [],
-      },
-      {
-        element: <span>Gerenciar usuário</span>,
-        onClick: async () => {
-          setModal(<></>);
-        },
-        rules: [],
-        divider: true,
-      },
-    ];
-  };
+  function handleEditClient(itemId: string) {
+    navigate("/clients/create", { state: { id: itemId } });
+  }
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -65,7 +46,7 @@ export function Client() {
   }
 
   useEffect(() => {
-    setUsersManager(ParseUsers(usersRequest));
+    setUsersManager(ParseUsers(usersRequest, handleEditClient));
   }, [usersRequest]);
 
   useEffect(() => {
@@ -80,7 +61,7 @@ export function Client() {
         searchPlaceHolder="Pesquisar Usuário"
         searchState={setSearch}
       />
-      <Manager header={headerUsers} body={usersManager} loading={loading} options={items} />
+      <Manager header={headerUsers} body={usersManager} loading={loading} />
       {modal}
     </Page>
   );

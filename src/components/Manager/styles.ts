@@ -39,8 +39,12 @@ export const TableHead = styled.tr`
   border-bottom: 1px solid ${(props) => props.theme.border};
 `;
 
-export const TableHeadItem = styled.th`
-  flex: 1;
+interface TableSize {
+  tableSize: number;
+}
+
+export const TableHeadItem = styled.th<TableSize>`
+  flex: ${(props) => props.tableSize};
   font-size: 1.8rem;
   font-weight: 800;
 `;
@@ -72,8 +76,8 @@ export const TableRow = styled.tr`
   }
 `;
 
-export const TableRowItem = styled.td`
-  flex: 1;
+export const TableRowItem = styled.td<TableSize>`
+  flex: ${(props) => props.tableSize};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -111,4 +115,5 @@ export const Empty = styled.div`
 
 export const ToolTip = styled.div`
   width: 3.2rem;
+  cursor: pointer;
 `;

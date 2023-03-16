@@ -63,6 +63,7 @@ interface Vehicle {
 
 export interface IManagerShow {
   id: string;
+  edit: JSX.Element;
   plate: JSX.Element;
   vehicle: JSX.Element;
   client: JSX.Element;

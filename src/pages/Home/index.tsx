@@ -7,7 +7,6 @@ import { Manager } from "../../components/Manager";
 import { getAllServices, toggleStatus } from "./services";
 import { IDropDown, IManagerShow, IServiceRequest } from "./interface";
 import { Parse } from "./parser";
-import { ManagerModal } from "./components/Modal";
 import { ToolBar } from "../../components/ToolBar";
 import { AuthUserContext } from "../../services/authUserContext";
 import axios from "axios";
@@ -25,17 +24,9 @@ export function Home() {
 
   const [search, setSearch] = useState<string>("");
 
-  const items = (item: IManagerShow): IDropDown[] => {
-    return [
-      {
-        element: <span>Gerenciar Serviço</span>,
-        onClick: () => {
-          navigation("/service", { state: { id: item.id } });
-        },
-        rules: [item.responsible_id !== info.user.id && info.user.permission !== "master"],
-      },
-    ];
-  };
+  function handleEditService(itemId: string) {
+    navigation("/service", { state: { id: itemId } });
+  }
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -57,7 +48,7 @@ export function Home() {
   }
 
   useEffect(() => {
-    setServicesManager(Parse(servicesRequest, reload));
+    setServicesManager(Parse(servicesRequest, reload, handleEditService));
   }, [servicesRequest]);
 
   useEffect(() => {
@@ -72,7 +63,7 @@ export function Home() {
         searchPlaceHolder="Pesquisar Serviço"
         searchState={setSearch}
       />
-      <Manager header={header} body={servicesManager} options={items} loading={loading} />
+      <Manager header={header} body={servicesManager} loading={loading} />
       {modal}
     </Page>
   );

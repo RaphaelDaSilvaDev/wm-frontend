@@ -11,4 +11,5 @@ export interface ManagerProps {
 export interface IHeaderManagerProps {
   title: string;
   key: string;
+  size?: number;
 }
