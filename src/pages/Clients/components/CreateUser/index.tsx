@@ -1,9 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { InputLabel } from "../../../../components/InputWithLabel";
 import { Page } from "../../../../components/Page";
+import { ToastStyle } from "../../../../components/Toast";
 import { ClientPayload } from "./interface";
 import { ClientSchema, ClientSchemaType } from "./schema";
 import { AddClientService } from "./service";
@@ -29,7 +31,10 @@ export function CreateUserPage() {
       await AddClientService(values);
       navigate("/clients");
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
     } finally {
       setLoading(false);
     }

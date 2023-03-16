@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -6,6 +7,7 @@ import { InputSelect } from "../../../../components/InputSelect";
 import { InputLabel } from "../../../../components/InputWithLabel";
 import { Page } from "../../../../components/Page";
 import { TextArea } from "../../../../components/TextArea";
+import { ToastStyle } from "../../../../components/Toast";
 import { IResponsible } from "../../../Home/components/CreateService/interfaces";
 import { CategoryRequest, ProductPayload } from "./interfaces";
 import { ProductSchema, ProductSchemaType } from "./schema";
@@ -35,7 +37,10 @@ export function CreateProduct() {
       const response = await GetCategoriesService();
       setCategories(response);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
     } finally {
       setLoadingCategory(false);
     }
@@ -51,7 +56,10 @@ export function CreateProduct() {
       await CreateProductService(values);
       navigation("/products");
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
     } finally {
       setLoading(false);
     }

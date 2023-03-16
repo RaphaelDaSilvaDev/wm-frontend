@@ -6,7 +6,6 @@ import { Page } from "../../components/Page";
 import { ToastStyle } from "../../components/Toast";
 import { ToolBar } from "../../components/ToolBar";
 import { IDropDown } from "../Home/interface";
-import { ManagerUserModal } from "./components/UserModal";
 import { headerUsers } from "./header";
 import { IClientRequest, IManagerShowClient } from "./interfaces";
 
@@ -38,7 +37,7 @@ export function Client() {
       {
         element: <span>Gerenciar usuário</span>,
         onClick: async () => {
-          setModal(<ManagerUserModal reload={reload} setModalOpen={setModal} id={item.id} />);
+          setModal(<></>);
         },
         rules: [],
         divider: true,

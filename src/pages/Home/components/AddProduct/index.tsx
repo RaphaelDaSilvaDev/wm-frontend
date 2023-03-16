@@ -1,6 +1,8 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { Manager } from "../../../../components/Manager";
 import { Modal } from "../../../../components/Modal";
+import { ToastStyle } from "../../../../components/Toast";
 import { ToolBar } from "../../../../components/ToolBar";
 import { GetProductsService } from "../../../Product/services";
 import { IServiceProductRequest, IServiceProductToManager } from "../CreateService/interfaces";
@@ -29,7 +31,10 @@ export function AddProduct({ id, reload, setModalOpen, setServiceProduct }: IMan
       const response = await GetProductsService();
       setData(response);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
     } finally {
       setLoading(false);
     }

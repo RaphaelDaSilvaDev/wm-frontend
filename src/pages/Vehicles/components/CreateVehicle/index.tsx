@@ -13,6 +13,8 @@ import { CreateVehicleSchema, CreateVehicleSchemaType } from "./schemas";
 import * as S from "./styles";
 import { VehiclePayload } from "./interfaces";
 import { CreateVehicleService } from "./services";
+import axios from "axios";
+import { ToastStyle } from "../../../../components/Toast";
 
 export function CreateVehicle() {
   const navigate = useNavigate();
@@ -30,7 +32,10 @@ export function CreateVehicle() {
       const response = await getAllClients();
       setClients(response);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
     } finally {
       setLoadClients(false);
     }
@@ -46,7 +51,10 @@ export function CreateVehicle() {
       await CreateVehicleService(values);
       navigate("/vehicles");
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
     } finally {
       setLoading(false);
     }

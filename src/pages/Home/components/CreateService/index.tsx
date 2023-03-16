@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -8,13 +9,13 @@ import { InputLabel } from "../../../../components/InputWithLabel";
 import { Manager } from "../../../../components/Manager";
 import { Page } from "../../../../components/Page";
 import { TextArea } from "../../../../components/TextArea";
+import { ToastStyle } from "../../../../components/Toast";
 import { ToolBar } from "../../../../components/ToolBar";
 import { IClientRequest } from "../../../Clients/interfaces";
 import { getAllClients } from "../../../Clients/services";
 import { IVehicleRequest } from "../../../Vehicles/interfaces";
 import { IDropDown } from "../../interface";
 import { AddProduct } from "../AddProduct";
-import { createService } from "../Modal/services";
 import { ProductHeader } from "./header";
 import {
   ICreateService,
@@ -77,7 +78,10 @@ export function CreateService() {
         const response = await getService(id);
         setService(response);
       } catch (error) {
-        console.log(error);
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
       } finally {
         setLoading(false);
       }
@@ -91,7 +95,10 @@ export function CreateService() {
         const response = await getServiceProduct(id);
         setServiceProduct(response);
       } catch (error) {
-        console.log(error);
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
       } finally {
         setLoadingProducts(false);
       }
@@ -108,7 +115,7 @@ export function CreateService() {
 
     const payload: ICreateService = {
       client_observation: values.client_observation,
-      responsible_observation: values.responsible_observation,
+      responsible_observation: values.responsible_observation ? values.responsible_observation : "",
       delivery: new Date(
         Number(date[0]),
         Number(date[1]),
@@ -126,10 +133,17 @@ export function CreateService() {
       await AddService(payload);
       navigation("/");
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
     } finally {
       setLoadSubmit(false);
     }
+  }
+
+  function onErrorSubmit() {
+    console.log(methods.formState.errors);
   }
 
   async function getResponsible() {
@@ -138,7 +152,10 @@ export function CreateService() {
       const response = await GetResponsible();
       setResponsibles(response);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
     } finally {
       setLoadResponsible(false);
     }
@@ -150,7 +167,10 @@ export function CreateService() {
       const response = await getAllClients();
       setClients(response);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
     } finally {
       setLoadClient(false);
     }
@@ -162,7 +182,10 @@ export function CreateService() {
       const response = await GetVehicleByClientService(client && client.value ? client.value : "");
       setVehicles(response);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
     } finally {
       setLoadVehicle(false);
     }
@@ -190,7 +213,6 @@ export function CreateService() {
         client_observation: service.client_observation,
         delivery_date: format(new Date(service.delivery), "yyyy-MM-dd"),
         delivery_hour: format(new Date(service.delivery), "hh:mm"),
-        responsible_observation: service.responsible_observation,
       });
 
       setResponsible({ value: service.user.id, label: service.user.name });
@@ -246,7 +268,10 @@ export function CreateService() {
           <span>{id ? "Editar Serviço" : "Adicionar Serviço"}</span>
         </S.Header>
         <FormProvider {...methods}>
-          <S.Body id="BasicDataUpdate" onSubmit={methods.handleSubmit(handleOnSubmit)}>
+          <S.Body
+            id="BasicDataUpdate"
+            onSubmit={methods.handleSubmit(handleOnSubmit, onErrorSubmit)}
+          >
             <S.LinesWithSpace>
               <InputSelect
                 options={clientOptions}
