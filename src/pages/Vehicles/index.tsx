@@ -33,16 +33,12 @@ export function Vehicles() {
     }
   }
 
-  const options = (item: any): IDropDown[] => [
-    {
-      element: <></>,
-      onClick: () => {},
-      rules: [],
-    },
-  ];
+  function handleEditVehicle(itemId: string) {
+    navigate("/vehicles/create", { state: { id: itemId } });
+  }
 
   useEffect(() => {
-    setDataToManaget(VehicleParse(data));
+    setDataToManaget(VehicleParse(data, handleEditVehicle));
   }, [data]);
 
   useEffect(() => {
@@ -57,7 +53,7 @@ export function Vehicles() {
         searchPlaceHolder="Pesquisar Veículo"
         searchState={setSearch}
       />
-      <Manager loading={loading} header={vehicleHeader} body={dataToManager} options={options} />
+      <Manager loading={loading} header={vehicleHeader} body={dataToManager} />
     </Page>
   );
 }

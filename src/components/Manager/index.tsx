@@ -11,7 +11,9 @@ export function Manager({ header, body, options, loading }: ManagerProps) {
           <S.TableHead>
             {options && <S.Option />}
             {header.map((item) => (
-              <S.TableHeadItem key={item.title}>{item.title}</S.TableHeadItem>
+              <S.TableHeadItem key={item.title} tableSize={item.size >= 0 ? item.size : 1}>
+                {item.title}
+              </S.TableHeadItem>
             ))}
           </S.TableHead>
           <S.TableBody>
@@ -31,14 +33,18 @@ export function Manager({ header, body, options, loading }: ManagerProps) {
                       <ToolTip items={options} elements={elements} />
                     </S.ToolTip>
                   )}
-                  {Object.entries(elements).map((element) =>
-                    header.map(
+                  {Object.entries(elements).map((element) => {
+                    const size = header.find((e) => e.key === element[0])?.size;
+                    console.log({ element: element[1], size });
+                    return header.map(
                       (item) =>
                         element[0] === item.key && (
-                          <S.TableRowItem key={item.key}>{element[1]}</S.TableRowItem>
+                          <S.TableRowItem key={item.key} tableSize={size && size >= 0 ? size : 1}>
+                            {element[1]}
+                          </S.TableRowItem>
                         )
-                    )
-                  )}
+                    );
+                  })}
                 </S.TableRow>
               ))
             )}

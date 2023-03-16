@@ -20,6 +20,7 @@ interface Client {
 
 export interface IVehicleToManager {
   id: string;
+  edit: JSX.Element;
   plate: JSX.Element;
   model: JSX.Element;
   brand: JSX.Element;

@@ -16,6 +16,7 @@ export interface IClientRequest {
 
 export interface IManagerShowClient {
   id: string;
+  edit: JSX.Element;
   name: JSX.Element;
   address: JSX.Element;
   phone: JSX.Element;

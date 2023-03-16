@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
+  height: 5.649rem;
 
   display: flex;
   flex-wrap: wrap;
@@ -13,6 +14,7 @@ export const Container = styled.div`
   border-radius: 4px 4px 0 0;
 
   background-color: ${(props) => props.theme.white};
+  overflow: hidden;
 
   & > button {
     max-width: 25rem;

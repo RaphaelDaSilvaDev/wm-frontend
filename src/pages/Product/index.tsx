@@ -20,24 +20,15 @@ export function Product() {
 
   const options = (item: any): IDropDown[] => [
     {
-      element: <></>,
+      element: <span>Alterar Quantidade</span>,
       onClick: () => {},
       rules: [],
     },
     {
-      element: <></>,
+      element: <span>Editar Produto</span>,
       onClick: () => {},
       rules: [],
-    },
-    {
-      element: <></>,
-      onClick: () => {},
-      rules: [],
-    },
-    {
-      element: <></>,
-      onClick: () => {},
-      rules: [],
+      divider: true,
     },
   ];
 
