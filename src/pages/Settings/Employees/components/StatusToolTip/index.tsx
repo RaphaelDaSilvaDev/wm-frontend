@@ -1,8 +1,9 @@
+import { DotsThreeVertical } from "phosphor-react";
 import { hideAll } from "tippy.js";
 
 import * as S from "./styles";
 import "tippy.js/dist/tippy.css";
-import { IDropDown } from "../../interface";
+import { IDropDown } from "../../../../Home/interface";
 
 interface StatusToolTipProps {
   items: (item: any) => IDropDown[];
