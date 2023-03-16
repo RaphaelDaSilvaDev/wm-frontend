@@ -1,6 +1,8 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { Manager } from "../../../../components/Manager";
 import { Page } from "../../../../components/Page";
+import { ToastStyle } from "../../../../components/Toast";
 import { ToolBar } from "../../../../components/ToolBar";
 import { IDropDown } from "../../../Home/interface";
 import { CategoryHeader } from "./header";
@@ -33,7 +35,10 @@ export function Category() {
       const response = await GetCategoryService();
       setData(response);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
     } finally {
       setLoading(false);
     }

@@ -1,7 +1,9 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useNavigation } from "react-router-dom";
 import { Manager } from "../../components/Manager";
 import { Page } from "../../components/Page";
+import { ToastStyle } from "../../components/Toast";
 import { ToolBar } from "../../components/ToolBar";
 import { IDropDown } from "../Home/interface";
 import { productsHeader } from "./header";
@@ -45,7 +47,10 @@ export function Product() {
       const response = await GetProductsService();
       setData(response);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
     } finally {
       setLoading(false);
     }

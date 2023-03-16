@@ -44,7 +44,7 @@ export function ManagerUserModal({ setModalOpen, user, token }: IManagerModalPro
       user: {
         name: user.name,
         username: values.username ? values.username : user.username,
-        isAdmin: user.isAdmin,
+        isAdmin: user.permission,
         id: user.id,
       },
     };
