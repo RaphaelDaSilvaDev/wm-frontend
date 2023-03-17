@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Manager } from "../../../components/Manager";
 import { Page } from "../../../components/Page";
 import { ToolBar } from "../../../components/ToolBar";
@@ -10,21 +11,23 @@ import { GetEmployeesService } from "./services";
 import * as S from "./styles";
 
 export function Employees() {
+  const navigate = useNavigate();
+
   const [data, setData] = useState<EmployeRequest[]>([]);
   const [dataToManaget, setDataToManager] = useState<EmployeToManager[]>([]);
   const [search, setSearch] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  async function getData() {
+  const getData = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await GetEmployeesService();
+      const response = await GetEmployeesService(search);
       setData(response);
     } catch (error) {
     } finally {
       setLoading(false);
     }
-  }
+  }, [search]);
 
   useEffect(() => {
     setDataToManager(EmployeParse(data));
@@ -32,7 +35,7 @@ export function Employees() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   return (
     <Page>
@@ -41,7 +44,7 @@ export function Employees() {
           searchPlaceHolder="Pesquisar Funcionário"
           buttonText="Adicionar Funcionário"
           searchState={setSearch}
-          buttonOnClick={() => {}}
+          buttonOnClick={() => navigate("/settings/employees/create")}
         />
         <Manager body={dataToManaget} header={EmployeHeader} loading={loading} />
       </S.Container>

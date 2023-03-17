@@ -96,6 +96,13 @@ export const pages = [
         text: <span>Ajustes</span>,
         permission: "master",
       },
+      {
+        name: "Funcionários",
+        path: "/settings/employees/create",
+        icon: <IdentificationBadge size={32} />,
+        text: <span>Ajustes</span>,
+        permission: "none",
+      },
     ],
   },
 ];

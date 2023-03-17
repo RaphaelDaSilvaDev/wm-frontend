@@ -2,6 +2,7 @@ import { Route } from "react-router-dom";
 import { EditAccount } from "../../pages/Settings/BasicData";
 import { Category } from "../../pages/Settings/Category";
 import { Employees } from "../../pages/Settings/Employees";
+import { CreateEmployer } from "../../pages/Settings/Employees/Page/CreateEmployer";
 import { AuthAdminRoute } from "../authAdminRouter";
 
 export const settingsRoutes = (
@@ -27,6 +28,14 @@ export const settingsRoutes = (
       element={
         <AuthAdminRoute>
           <Employees />
+        </AuthAdminRoute>
+      }
+    />
+    <Route
+      path="/settings/employees/create"
+      element={
+        <AuthAdminRoute>
+          <CreateEmployer />
         </AuthAdminRoute>
       }
     />
