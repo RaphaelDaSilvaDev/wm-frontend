@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useNavigation } from "react-router-dom";
 import { Manager } from "../../components/Manager";
 import { Page } from "../../components/Page";
@@ -32,10 +32,10 @@ export function Product() {
     },
   ];
 
-  async function getData() {
+  const getData = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await GetProductsService();
+      const response = await GetProductsService(search);
       setData(response);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -45,15 +45,19 @@ export function Product() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [search]);
 
   useEffect(() => {
     setDataToManager(ProductParse(data));
   }, [data]);
 
+  function reload() {
+    getData();
+  }
+
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   return (
     <Page>

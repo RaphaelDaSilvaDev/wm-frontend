@@ -35,7 +35,6 @@ export function Manager({ header, body, options, loading }: ManagerProps) {
                   )}
                   {Object.entries(elements).map((element) => {
                     const size = header.find((e) => e.key === element[0])?.size;
-                    console.log({ element: element[1], size });
                     return header.map(
                       (item) =>
                         element[0] === item.key && (

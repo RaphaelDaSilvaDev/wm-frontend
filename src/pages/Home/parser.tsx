@@ -22,7 +22,7 @@ export function Parse(
     const items = (): IDropDown[] => {
       return [
         {
-          element: <span>Aguardando Aprovação</span>,
+          element: <span>Aguardando</span>,
           onClick: async () => {
             try {
               await toggleStatus(service.id, "pending");
