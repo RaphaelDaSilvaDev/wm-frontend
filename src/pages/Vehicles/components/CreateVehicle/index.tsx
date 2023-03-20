@@ -11,20 +11,39 @@ import { IClientRequest } from "../../../Clients/interfaces";
 import { CreateVehicleSchema, CreateVehicleSchemaType } from "./schemas";
 
 import * as S from "./styles";
-import { VehiclePayload } from "./interfaces";
-import { CreateVehicleService } from "./services";
+import { IVehicleRequest, IVehicleUpdate, VehiclePayload } from "./interfaces";
+import { CreateVehicleService, GetVehicle, UpdateVehicle } from "./services";
 import axios from "axios";
 import { ToastStyle } from "../../../../components/Toast";
+import { format } from "date-fns";
 
 export function CreateVehicle() {
   const navigate = useNavigate();
   const location = useLocation();
   const id = location.state?.id;
 
+  const [vehicle, setVehicle] = useState<IVehicleRequest>();
   const [client, setClient] = useState<IResponsible>();
   const [clients, setClients] = useState<IClientRequest[]>([]);
   const [loadClients, setLoadClients] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+
+  async function getVehicle() {
+    if (id) {
+      setLoading(true);
+      try {
+        const response = await GetVehicle(id);
+        setVehicle(response);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+  }
 
   async function getClientes() {
     setLoadClients(true);
@@ -43,20 +62,36 @@ export function CreateVehicle() {
 
   async function handleOnSubmit() {
     setLoading(true);
-    const values: VehiclePayload = {
-      ...methods.getValues(),
-      clientId: client?.value ? client.value : "",
-    };
-    try {
-      await CreateVehicleService(values);
-      navigate("/vehicles");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message);
-        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+    if (!id) {
+      const values: VehiclePayload = {
+        ...methods.getValues(),
+        clientId: client?.value ? client.value : "",
+      };
+      try {
+        await CreateVehicleService(values);
+        navigate("/vehicles");
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
+    } else {
+      const payload: IVehicleUpdate = { client_id: client?.value || "" };
+
+      try {
+        await UpdateVehicle(payload, id);
+        navigate("/vehicles");
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoading(false);
+      }
     }
   }
 
@@ -66,7 +101,25 @@ export function CreateVehicle() {
   });
 
   useEffect(() => {
+    if (vehicle) {
+      methods.reset({
+        brand: vehicle.brand,
+        color: vehicle.color,
+        fuel: vehicle.fuel,
+        launchYear:
+          (Number(format(new Date(vehicle.launchYear), "yyyy")) + 1).toString() +
+          (Number(format(new Date(vehicle.modelYear), "yyyy")) + 1).toString(),
+        model: vehicle.model,
+        plate: vehicle.plate,
+      });
+
+      setClient({ value: vehicle.Client.id, label: vehicle.Client.name });
+    }
+  }, [vehicle]);
+
+  useEffect(() => {
     getClientes();
+    getVehicle();
   }, []);
 
   const clientOptions =
@@ -90,12 +143,14 @@ export function CreateVehicle() {
                 placeholder="Insira o modelo do veículo"
                 hasError={methods.formState.errors.model?.message ? true : false}
                 registerText="model"
+                disabled={id ? true : false}
               />
               <InputLabel
                 label="Marca do Veículo"
                 placeholder="Insira a marca do veículo"
                 hasError={methods.formState.errors.brand?.message ? true : false}
                 registerText="brand"
+                disabled={id ? true : false}
               />
               <InputLabel
                 label="Placa do Veículo"
@@ -103,6 +158,7 @@ export function CreateVehicle() {
                 hasError={methods.formState.errors.plate?.message ? true : false}
                 registerText="plate"
                 mask="aaa-9*99"
+                disabled={id ? true : false}
               />
             </S.LinesWithSpace>
             <S.LinesWithSpace>
@@ -118,12 +174,14 @@ export function CreateVehicle() {
                 placeholder="Insira o combustível do veículo"
                 hasError={methods.formState.errors.fuel?.message ? true : false}
                 registerText="fuel"
+                disabled={id ? true : false}
               />
               <InputLabel
                 label="Cor do Veículo"
                 placeholder="Insira a cor do veículo"
                 hasError={methods.formState.errors.color?.message ? true : false}
                 registerText="color"
+                disabled={id ? true : false}
               />
             </S.LinesWithSpace>
             <S.LinesWithSpace>
@@ -141,12 +199,7 @@ export function CreateVehicle() {
           <S.Button styleBnt="secondary" onClick={() => navigate("/vehicles")}>
             <span>Cancelar</span>
           </S.Button>
-          <S.Button
-            type="submit"
-            form="BasicDataUpdate"
-            styleBnt="primary"
-            disabled={!methods.formState.isDirty}
-          >
+          <S.Button type="submit" form="BasicDataUpdate" styleBnt="primary">
             <span>{id ? "Editar" : "Adicionar"}</span>
           </S.Button>
         </S.Footer>
