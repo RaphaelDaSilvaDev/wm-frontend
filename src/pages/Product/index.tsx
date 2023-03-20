@@ -26,7 +26,9 @@ export function Product() {
     },
     {
       element: <span>Editar Produto</span>,
-      onClick: () => {},
+      onClick: () => {
+        navigate("/products/create", { state: { id: item.id } });
+      },
       rules: [],
       divider: true,
     },

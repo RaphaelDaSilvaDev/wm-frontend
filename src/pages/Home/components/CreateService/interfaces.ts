@@ -19,6 +19,12 @@ export interface ICreateService {
   vehicleId: string;
 }
 
+export interface IEditService {
+  delivery?: Date;
+  responsible?: string;
+  responsible_observation?: string;
+}
+
 export interface IServiceRequest {
   id: string;
   client_observation: string;

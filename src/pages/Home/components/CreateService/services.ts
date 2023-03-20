@@ -1,5 +1,5 @@
 import { api } from "../../../../services/axios";
-import { ICreateService } from "./interfaces";
+import { ICreateService, IEditService } from "./interfaces";
 
 export async function GetVehicleByClientService(client_id: string) {
   const { data } = await api.get(`/vehicle/client/${client_id}`);
@@ -16,6 +16,13 @@ export async function GetResponsible() {
 export async function AddService(payloadData: ICreateService) {
   const payload = payloadData;
   const { data } = await api.post("/service", payload);
+
+  return data;
+}
+
+export async function EditService(payloadData: IEditService, id: string) {
+  const payload = payloadData;
+  const { data } = await api.patch(`/service/edit/${id}`, payload);
 
   return data;
 }

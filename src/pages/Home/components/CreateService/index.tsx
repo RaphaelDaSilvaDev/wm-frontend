@@ -24,11 +24,13 @@ import {
   IServiceProductRequest,
   IServiceProductToManager,
   IServiceRequest,
+  IEditService,
 } from "./interfaces";
 import { ProductParse } from "./parse";
 import { ServiceSchema, ServiceSchemaType } from "./schemas";
 import {
   AddService,
+  EditService,
   GetResponsible,
   getService,
   getServiceProduct,
@@ -108,37 +110,82 @@ export function CreateService() {
   async function handleOnSubmit() {
     setLoadSubmit(true);
 
-    const values = methods.getValues();
+    if (!id) {
+      const values = methods.getValues();
 
-    const date = values.delivery_date.split("-");
-    const time = values.delivery_hour.split(":");
+      const date = values.delivery_date.split("-");
+      const time = values.delivery_hour.split(":");
 
-    const payload: ICreateService = {
-      client_observation: values.client_observation,
-      responsible_observation: values.responsible_observation ? values.responsible_observation : "",
-      delivery: new Date(
-        Number(date[0]),
-        Number(date[1]),
-        Number(date[2]),
-        Number(time[0]),
-        Number(time[1])
-      ),
-      clientId: client && client.value ? client.value : "",
-      vehicleId: vehicle && vehicle.value ? vehicle.value : "",
-      responsible: responsible && responsible.value ? responsible.value : "",
-      price: 250,
-    };
+      const payload: ICreateService = {
+        client_observation: values.client_observation,
+        responsible_observation: values.responsible_observation
+          ? values.responsible_observation
+          : "",
+        delivery: new Date(
+          Number(date[0]),
+          Number(Number(date[1]) - 1),
+          Number(date[2]),
+          Number(time[0]),
+          Number(time[1])
+        ),
+        clientId: client && client.value ? client.value : "",
+        vehicleId: vehicle && vehicle.value ? vehicle.value : "",
+        responsible: responsible && responsible.value ? responsible.value : "",
+        price: 250,
+      };
 
-    try {
-      await AddService(payload);
-      navigation("/");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message);
-        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      try {
+        await AddService(payload);
+        navigation("/");
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoadSubmit(false);
       }
-    } finally {
-      setLoadSubmit(false);
+    } else {
+      const payload: IEditService = {};
+      const deliveryDate = methods.watch("delivery_date");
+      const deliveryHour = methods.watch("delivery_hour");
+      const responsibleObservation = methods.watch("responsible_observation");
+      const responsibleData = responsible;
+
+      if (deliveryDate || deliveryHour) {
+        const date = deliveryDate.split("-");
+        const time = deliveryHour.split(":");
+        console.log(date);
+        console.log(time);
+        payload.delivery = new Date(
+          Number(date[0]),
+          Number(Number(date[1]) - 1),
+          Number(date[2]),
+          Number(time[0]),
+          Number(time[1])
+        );
+        console.log(payload.delivery);
+      }
+
+      if (responsibleObservation) {
+        payload.responsible_observation = responsibleObservation;
+      }
+
+      if (responsibleData?.value !== service?.responsible) {
+        payload.responsible = responsibleData?.value || "";
+      }
+
+      try {
+        await EditService(payload, id);
+        navigation("/");
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoadSubmit(false);
+      }
     }
   }
 
@@ -211,8 +258,9 @@ export function CreateService() {
     if (service) {
       methods.reset({
         client_observation: service.client_observation,
+        responsible_observation: service.responsible_observation,
         delivery_date: format(new Date(service.delivery), "yyyy-MM-dd"),
-        delivery_hour: format(new Date(service.delivery), "hh:mm"),
+        delivery_hour: format(new Date(service.delivery), "HH:mm"),
       });
 
       setResponsible({ value: service.user.id, label: service.user.name });
