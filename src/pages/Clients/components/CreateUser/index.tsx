@@ -1,14 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { useState } from "react";
+import { format } from "date-fns";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { InputLabel } from "../../../../components/InputWithLabel";
 import { Page } from "../../../../components/Page";
 import { ToastStyle } from "../../../../components/Toast";
-import { ClientPayload } from "./interface";
+import { ClientPayload, IClientRequest, IClientUpdate } from "./interface";
 import { ClientSchema, ClientSchemaType } from "./schema";
-import { AddClientService } from "./service";
+import { AddClientService, GetClientService, UpdateClientService } from "./service";
 
 import * as S from "./styles";
 
@@ -22,23 +23,100 @@ export function CreateUserPage() {
     mode: "onSubmit",
   });
 
+  const [client, setClient] = useState<IClientRequest>();
   const [loading, setLoading] = useState<boolean>(false);
+
+  async function getClient() {
+    if (id) {
+      setLoading(true);
+      try {
+        const response = await GetClientService(id);
+        setClient(response);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+  }
 
   async function handleOnSubmit() {
     setLoading(true);
-    const values: ClientPayload = methods.getValues();
-    try {
-      await AddClientService(values);
-      navigate("/clients");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message);
-        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+    if (!id) {
+      const values: ClientPayload = methods.getValues();
+      try {
+        await AddClientService(values);
+        navigate("/clients");
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
+    } else {
+      const payload: IClientUpdate = {};
+
+      const addressCity = methods.watch("addressCity");
+      const addressDistrict = methods.watch("addressDistrict");
+      const addressNumber = methods.watch("addressNumber");
+      const addressState = methods.watch("addressState");
+      const addressStreet = methods.watch("addressStreet");
+      const cellphoneNumber = methods.watch("cellphoneNumber");
+      const cep = methods.watch("cep");
+      const email = methods.watch("email");
+      const phoneNumber = methods.watch("phoneNumber");
+
+      if (addressCity) payload.addressCity = addressCity;
+      if (addressDistrict) payload.addressDistrict = addressDistrict;
+      if (addressNumber) payload.addressNumber = addressNumber;
+      if (addressState) payload.addressState = addressState;
+      if (addressStreet) payload.addressStreet = addressStreet;
+      if (cep) payload.cep = cep;
+      if (cellphoneNumber) payload.cellphoneNumber = cellphoneNumber;
+      if (email) payload.email = email;
+      if (phoneNumber) payload.phoneNumber = phoneNumber;
+
+      try {
+        await UpdateClientService(payload, id);
+        navigate("/clients");
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoading(false);
+      }
     }
   }
+
+  useEffect(() => {
+    if (client) {
+      methods.reset({
+        addressCity: client.addressCity,
+        addressDistrict: client.addressDistrict,
+        addressNumber: client.addressNumber,
+        addressState: client.addressState,
+        addressStreet: client.addressStreet,
+        bornAt: format(new Date(client.bornAt), "yyyy-MM-dd"),
+        cellphoneNumber: client.cellphoneNumber,
+        cep: client.cep,
+        document: client.document,
+        email: client.email,
+        name: client.name,
+        phoneNumber: client.phoneNumber,
+      });
+    }
+  }, [client]);
+
+  useEffect(() => {
+    getClient();
+  }, []);
 
   return (
     <Page>
@@ -54,6 +132,7 @@ export function CreateUserPage() {
                 label="Nome do Cliente"
                 placeholder="Insira o nome do Cliente"
                 hasError={methods.formState.errors.name?.message ? true : false}
+                disabled={id ? true : false}
               />
               <InputLabel
                 registerText="document"
@@ -61,6 +140,7 @@ export function CreateUserPage() {
                 placeholder="Insira o cpf do Cliente"
                 hasError={methods.formState.errors.document?.message ? true : false}
                 mask="999.999.999-99"
+                disabled={id ? true : false}
               />
               <InputLabel
                 registerText="bornAt"
@@ -68,6 +148,7 @@ export function CreateUserPage() {
                 placeholder="Insira a data de nascimento do Cliente"
                 hasError={methods.formState.errors.bornAt?.message ? true : false}
                 type="date"
+                disabled={id ? true : false}
               />
             </S.LinesWithSpace>
             <S.LinesWithSpace>
