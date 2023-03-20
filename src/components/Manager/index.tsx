@@ -11,7 +11,10 @@ export function Manager({ header, body, options, loading }: ManagerProps) {
           <S.TableHead>
             {options && <S.Option />}
             {header.map((item) => (
-              <S.TableHeadItem key={item.title} tableSize={item.size >= 0 ? item.size : 1}>
+              <S.TableHeadItem
+                key={item.title}
+                tableSize={item && item.size && item.size >= 0 ? item.size : 1}
+              >
                 {item.title}
               </S.TableHeadItem>
             ))}

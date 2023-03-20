@@ -20,6 +20,7 @@ interface ICategory {
 }
 
 export interface ProductToManager {
+  id: string;
   name: JSX.Element;
   brand: JSX.Element;
   description: JSX.Element;

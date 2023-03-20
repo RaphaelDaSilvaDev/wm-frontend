@@ -9,9 +9,14 @@ import { Page } from "../../../../components/Page";
 import { TextArea } from "../../../../components/TextArea";
 import { ToastStyle } from "../../../../components/Toast";
 import { IResponsible } from "../../../Home/components/CreateService/interfaces";
-import { CategoryRequest, ProductPayload } from "./interfaces";
+import { CategoryRequest, IEditPayload, IProductRequest, ProductPayload } from "./interfaces";
 import { ProductSchema, ProductSchemaType } from "./schema";
-import { CreateProductService, GetCategoriesService } from "./service";
+import {
+  CreateProductService,
+  EditProductService,
+  GetCategoriesService,
+  GetProductService,
+} from "./service";
 
 import * as S from "./style";
 
@@ -24,12 +29,31 @@ export function CreateProduct() {
     mode: "onSubmit",
   });
 
+  const [product, setProduct] = useState<IProductRequest>();
+
   const [category, setCategory] = useState<IResponsible>();
   const [categories, setCategories] = useState<CategoryRequest[]>([]);
   const [loadingCategory, setLoadingCategory] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
 
   const id = location.state?.id;
+
+  async function loadingProduct() {
+    if (id) {
+      setLoading(true);
+      try {
+        const response = await GetProductService(id);
+        setProduct(response);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+  }
 
   async function GetCategory() {
     setLoadingCategory(true);
@@ -48,25 +72,74 @@ export function CreateProduct() {
 
   async function handleOnSubmit() {
     setLoading(true);
-    const values: ProductPayload = {
-      ...methods.getValues(),
-      categoryId: category?.value ? category.value : "",
-    };
-    try {
-      await CreateProductService(values);
-      navigation("/products");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message);
-        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+    if (!id) {
+      const values: ProductPayload = {
+        ...methods.getValues(),
+        categoryId: category?.value ? category.value : "",
+      };
+      try {
+        await CreateProductService(values);
+        navigation("/products");
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
+    } else {
+      const payload: IEditPayload = {};
+
+      const brand = methods.watch("brand");
+      const description = methods.watch("description");
+      const minQuantity = methods.watch("minQuantity");
+      const name = methods.watch("name");
+      const quantity = methods.watch("quantity");
+      const valueToBuy = methods.watch("valueToBuy");
+      const valueToSell = methods.watch("valueToSell");
+
+      if (brand) payload.brand = brand;
+      if (description) payload.description = description;
+      if (minQuantity) payload.minQuantity = minQuantity;
+      if (name) payload.name = name;
+      if (quantity) payload.quantity = quantity;
+      if (valueToBuy) payload.valueToBuy = valueToBuy;
+      if (valueToSell) payload.valueToSell = valueToSell;
+
+      try {
+        await EditProductService(payload, id);
+        navigation("/products");
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoading(false);
+      }
     }
   }
 
   useEffect(() => {
+    if (product) {
+      methods.reset({
+        brand: product.brand,
+        description: product.description,
+        minQuantity: product.minQuantity,
+        name: product.name,
+        quantity: product.quantity,
+        valueToBuy: product.valueToBuy,
+        valueToSell: product.valueToSell,
+      });
+
+      setCategory({ value: product.category.id, label: product.category.name });
+    }
+  }, [product]);
+
+  useEffect(() => {
     GetCategory();
+    loadingProduct();
   }, []);
 
   const categoryOptions =

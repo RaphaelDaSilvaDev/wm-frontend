@@ -28,7 +28,7 @@ export function AddProduct({ id, reload, setModalOpen, setServiceProduct }: IMan
   async function getData() {
     setLoading(true);
     try {
-      const response = await GetProductsService();
+      const response = await GetProductsService(search);
       setData(response);
     } catch (error) {
       if (axios.isAxiosError(error)) {
