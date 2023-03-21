@@ -1,27 +1,48 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useNavigation } from "react-router-dom";
+import { InputLabel } from "../../components/InputWithLabel";
 import { Manager } from "../../components/Manager";
+import { Modal } from "../../components/Modal";
 import { Page } from "../../components/Page";
 import { ToastStyle } from "../../components/Toast";
 import { ToolBar } from "../../components/ToolBar";
 import { IDropDown } from "../Home/interface";
+import { AlterQuantityProductContent } from "./components/AlterQuantityProductContent";
+import { AlterQuantityProductModal } from "./components/AlterQuantityProductModal";
 import { productsHeader } from "./header";
 import { IProductsRequest, ProductToManager } from "./interfaces";
 import { ProductParse } from "./parse";
 import { GetProductsService } from "./services";
+import * as S from "./styles";
 
 export function Product() {
   const navigate = useNavigate();
   const [data, setData] = useState<IProductsRequest[]>([]);
   const [dataToManager, setDataToManager] = useState<ProductToManager[]>([]);
   const [search, setSearch] = useState<string>("");
+  const [alterQuantityProductModal, setAlterQuantityProductModal] = useState<JSX.Element>(<></>);
   const [loading, setLoading] = useState<boolean>(true);
 
   const options = (item: any): IDropDown[] => [
     {
       element: <span>Alterar Quantidade</span>,
-      onClick: () => {},
+      onClick: () =>
+        setAlterQuantityProductModal(
+          <AlterQuantityProductModal
+            confirmButtonText="Alterar"
+            setModalOpen={setAlterQuantityProductModal}
+            title={`Alterar quantidade de ${item.name.props.children}`}
+            content={
+              <AlterQuantityProductContent
+                quantity={item.quantity.props.children}
+                id={item.id}
+                setModalOpen={setAlterQuantityProductModal}
+                reload={reload}
+              />
+            }
+          />
+        ),
       rules: [],
     },
     {
@@ -70,6 +91,7 @@ export function Product() {
         searchState={setSearch}
       />
       <Manager header={productsHeader} body={dataToManager} options={options} loading={loading} />
+      {alterQuantityProductModal}
     </Page>
   );
 }

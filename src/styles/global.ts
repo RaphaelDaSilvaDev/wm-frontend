@@ -83,7 +83,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   .modal-content {
-    width: 90%;
+    width: fit-content;
     max-width: calc(100vw - 20rem);
     height: fit-content;
     max-height: calc(100vh - 16rem);
