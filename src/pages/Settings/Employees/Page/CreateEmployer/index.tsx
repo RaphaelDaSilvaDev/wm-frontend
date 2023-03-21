@@ -1,14 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { useState } from "react";
+import { format } from "date-fns";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { InputLabel } from "../../../../../components/InputWithLabel";
 import { Page } from "../../../../../components/Page";
 import { ToastStyle } from "../../../../../components/Toast";
-import { EmployeePayload } from "./interfaces";
+import { EmployeePayload, IEmployeeRequest, IEmployeeUpdate } from "./interfaces";
 import { CreateEmployerSchema, CreateEmployerSchemaType } from "./schemas";
-import { CreateEmployeeService } from "./service";
+import { CreateEmployeeService, GetEmployeeService, UpdateEmployessService } from "./service";
 
 import * as S from "./styles";
 
@@ -17,6 +18,7 @@ export function CreateEmployer() {
   const location = useLocation();
   const id = location.state?.id;
 
+  const [employee, setEmployee] = useState<IEmployeeRequest>();
   const [loading, setLoading] = useState<boolean>(false);
 
   const methods = useForm<CreateEmployerSchemaType>({
@@ -24,21 +26,95 @@ export function CreateEmployer() {
     mode: "onSubmit",
   });
 
-  async function handleOnSubmit() {
-    setLoading(true);
-    const values: EmployeePayload = methods.getValues();
-    try {
-      await CreateEmployeeService(values);
-      navigate("/settings/employees");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message);
-        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+  async function getEmployee() {
+    if (id) {
+      setLoading(true);
+      try {
+        const response = await GetEmployeeService(id);
+        setEmployee(response);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
     }
   }
+
+  async function handleOnSubmit() {
+    setLoading(true);
+    if (!id) {
+      const values: EmployeePayload = methods.getValues();
+      try {
+        await CreateEmployeeService(values);
+        navigate("/settings/employees");
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      const payload: IEmployeeUpdate = {};
+
+      const phoneNumber = methods.watch("phoneNumber");
+      const cellphoneNumber = methods.watch("cellphoneNumber");
+      const email = methods.watch("email");
+      const addressState = methods.watch("addressState");
+      const addressCity = methods.watch("addressCity");
+      const addressDistrict = methods.watch("addressDistrict");
+      const addressStreet = methods.watch("addressStreet");
+      const addressNumber = methods.watch("addressNumber");
+
+      if (phoneNumber) payload.phoneNumber = phoneNumber;
+      if (cellphoneNumber) payload.cellphoneNumber = cellphoneNumber;
+      if (email) payload.email = email;
+      if (addressState) payload.addressState = addressState;
+      if (addressCity) payload.addressCity = addressCity;
+      if (addressDistrict) payload.addressDistrict = addressDistrict;
+      if (addressStreet) payload.addressStreet = addressStreet;
+      if (addressNumber) payload.addressNumber = addressNumber;
+
+      try {
+        await UpdateEmployessService(payload, id);
+        navigate("/settings/employees");
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (employee) {
+      methods.reset({
+        addressCity: employee.addressCity,
+        addressDistrict: employee.addressDistrict,
+        addressNumber: employee.addressNumber,
+        addressState: employee.addressState,
+        addressStreet: employee.addressStreet,
+        bornAt: format(new Date(employee.bornAt), "yyyy-MM-dd"),
+        cellphoneNumber: employee.cellphoneNumber,
+        document: employee.document,
+        email: employee.email,
+        name: employee.name,
+        phoneNumber: employee.phoneNumber,
+        username: employee.username,
+      });
+    }
+  }, [employee]);
+
+  useEffect(() => {
+    getEmployee();
+  }, []);
 
   return (
     <Page>
@@ -54,12 +130,14 @@ export function CreateEmployer() {
                 label="Nome do Funcionário"
                 placeholder="Insira o nome do Funcionário"
                 hasError={methods.formState.errors.name?.message ? true : false}
+                disabled={id ? true : false}
               />
               <InputLabel
                 registerText="username"
                 label="Usuário do Funcionário"
                 placeholder="Insira o usuário do Funcionário"
                 hasError={methods.formState.errors.username?.message ? true : false}
+                disabled={id ? true : false}
               />
             </S.LinesWithSpace>
             <S.LinesWithSpace>
@@ -69,6 +147,7 @@ export function CreateEmployer() {
                 placeholder="Insira o CPF do Funcionário"
                 hasError={methods.formState.errors.document?.message ? true : false}
                 mask="999.999.999-99"
+                disabled={id ? true : false}
               />
               <InputLabel
                 registerText="bornAt"
@@ -76,6 +155,7 @@ export function CreateEmployer() {
                 placeholder="Insira o nascimento do Funcionário"
                 hasError={methods.formState.errors.bornAt?.message ? true : false}
                 type="date"
+                disabled={id ? true : false}
               />
             </S.LinesWithSpace>
             <S.LinesWithSpace>

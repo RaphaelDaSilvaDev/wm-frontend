@@ -7,7 +7,10 @@ import { EmployeRequest, EmployeToManager } from "./interfaces";
 import { status } from "./labels";
 import * as S from "./styles";
 
-export function EmployeParse(data: EmployeRequest[]): EmployeToManager[] {
+export function EmployeParse(
+  data: EmployeRequest[],
+  editEmployee: (id: string) => void
+): EmployeToManager[] {
   const items = (): IDropDown[] => {
     return [
       {
@@ -22,7 +25,7 @@ export function EmployeParse(data: EmployeRequest[]): EmployeToManager[] {
     return {
       id: item.id,
       edit: (
-        <S.ToolTip>
+        <S.ToolTip onClick={() => editEmployee(item.id)}>
           <Pencil />
         </S.ToolTip>
       ),
