@@ -90,6 +90,13 @@ export const pages = [
         permission: "master",
       },
       {
+        name: "Categorias",
+        path: "/settings/categories/create",
+        icon: <Tag size={32} />,
+        text: <span>Ajustes</span>,
+        permission: "nones",
+      },
+      {
         name: "Funcionários",
         path: "/settings/employees",
         icon: <IdentificationBadge size={32} />,

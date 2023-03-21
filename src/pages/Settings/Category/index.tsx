@@ -1,33 +1,24 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Manager } from "../../../components/Manager";
 import { Page } from "../../../components/Page";
 import { ToastStyle } from "../../../components/Toast";
 import { ToolBar } from "../../../components/ToolBar";
 import { IDropDown } from "../../Home/interface";
 import { CategoryHeader } from "./header";
-import { ICategoryRequest } from "./interfaces";
+import { ICategoryManager, ICategoryRequest } from "./interfaces";
+import { parse } from "./parse";
 import { GetCategoryService } from "./services";
 
 import * as S from "./styles";
 
 export function Category() {
+  const navigate = useNavigate();
   const [data, setData] = useState<ICategoryRequest[]>([]);
+  const [dataToManager, setDataToManager] = useState<ICategoryManager[]>([]);
   const [search, setSearch] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-
-  const options = (item: string): IDropDown[] => [
-    {
-      element: <></>,
-      onClick: () => {},
-      rules: [],
-    },
-    {
-      element: <></>,
-      onClick: () => {},
-      rules: [],
-    },
-  ];
 
   async function getData() {
     setLoading(true);
@@ -44,6 +35,14 @@ export function Category() {
     }
   }
 
+  function handleEditCategory(id: string) {
+    navigate("/settings/categories/create", { state: { id } });
+  }
+
+  useEffect(() => {
+    setDataToManager(parse(data, handleEditCategory));
+  }, [data]);
+
   useEffect(() => {
     getData();
   }, []);
@@ -52,12 +51,12 @@ export function Category() {
     <Page>
       <S.Container>
         <ToolBar
-          buttonOnClick={() => {}}
+          buttonOnClick={() => navigate("/settings/categories/create")}
           buttonText="Adicionar Categoria"
           searchPlaceHolder="Pesquisar Categoria"
           searchState={setSearch}
         />
-        <Manager header={CategoryHeader} options={options} body={data} loading={loading} />
+        <Manager header={CategoryHeader} body={dataToManager} loading={loading} />
       </S.Container>
     </Page>
   );
