@@ -264,7 +264,7 @@ export function CreateService() {
       });
 
       setResponsible({ value: service.user.id, label: service.user.name });
-      setClient({ value: service.client.id, label: service.client.name });
+      setClient({ value: service.vehicle.Client.id, label: service.vehicle.Client.name });
       setVehicle({
         value: service.vehicle.id,
         label: service.vehicle.brand + " - " + service.vehicle.model,

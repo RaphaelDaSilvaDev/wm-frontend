@@ -22,23 +22,14 @@ export interface IBasicDataRequest {
 }
 
 export interface IBasicDataUpdate {
-  name?: string;
-  socialName?: string;
-  document?: string;
   cep?: string;
   addressState?: string;
   addressCity?: string;
   addressStreet?: string;
   addressNumber?: string;
   addressDistrict?: string;
-  clientCode?: string;
   phoneNumber?: string;
   cellphoneNumber?: string;
   email?: string;
-  avatar?: string | null;
-  status?: boolean;
-  paymentValue?: number;
-  paymentDate?: string;
-  contractorName?: string;
-  contractorDocument?: string;
+  avatar?: string | any;
 }

@@ -97,7 +97,7 @@ export function Parse(
       ),
       plate: <span>{service.vehicle.plate}</span>,
       vehicle: <span>{service.vehicle.brand + " - " + service.vehicle.model}</span>,
-      client: <span>{service.client.name}</span>,
+      client: <span>{service.vehicle.Client.name}</span>,
       responsible: <span>{service.user.name}</span>,
       responsible_id: service.user.id,
       delivery_date: (

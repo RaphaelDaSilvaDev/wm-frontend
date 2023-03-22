@@ -16,7 +16,6 @@ export interface IVehicleRequest {
   modelYear: string;
   fuel: string;
   color: string;
-  clientId: string;
   Client: IClientRequest;
 }
 

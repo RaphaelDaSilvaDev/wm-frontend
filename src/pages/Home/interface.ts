@@ -7,10 +7,8 @@ export interface IServiceRequest {
   responsible: string;
   createdAt: string;
   updatedAt: string;
-  clientId: string;
   vehicleId: string;
   user: User;
-  client: Client;
   serviceProducts: ServiceProduct[];
   vehicle: Vehicle;
 }
@@ -57,6 +55,7 @@ interface Vehicle {
   fuel: string;
   color: string;
   clientId: string;
+  Client: Client;
   createdAt: string;
   updatedAt: string;
 }
