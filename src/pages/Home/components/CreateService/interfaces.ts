@@ -34,7 +34,6 @@ export interface IServiceRequest {
   status: string;
   responsible: string;
   createdAt: string;
-  clientId: string;
   vehicleId: string;
   user: {
     id: string;
@@ -50,9 +49,27 @@ export interface IServiceRequest {
     model: string;
     plate: string;
     brand: string;
+    Client: Client;
   };
 }
 
+interface Client {
+  id: string;
+  name: string;
+  document: string;
+  bornAt: string;
+  phoneNumber: string;
+  cellphoneNumber: string;
+  email: string;
+  cep: string;
+  addressState: string;
+  addressCity: string;
+  addressDistrict: string;
+  addressStreet: string;
+  addressNumber: string;
+  createdAt: string;
+  updatedAt: string;
+}
 export interface IServiceProductRequest {
   id: string;
   quantity: number;

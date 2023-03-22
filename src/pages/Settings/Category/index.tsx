@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Manager } from "../../../components/Manager";
 import { Page } from "../../../components/Page";
@@ -20,10 +20,10 @@ export function Category() {
   const [search, setSearch] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  async function getData() {
+  const getData = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await GetCategoryService();
+      const response = await GetCategoryService(search);
       setData(response);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -33,7 +33,7 @@ export function Category() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [search]);
 
   function handleEditCategory(id: string) {
     navigate("/settings/categories/create", { state: { id } });
@@ -45,7 +45,7 @@ export function Category() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   return (
     <Page>

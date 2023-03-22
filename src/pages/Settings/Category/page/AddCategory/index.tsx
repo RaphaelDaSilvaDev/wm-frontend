@@ -1,14 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { InputLabel } from "../../../../../components/InputWithLabel";
 import { Page } from "../../../../../components/Page";
 import { ToastStyle } from "../../../../../components/Toast";
-import { ICategoryCreate } from "./interface";
+import { ICategoryCreate, ICategoryRequest, ICategoryUpdate } from "./interface";
 import { CategorySchema, CategorySchemaType } from "./schemas";
-import { CreateCategoryService } from "./service";
+import { CreateCategoryService, GetCategoryService, UpdateCategoryService } from "./service";
 
 import * as S from "./styles";
 export function AddCategory() {
@@ -21,24 +21,69 @@ export function AddCategory() {
     mode: "onSubmit",
   });
 
+  const [category, setCategory] = useState<ICategoryRequest>();
   const [loading, setLoading] = useState<boolean>(false);
+
+  async function getCategory() {
+    if (id) {
+      setLoading(true);
+      try {
+        const response = await GetCategoryService(id);
+        setCategory(response);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+  }
 
   async function handleOnSubmit() {
     setLoading(true);
-    const payload: ICategoryCreate = { name: methods.watch("name") };
+    if (!id) {
+      const payload: ICategoryCreate = { name: methods.watch("name") };
 
-    try {
-      await CreateCategoryService(payload);
-      navigation("/settings/categories");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error.message);
-        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      try {
+        await CreateCategoryService(payload);
+        navigation("/settings/categories");
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
+    } else {
+      const payload: ICategoryUpdate = { name: methods.watch("name") };
+      try {
+        await UpdateCategoryService(payload, id);
+        navigation("/settings/categories");
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message);
+          ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+        }
+      } finally {
+        setLoading(false);
+      }
     }
   }
+
+  useEffect(() => {
+    if (category) {
+      methods.reset({
+        name: category.name,
+      });
+    }
+  }, [category]);
+
+  useEffect(() => {
+    getCategory();
+  }, []);
 
   return (
     <Page>

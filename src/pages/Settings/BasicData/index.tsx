@@ -1,12 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { InputLabel } from "../../../components/InputWithLabel";
 import { Page } from "../../../components/Page";
+import { ToastStyle } from "../../../components/Toast";
 import { getClientService } from "../../Login/service";
-import { IBasicDataRequest } from "./interfaces";
+import { IBasicDataRequest, IBasicDataUpdate } from "./interfaces";
 import { BasicDataSchema, BasicDataSchemaType } from "./schemas";
+import { UpdateBasicDataService } from "./service";
 import * as S from "./styles";
 
 export function EditAccount() {
@@ -16,6 +19,7 @@ export function EditAccount() {
   });
 
   const [data, setData] = useState<IBasicDataRequest>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   async function GetData() {
     const clientCode = Cookies.get("clientCode");
@@ -25,7 +29,42 @@ export function EditAccount() {
     }
   }
 
-  async function handleOnSubmit() {}
+  async function handleOnSubmit() {
+    setLoading(true);
+    const payload: IBasicDataUpdate = {};
+
+    const cep = methods.watch("cep");
+    const addressState = methods.watch("addressState");
+    const addressCity = methods.watch("addressCity");
+    const addressStreet = methods.watch("addressStreet");
+    const addressNumber = methods.watch("addressNumber");
+    const addressDistrict = methods.watch("addressDistrict");
+    const phoneNumber = methods.watch("phoneNumber");
+    const cellphoneNumber = methods.watch("cellphoneNumber");
+    const email = methods.watch("email");
+
+    if (cep) payload.cep = cep;
+    if (addressState) payload.addressState = addressState;
+    if (addressCity) payload.addressCity = addressCity;
+    if (addressStreet) payload.addressStreet = addressStreet;
+    if (addressNumber) payload.addressNumber = addressNumber;
+    if (addressDistrict) payload.addressDistrict = addressDistrict;
+    if (phoneNumber) payload.phoneNumber = phoneNumber;
+    if (cellphoneNumber) payload.cellphoneNumber = cellphoneNumber;
+    if (email) payload.email = email;
+
+    try {
+      await UpdateBasicDataService(payload, data?.id);
+      GetData();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     if (data) {
