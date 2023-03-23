@@ -26,7 +26,6 @@ export function MultipleOptions({ page, isOpen, setIsOpen }: MultiOptionsProps) 
   return (
     <S.Container>
       <S.Option
-        key={page.name}
         isSelected={path.pathname.includes(page.path)}
         onClick={() => {
           setOpen((prev) => !prev);
@@ -41,7 +40,7 @@ export function MultipleOptions({ page, isOpen, setIsOpen }: MultiOptionsProps) 
           return (
             (option.permission === "all" || option.permission === info.user.permission) && (
               <S.SubOption
-                key={option.name}
+                key={option.name + "multi"}
                 isSelected={path.pathname.includes(option.path)}
                 onClick={() => navigateTo(option.path)}
               >

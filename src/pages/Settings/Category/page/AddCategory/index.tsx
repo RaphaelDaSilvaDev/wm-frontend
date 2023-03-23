@@ -2,8 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import Loading from "react-loading";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Button } from "../../../../../components/Button";
 import { InputLabel } from "../../../../../components/InputWithLabel";
+import { LoadingContainer } from "../../../../../components/Modal/styles";
 import { Page } from "../../../../../components/Page";
 import { ToastStyle } from "../../../../../components/Toast";
 import { ICategoryCreate, ICategoryRequest, ICategoryUpdate } from "./interface";
@@ -22,7 +25,8 @@ export function AddCategory() {
   });
 
   const [category, setCategory] = useState<ICategoryRequest>();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
 
   async function getCategory() {
     if (id) {
@@ -42,7 +46,7 @@ export function AddCategory() {
   }
 
   async function handleOnSubmit() {
-    setLoading(true);
+    setButtonLoading(true);
     if (!id) {
       const payload: ICategoryCreate = { name: methods.watch("name") };
 
@@ -55,7 +59,7 @@ export function AddCategory() {
           ToastStyle({ message: error.response?.data.message, styleToast: "error" });
         }
       } finally {
-        setLoading(false);
+        setButtonLoading(false);
       }
     } else {
       const payload: ICategoryUpdate = { name: methods.watch("name") };
@@ -68,7 +72,7 @@ export function AddCategory() {
           ToastStyle({ message: error.response?.data.message, styleToast: "error" });
         }
       } finally {
-        setLoading(false);
+        setButtonLoading(false);
       }
     }
   }
@@ -83,6 +87,9 @@ export function AddCategory() {
 
   useEffect(() => {
     getCategory();
+    if (!id) {
+      setLoading(false);
+    }
   }, []);
 
   return (
@@ -91,31 +98,37 @@ export function AddCategory() {
         <S.Header>
           <span>{id ? "Editar Categoria" : "Adicionar Categoria"}</span>
         </S.Header>
-        <FormProvider {...methods}>
-          <S.Body id="BasicDataUpdate" onSubmit={methods.handleSubmit(handleOnSubmit)}>
-            <S.LinesWithSpace>
-              <InputLabel
-                registerText="name"
-                label="Nome da Categoria"
-                placeholder="Insira o nome da Categoria"
-                hasError={methods.formState.errors.name?.message ? true : false}
+        {loading ? (
+          <LoadingContainer>
+            <Loading type="spin" />
+          </LoadingContainer>
+        ) : (
+          <>
+            <FormProvider {...methods}>
+              <S.Body id="BasicDataUpdate" onSubmit={methods.handleSubmit(handleOnSubmit)}>
+                <S.LinesWithSpace>
+                  <InputLabel
+                    registerText="name"
+                    label="Nome da Categoria"
+                    placeholder="Insira o nome da Categoria"
+                    hasError={methods.formState.errors.name?.message ? true : false}
+                  />
+                </S.LinesWithSpace>
+              </S.Body>
+            </FormProvider>
+            <S.Footer>
+              <S.Button styleBnt="secondary" onClick={() => navigation("/settings/categories")}>
+                <span>Cancelar</span>
+              </S.Button>
+              <Button
+                loading={buttonLoading}
+                text={id ? "Editar" : "Adicionar"}
+                form="BasicDataUpdate"
+                type="submit"
               />
-            </S.LinesWithSpace>
-          </S.Body>
-        </FormProvider>
-        <S.Footer>
-          <S.Button styleBnt="secondary" onClick={() => navigation("/settings/categories")}>
-            <span>Cancelar</span>
-          </S.Button>
-          <S.Button
-            type="submit"
-            form="BasicDataUpdate"
-            styleBnt="primary"
-            disabled={!methods.formState.isDirty}
-          >
-            <span>{id ? "Editar" : "Adicionar"}</span>
-          </S.Button>
-        </S.Footer>
+            </S.Footer>
+          </>
+        )}
       </S.Container>
     </Page>
   );

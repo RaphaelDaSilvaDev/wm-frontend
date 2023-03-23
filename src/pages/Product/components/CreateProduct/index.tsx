@@ -2,9 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import Loading from "react-loading";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Button } from "../../../../components/Button";
 import { InputSelect } from "../../../../components/InputSelect";
 import { InputLabel } from "../../../../components/InputWithLabel";
+import { LoadingContainer } from "../../../../components/Modal/styles";
 import { Page } from "../../../../components/Page";
 import { TextArea } from "../../../../components/TextArea";
 import { ToastStyle } from "../../../../components/Toast";
@@ -35,6 +38,7 @@ export function CreateProduct() {
   const [categories, setCategories] = useState<CategoryRequest[]>([]);
   const [loadingCategory, setLoadingCategory] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
 
   const id = location.state?.id;
 
@@ -71,7 +75,7 @@ export function CreateProduct() {
   }
 
   async function handleOnSubmit() {
-    setLoading(true);
+    setButtonLoading(true);
     if (!id) {
       const values: ProductPayload = {
         ...methods.getValues(),
@@ -86,7 +90,7 @@ export function CreateProduct() {
           ToastStyle({ message: error.response?.data.message, styleToast: "error" });
         }
       } finally {
-        setLoading(false);
+        setButtonLoading(false);
       }
     } else {
       const payload: IEditPayload = {};
@@ -116,7 +120,7 @@ export function CreateProduct() {
           ToastStyle({ message: error.response?.data.message, styleToast: "error" });
         }
       } finally {
-        setLoading(false);
+        setButtonLoading(false);
       }
     }
   }
@@ -140,6 +144,9 @@ export function CreateProduct() {
   useEffect(() => {
     GetCategory();
     loadingProduct();
+    if (!id) {
+      setLoading(false);
+    }
   }, []);
 
   const categoryOptions =
@@ -155,93 +162,99 @@ export function CreateProduct() {
         <S.Header>
           <span>{id ? "Editar Produto" : "Adicionar Produto"}</span>
         </S.Header>
-        <FormProvider {...methods}>
-          <S.Body id="BasicDataUpdate" onSubmit={methods.handleSubmit(handleOnSubmit)}>
-            <S.LinesWithSpace>
-              <InputLabel
-                registerText="name"
-                label="Nome do Produto"
-                placeholder="Insira o nome do Produto"
-                hasError={methods.formState.errors.name?.message ? true : false}
-              />
+        {loading ? (
+          <LoadingContainer>
+            <Loading type="spin" />
+          </LoadingContainer>
+        ) : (
+          <>
+            <FormProvider {...methods}>
+              <S.Body id="BasicDataUpdate" onSubmit={methods.handleSubmit(handleOnSubmit)}>
+                <S.LinesWithSpace>
+                  <InputLabel
+                    registerText="name"
+                    label="Nome do Produto"
+                    placeholder="Insira o nome do Produto"
+                    hasError={methods.formState.errors.name?.message ? true : false}
+                  />
 
-              <InputLabel
-                registerText="brand"
-                label="Marca do Produto"
-                placeholder="Insira a Marca do Produto"
-                hasError={methods.formState.errors.brand?.message ? true : false}
-              />
-            </S.LinesWithSpace>
-            <S.LinesWithSpace>
-              <InputLabel
-                registerText="quantity"
-                label="Quantidade do Produto"
-                placeholder="Insira a quantidade do Produto"
-                hasError={methods.formState.errors.quantity?.message ? true : false}
-                type="number"
-                min={0}
-              />
+                  <InputLabel
+                    registerText="brand"
+                    label="Marca do Produto"
+                    placeholder="Insira a Marca do Produto"
+                    hasError={methods.formState.errors.brand?.message ? true : false}
+                  />
+                </S.LinesWithSpace>
+                <S.LinesWithSpace>
+                  <InputLabel
+                    registerText="quantity"
+                    label="Quantidade do Produto"
+                    placeholder="Insira a quantidade do Produto"
+                    hasError={methods.formState.errors.quantity?.message ? true : false}
+                    type="number"
+                    min={0}
+                  />
 
-              <InputLabel
-                registerText="minQuantity"
-                label="Quantidade mínima do Produto"
-                placeholder="Insira a quantidade mínima do Produto"
-                hasError={methods.formState.errors.minQuantity?.message ? true : false}
-                type="number"
-                min={0}
-              />
-            </S.LinesWithSpace>
-            <S.LinesWithSpace>
-              <InputLabel
-                registerText="valueToBuy"
-                label="Valor de Compra do Produto"
-                placeholder="Insira o valor de Compra do Produto"
-                hasError={methods.formState.errors.valueToBuy?.message ? true : false}
-                type="number"
-                min={0}
-              />
+                  <InputLabel
+                    registerText="minQuantity"
+                    label="Quantidade mínima do Produto"
+                    placeholder="Insira a quantidade mínima do Produto"
+                    hasError={methods.formState.errors.minQuantity?.message ? true : false}
+                    type="number"
+                    min={0}
+                  />
+                </S.LinesWithSpace>
+                <S.LinesWithSpace>
+                  <InputLabel
+                    registerText="valueToBuy"
+                    label="Valor de Compra do Produto"
+                    placeholder="Insira o valor de Compra do Produto"
+                    hasError={methods.formState.errors.valueToBuy?.message ? true : false}
+                    type="number"
+                    min={0}
+                  />
 
-              <InputLabel
-                registerText="valueToSell"
-                label="Valor de Venda do Produto"
-                placeholder="Insira o valor de Venda do Produto"
-                hasError={methods.formState.errors.valueToSell?.message ? true : false}
-                type="number"
-                min={0}
-              />
-            </S.LinesWithSpace>
-            <S.LinesWithSpace>
-              <TextArea
-                hasError={methods.formState.errors.description?.message ? true : false}
-                placeholder="Insira a descrição do Produto"
-                registerText="description"
-                label="Descrição do Produto"
-              />
+                  <InputLabel
+                    registerText="valueToSell"
+                    label="Valor de Venda do Produto"
+                    placeholder="Insira o valor de Venda do Produto"
+                    hasError={methods.formState.errors.valueToSell?.message ? true : false}
+                    type="number"
+                    min={0}
+                  />
+                </S.LinesWithSpace>
+                <S.LinesWithSpace>
+                  <TextArea
+                    hasError={methods.formState.errors.description?.message ? true : false}
+                    placeholder="Insira a descrição do Produto"
+                    registerText="description"
+                    label="Descrição do Produto"
+                  />
 
-              <InputSelect
-                label="Categoria do Produto"
-                placeHolder="Selecione a Categoria"
-                disabled={loadingCategory}
-                options={categoryOptions}
-                setValue={setCategory}
-                value={category}
+                  <InputSelect
+                    label="Categoria do Produto"
+                    placeHolder="Selecione a Categoria"
+                    disabled={loadingCategory}
+                    options={categoryOptions}
+                    setValue={setCategory}
+                    value={category}
+                  />
+                </S.LinesWithSpace>
+              </S.Body>
+            </FormProvider>
+            <S.Footer>
+              <S.Button styleBnt="secondary" onClick={() => navigation("/products")}>
+                <span>Cancelar</span>
+              </S.Button>
+              <Button
+                loading={buttonLoading}
+                text={id ? "Editar" : "Adicionar"}
+                form="BasicDataUpdate"
+                type="submit"
               />
-            </S.LinesWithSpace>
-          </S.Body>
-        </FormProvider>
-        <S.Footer>
-          <S.Button styleBnt="secondary" onClick={() => navigation("/products")}>
-            <span>Cancelar</span>
-          </S.Button>
-          <S.Button
-            type="submit"
-            form="BasicDataUpdate"
-            styleBnt="primary"
-            disabled={!methods.formState.isDirty}
-          >
-            <span>{id ? "Editar" : "Adicionar"}</span>
-          </S.Button>
-        </S.Footer>
+            </S.Footer>
+          </>
+        )}
       </S.Container>
     </Page>
   );

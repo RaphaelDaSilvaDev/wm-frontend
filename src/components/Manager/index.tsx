@@ -10,9 +10,9 @@ export function Manager({ header, body, options, loading }: ManagerProps) {
         <S.TableOverflow>
           <S.TableHead>
             {options && <S.Option />}
-            {header.map((item) => (
+            {header.map((item, index) => (
               <S.TableHeadItem
-                key={item.title}
+                key={item.title + index}
                 tableSize={item && item.size && item.size >= 0 ? item.size : 1}
               >
                 {item.title}
