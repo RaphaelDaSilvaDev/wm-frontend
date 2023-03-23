@@ -166,3 +166,11 @@ export const ProductManager = styled.div`
   height: min-content;
   max-height: 50rem;
 `;
+
+export const ToolTip = styled.div`
+  width: 3.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;

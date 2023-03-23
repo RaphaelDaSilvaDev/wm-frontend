@@ -1,5 +1,5 @@
 import { api } from "../../../../services/axios";
-import { ICreateService, IEditService } from "./interfaces";
+import { ICreateService, IEditService, IProductServiceUpdate } from "./interfaces";
 
 export async function GetVehicleByClientService(client_id: string) {
   const { data } = await api.get(`/vehicle/client/${client_id}`);
@@ -36,5 +36,11 @@ export async function getService(id: string) {
 export async function getServiceProduct(id: string) {
   const { data } = await api.get(`/service-product/${id}`);
 
+  return data;
+}
+
+export async function CreateProductService(payloadData: IProductServiceUpdate[]) {
+  const payload: IProductServiceUpdate[] = payloadData;
+  const { data } = await api.post(`/service-product`, { products: payload });
   return data;
 }

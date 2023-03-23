@@ -85,10 +85,15 @@ export interface IServiceProductRequest {
 export interface IServiceProductToManager {
   id: string;
   amount: number;
+  edit: JSX.Element;
   quantity: JSX.Element;
   product: JSX.Element;
-  responsible: JSX.Element;
   value: JSX.Element;
   total: JSX.Element;
-  status: JSX.Element;
+}
+
+export interface IProductServiceUpdate {
+  serviceId: string;
+  productId: string;
+  quantity: number;
 }
