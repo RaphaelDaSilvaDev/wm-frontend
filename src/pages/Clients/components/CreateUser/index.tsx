@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { format } from "date-fns";
+import { format, subYears } from "date-fns";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -149,6 +149,7 @@ export function CreateUserPage() {
                 hasError={methods.formState.errors.bornAt?.message ? true : false}
                 type="date"
                 disabled={id ? true : false}
+                max={subYears(new Date(), 17).toISOString().split("T")[0]}
               />
             </S.LinesWithSpace>
             <S.LinesWithSpace>

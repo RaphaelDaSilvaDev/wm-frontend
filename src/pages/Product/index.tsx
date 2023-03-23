@@ -9,7 +9,6 @@ import { ToastStyle } from "../../components/Toast";
 import { ToolBar } from "../../components/ToolBar";
 import { IDropDown } from "../Home/interface";
 import { AlterQuantityProductContent } from "./components/AlterQuantityProductContent";
-import { AlterQuantityProductModal } from "./components/AlterQuantityProductModal";
 import { productsHeader } from "./header";
 import { IProductsRequest, ProductToManager } from "./interfaces";
 import { ProductParse } from "./parse";
@@ -29,19 +28,21 @@ export function Product() {
       element: <span>Alterar Quantidade</span>,
       onClick: () =>
         setAlterQuantityProductModal(
-          <AlterQuantityProductModal
-            confirmButtonText="Alterar"
-            setModalOpen={setAlterQuantityProductModal}
-            title={`Alterar quantidade de ${item.name.props.children}`}
-            content={
-              <AlterQuantityProductContent
-                quantity={item.quantity.props.children}
-                id={item.id}
-                setModalOpen={setAlterQuantityProductModal}
-                reload={reload}
-              />
-            }
-          />
+          <S.Container>
+            <Modal
+              confirmButtonText="Alterar"
+              setModalOpen={setAlterQuantityProductModal}
+              title={`Alterar a quantidade de ${item.name.props.children}`}
+              content={
+                <AlterQuantityProductContent
+                  quantity={item.quantity.props.children}
+                  id={item.id}
+                  setModalOpen={setAlterQuantityProductModal}
+                  reload={reload}
+                />
+              }
+            />
+          </S.Container>
         ),
       rules: [],
     },

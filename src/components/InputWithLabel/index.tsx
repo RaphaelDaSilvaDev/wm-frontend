@@ -10,6 +10,8 @@ export interface InputProps {
   disabled?: boolean;
   mask?: string | (string | RegExp)[];
   label?: string;
+  min?: number | string;
+  max?: number | string;
 }
 
 export function InputLabel({
@@ -20,6 +22,8 @@ export function InputLabel({
   disabled = false,
   mask,
   label,
+  min,
+  max,
 }: InputProps) {
   const { register, watch } = useFormContext();
   const text = watch(registerText);
@@ -33,6 +37,8 @@ export function InputLabel({
         step="any"
         disabled={disabled}
         placeholder={placeholder}
+        min={min}
+        max={max}
         {...register(registerText, { valueAsNumber: type === "number" ? true : false })}
       />
     </S.Row>
@@ -48,6 +54,8 @@ export function InputLabel({
         step="any"
         disabled={disabled}
         placeholder={placeholder}
+        min={min}
+        max={max}
         {...register(registerText, { valueAsNumber: type === "number" ? true : false })}
       />
     </S.Row>

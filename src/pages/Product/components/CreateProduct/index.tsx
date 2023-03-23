@@ -179,6 +179,7 @@ export function CreateProduct() {
                 placeholder="Insira a quantidade do Produto"
                 hasError={methods.formState.errors.quantity?.message ? true : false}
                 type="number"
+                min={0}
               />
 
               <InputLabel
@@ -187,6 +188,7 @@ export function CreateProduct() {
                 placeholder="Insira a quantidade mínima do Produto"
                 hasError={methods.formState.errors.minQuantity?.message ? true : false}
                 type="number"
+                min={0}
               />
             </S.LinesWithSpace>
             <S.LinesWithSpace>
@@ -196,6 +198,7 @@ export function CreateProduct() {
                 placeholder="Insira o valor de Compra do Produto"
                 hasError={methods.formState.errors.valueToBuy?.message ? true : false}
                 type="number"
+                min={0}
               />
 
               <InputLabel
@@ -204,6 +207,7 @@ export function CreateProduct() {
                 placeholder="Insira o valor de Venda do Produto"
                 hasError={methods.formState.errors.valueToSell?.message ? true : false}
                 type="number"
+                min={0}
               />
             </S.LinesWithSpace>
             <S.LinesWithSpace>
