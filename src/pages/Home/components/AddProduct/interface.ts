@@ -5,8 +5,8 @@ export interface IProductsRequest {
   brand: string;
   quantity: number;
   minQuantity: number;
-  valueToBuy: number;
-  amount: number;
+  valueToSell: number;
+  amount: any;
   description: string;
   categoryId: string;
   category: ICategory;
@@ -21,9 +21,10 @@ interface ICategory {
 
 export interface ProductToManager {
   id: string;
-  amount?: number;
+  amount: number;
   valueToSell: number;
   quantity: JSX.Element;
+  name: JSX.Element;
   product: JSX.Element;
   responsible: JSX.Element;
   value: JSX.Element;

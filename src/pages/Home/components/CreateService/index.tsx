@@ -25,11 +25,13 @@ import {
   IServiceProductToManager,
   IServiceRequest,
   IEditService,
+  IProductServiceUpdate,
 } from "./interfaces";
 import { ProductParse } from "./parse";
 import { ServiceSchema, ServiceSchemaType } from "./schemas";
 import {
   AddService,
+  CreateProductService,
   EditService,
   GetResponsible,
   getService,
@@ -47,7 +49,7 @@ export function CreateService() {
     mode: "onSubmit",
   });
 
-  const id = location.state?.id;
+  const id: string = location.state?.id;
 
   const [searchProduct, setSearchProduct] = useState<string>("");
 
@@ -155,8 +157,6 @@ export function CreateService() {
       if (deliveryDate || deliveryHour) {
         const date = deliveryDate.split("-");
         const time = deliveryHour.split(":");
-        console.log(date);
-        console.log(time);
         payload.delivery = new Date(
           Number(date[0]),
           Number(Number(date[1]) - 1),
@@ -164,7 +164,6 @@ export function CreateService() {
           Number(time[0]),
           Number(time[1])
         );
-        console.log(payload.delivery);
       }
 
       if (responsibleObservation) {
@@ -175,8 +174,13 @@ export function CreateService() {
         payload.responsible = responsibleData?.value || "";
       }
 
+      const productService: IProductServiceUpdate[] = serviceProductToManager.map((item) => {
+        return { serviceId: id, productId: item.id, quantity: item.amount };
+      });
+
       try {
         await EditService(payload, id);
+        await CreateProductService(productService);
         navigation("/");
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -187,10 +191,6 @@ export function CreateService() {
         setLoadSubmit(false);
       }
     }
-  }
-
-  function onErrorSubmit() {
-    console.log(methods.formState.errors);
   }
 
   async function getResponsible() {
@@ -238,20 +238,12 @@ export function CreateService() {
     }
   }
 
-  const items = (item: any): IDropDown[] => {
-    return [
-      {
-        element: <span>Gerenciar Serviço</span>,
-        onClick: () => {
-          navigation("/service", { state: { id: item.id } });
-        },
-        rules: [],
-      },
-    ];
-  };
+  function handleRemoveProduct(productId: string) {
+    setServiceProduct((prev) => [...prev.filter((product) => product.product.id !== productId)]);
+  }
 
   useEffect(() => {
-    setServiceProductToManager(ProductParse(serviceProduct));
+    setServiceProductToManager(ProductParse(serviceProduct, handleRemoveProduct));
   }, [serviceProduct]);
 
   useEffect(() => {
@@ -316,10 +308,7 @@ export function CreateService() {
           <span>{id ? "Editar Serviço" : "Adicionar Serviço"}</span>
         </S.Header>
         <FormProvider {...methods}>
-          <S.Body
-            id="BasicDataUpdate"
-            onSubmit={methods.handleSubmit(handleOnSubmit, onErrorSubmit)}
-          >
+          <S.Body id="BasicDataUpdate" onSubmit={methods.handleSubmit(handleOnSubmit)}>
             <S.LinesWithSpace>
               <InputSelect
                 options={clientOptions}
@@ -408,6 +397,7 @@ export function CreateService() {
                           <AddProduct
                             setModalOpen={setServiceModal}
                             setServiceProduct={setServiceProductToManager}
+                            serviceProductToManager={serviceProductToManager}
                           />
                         )
                       }
@@ -417,7 +407,6 @@ export function CreateService() {
                     <Manager
                       body={serviceProductToManager}
                       header={ProductHeader}
-                      options={items}
                       loading={loadingProducts}
                     />
                   </S.ProductManager>
@@ -434,7 +423,9 @@ export function CreateService() {
             type="submit"
             form="BasicDataUpdate"
             styleBnt="primary"
-            disabled={!methods.formState.isDirty}
+            disabled={
+              !methods.formState.isDirty && serviceProduct.length === serviceProductToManager.length
+            }
           >
             <span>{id ? "Editar" : "Adicionar"}</span>
           </S.Button>

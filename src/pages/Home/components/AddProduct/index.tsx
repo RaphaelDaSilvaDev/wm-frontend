@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Manager } from "../../../../components/Manager";
 import { Modal } from "../../../../components/Modal";
 import { ToastStyle } from "../../../../components/Toast";
@@ -16,16 +16,23 @@ interface IManagerModalProps {
   id?: string;
   setModalOpen: React.Dispatch<React.SetStateAction<JSX.Element>>;
   setServiceProduct: React.Dispatch<React.SetStateAction<IServiceProductToManager[]>>;
+  serviceProductToManager: IServiceProductToManager[];
   reload?: () => void;
 }
 
-export function AddProduct({ id, reload, setModalOpen, setServiceProduct }: IManagerModalProps) {
+export function AddProduct({
+  id,
+  reload,
+  setModalOpen,
+  setServiceProduct,
+  serviceProductToManager,
+}: IManagerModalProps) {
   const [data, setData] = useState<IProductsRequest[]>([]);
   const [dataToManager, setDataToManager] = useState<ProductToManager[]>([]);
   const [search, setSearch] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
 
-  async function getData() {
+  const getData = useCallback(async () => {
     setLoading(true);
     try {
       const response = await GetProductsService(search);
@@ -38,25 +45,47 @@ export function AddProduct({ id, reload, setModalOpen, setServiceProduct }: IMan
     } finally {
       setLoading(false);
     }
-  }
+  }, [search]);
 
   function handleSubmit() {
     event?.preventDefault();
-    const addItens = dataToManager.filter((item) => item.amount !== 0);
-    console.log(addItens);
-    const parsed = AddParse(addItens);
-    console.log(parsed);
-    setServiceProduct((prev) => [...prev, ...parsed]);
+
+    const addItens = dataToManager.filter(
+      (item) => item.amount !== 0 && item.amount !== undefined && item.amount !== null
+    );
+
+    const parsed = AddParse(addItens, handleRemoveProduct);
+
+    setServiceProduct(parsed);
     setModalOpen(<></>);
   }
 
+  function handleRemoveProduct(productId: string) {
+    setServiceProduct((prev) => [...prev.filter((product) => product.id !== productId)]);
+  }
+
   useEffect(() => {
-    setDataToManager(ProductParse(data));
+    const serviceProductToManagerStorage = Array.from(serviceProductToManager);
+    const dataStorage = Array.from(data);
+
+    dataStorage.map((data) =>
+      serviceProductToManagerStorage.map((manager) => {
+        if (manager.id === data.id) {
+          data.amount === undefined || data.amount === null
+            ? (data.amount = manager.amount)
+            : (data.amount = data.amount);
+          return data;
+        } else {
+          return data;
+        }
+      })
+    );
+    setDataToManager(ProductParse(dataStorage, setData));
   }, [data]);
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   return (
     <Modal
@@ -64,10 +93,12 @@ export function AddProduct({ id, reload, setModalOpen, setServiceProduct }: IMan
       title="Adicionar Produto"
       confirmButtonText="Adicionar"
       content={
-        <S.Form id="formModal" onSubmit={handleSubmit}>
+        <S.Content>
           <ToolBar searchState={setSearch} searchPlaceHolder="Pesquisar Produto" />
-          <Manager header={AddProductHeader} body={dataToManager} loading={loading} />
-        </S.Form>
+          <S.Form id="formModal" onSubmit={handleSubmit}>
+            <Manager header={AddProductHeader} body={dataToManager} loading={loading} />
+          </S.Form>
+        </S.Content>
       }
     />
   );
