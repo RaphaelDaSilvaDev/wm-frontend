@@ -48,6 +48,7 @@ export function AlterQuantityProductContent({ quantity, id, reload, setModalOpen
           registerText="quantity"
           label="Quantidade do produto"
           type="number"
+          min={0}
         />
       </S.Container>
     </FormProvider>

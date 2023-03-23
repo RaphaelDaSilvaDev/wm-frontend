@@ -32,28 +32,33 @@ export function SideBar() {
     <>
       {info && info.user && (
         <S.Container open={open}>
-          <S.Logo onClick={() => setOpen((prev) => !prev)}>
-            <img src={client?.avatar ? client.avatar : ""} />
-            <span>{client?.name}</span>
-          </S.Logo>
+          <S.Content>
+            <S.Logo onClick={() => setOpen((prev) => !prev)}>
+              <img src={client?.avatar ? client.avatar : ""} />
+              <span>{client?.name}</span>
+            </S.Logo>
 
-          <S.Options>
-            {pages.map((page) => {
-              return (page.permission === "all" || page.permission === info.user.permission) &&
-                page.options === undefined ? (
-                <S.Option
-                  key={page.name}
-                  isSelected={path.pathname === page.path}
-                  onClick={() => navigateTo(page.path)}
-                >
-                  {page.icon}
-                  {page.text}
-                </S.Option>
-              ) : (
-                page.options && <MultipleOptions page={page} isOpen={open} setIsOpen={setOpen} />
-              );
-            })}
-          </S.Options>
+            <S.Options>
+              {pages.map((page) => {
+                return (page.permission === "all" || page.permission === info.user.permission) &&
+                  page.options === undefined ? (
+                  <S.Option
+                    key={page.name}
+                    isSelected={path.pathname.includes(page.path)}
+                    onClick={() => navigateTo(page.path)}
+                  >
+                    {page.icon}
+                    {page.text}
+                  </S.Option>
+                ) : (
+                  page.options && <MultipleOptions page={page} isOpen={open} setIsOpen={setOpen} />
+                );
+              })}
+            </S.Options>
+          </S.Content>
+          <S.Version>
+            <span>v-0.3.1</span>
+          </S.Version>
         </S.Container>
       )}
       {open && <S.Overlay onClick={() => setOpen((prev) => !prev)} />}

@@ -5,4 +5,6 @@ export const Container = styled.form`
   height: 100%;
 
   display: flex;
+
+  position: fixed;
 `;

@@ -14,14 +14,14 @@ export type IPages = "service" | "users";
 export const pages = [
   {
     name: "Serviços",
-    path: "/",
+    path: "/service",
     icon: <Wrench size={32} />,
     text: <span>Serviços</span>,
     permission: "all",
   },
   {
     name: "Serviços",
-    path: "/service",
+    path: "/service/create",
     icon: <Wrench size={32} />,
     text: <span>Serviços</span>,
     permission: "none",

@@ -42,7 +42,7 @@ export function MultipleOptions({ page, isOpen, setIsOpen }: MultiOptionsProps) 
             (option.permission === "all" || option.permission === info.user.permission) && (
               <S.SubOption
                 key={option.name}
-                isSelected={path.pathname === option.path}
+                isSelected={path.pathname.includes(option.path)}
                 onClick={() => navigateTo(option.path)}
               >
                 {option.icon}

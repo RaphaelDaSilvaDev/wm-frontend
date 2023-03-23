@@ -10,6 +10,7 @@ export const Container = styled.div<ContainerProps>`
 
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   position: fixed;
 
   left: 0;
@@ -19,12 +20,27 @@ export const Container = styled.div<ContainerProps>`
   z-index: 999;
   transition: width 175ms;
 
-  span {
+  div > div > span {
     transition: all 175ms;
     position: absolute;
     left: 6rem;
     display: ${(props) => (props.open ? "block" : "none")};
   }
+`;
+
+export const Content = styled.div`
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  left: 0;
+  top: 0;
+
+  z-index: 999;
+  transition: width 175ms;
 `;
 
 export const Logo = styled.div`
@@ -95,4 +111,19 @@ export const Overlay = styled.div`
   transition: all 175ms;
 
   z-index: 998;
+`;
+
+export const Version = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  bottom: 2rem;
+
+  & > span {
+    color: white;
+    font-size: 1.2rem;
+  }
 `;

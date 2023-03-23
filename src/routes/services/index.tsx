@@ -6,7 +6,7 @@ import { AuthRoute } from "../authRoute";
 export const serviceRoutes = (
   <>
     <Route
-      path="/"
+      path="/service"
       element={
         <AuthRoute>
           <Home />
@@ -14,7 +14,7 @@ export const serviceRoutes = (
       }
     />
     <Route
-      path="/service"
+      path="/service/create"
       element={
         <AuthRoute>
           <CreateService />

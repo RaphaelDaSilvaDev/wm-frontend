@@ -138,7 +138,7 @@ export function CreateService() {
 
       try {
         await AddService(payload);
-        navigation("/");
+        navigation("/service");
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log(error.message);
@@ -181,7 +181,7 @@ export function CreateService() {
       try {
         await EditService(payload, id);
         await CreateProductService(productService);
-        navigation("/");
+        navigation("/service");
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log(error.message);
@@ -343,6 +343,7 @@ export function CreateService() {
                 placeholder="Insira a data da entrega"
                 type="date"
                 hasError={methods.formState.errors.delivery_date?.message ? true : false}
+                min={format(new Date(), "yyyy-MM-dd")}
               />
               <InputLabel
                 registerText="delivery_hour"
@@ -416,7 +417,7 @@ export function CreateService() {
           </S.Body>
         </FormProvider>
         <S.Footer>
-          <S.Button styleBnt="secondary" onClick={() => navigation("/")}>
+          <S.Button styleBnt="secondary" onClick={() => navigation("/service")}>
             <span>Cancelar</span>
           </S.Button>
           <S.Button

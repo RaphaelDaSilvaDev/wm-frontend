@@ -25,7 +25,7 @@ export function Home() {
   const [search, setSearch] = useState<string>("");
 
   function handleEditService(itemId: string) {
-    navigation("/service", { state: { id: itemId } });
+    navigation("/service/create", { state: { id: itemId } });
   }
 
   const loadData = useCallback(async () => {
@@ -59,7 +59,7 @@ export function Home() {
     <Page>
       <ToolBar
         buttonText="Adicionar Serviço"
-        buttonOnClick={() => navigation("/service")}
+        buttonOnClick={() => navigation("/service/create")}
         searchPlaceHolder="Pesquisar Serviço"
         searchState={setSearch}
       />
