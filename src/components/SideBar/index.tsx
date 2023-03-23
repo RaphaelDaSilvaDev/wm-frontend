@@ -51,13 +51,20 @@ export function SideBar() {
                     {page.text}
                   </S.Option>
                 ) : (
-                  page.options && <MultipleOptions page={page} isOpen={open} setIsOpen={setOpen} />
+                  page.options && (
+                    <MultipleOptions
+                      key={page.name}
+                      page={page}
+                      isOpen={open}
+                      setIsOpen={setOpen}
+                    />
+                  )
                 );
               })}
             </S.Options>
           </S.Content>
           <S.Version>
-            <span>v-0.3.1</span>
+            <span>v-0.3.2</span>
           </S.Version>
         </S.Container>
       )}

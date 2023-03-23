@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const Button = styled.button`
-  width: 100%;
   align-self: center;
   background-color: ${(props) => props.theme.primary};
   color: ${(props) => props.theme.white};
@@ -21,8 +20,8 @@ export const Button = styled.button`
     justify-content: center !important;
 
     & > svg {
-      width: 3.6rem;
-      height: 3.6rem;
+      width: 2.4rem;
+      height: 2.4rem;
     }
   }
 

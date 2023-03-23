@@ -3,10 +3,13 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import Loading from "react-loading";
+import { Button } from "../../../components/Button";
 import { InputLabel } from "../../../components/InputWithLabel";
 import { Page } from "../../../components/Page";
 import { ToastStyle } from "../../../components/Toast";
 import { getClientService } from "../../Login/service";
+import { LoadingContainer } from "../../Login/styles";
 import { IBasicDataRequest, IBasicDataUpdate } from "./interfaces";
 import { BasicDataSchema, BasicDataSchemaType } from "./schemas";
 import { UpdateBasicDataService } from "./service";
@@ -20,17 +23,28 @@ export function EditAccount() {
 
   const [data, setData] = useState<IBasicDataRequest>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
 
   async function GetData() {
-    const clientCode = Cookies.get("clientCode");
-    if (clientCode) {
-      const response = await getClientService(clientCode);
-      setData(response);
+    setLoading(true);
+    try {
+      const clientCode = Cookies.get("clientCode");
+      if (clientCode) {
+        const response = await getClientService(clientCode);
+        setData(response);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
+    } finally {
+      setLoading(false);
     }
   }
 
   async function handleOnSubmit() {
-    setLoading(true);
+    setButtonLoading(true);
     const payload: IBasicDataUpdate = {};
 
     const cep = methods.watch("cep");
@@ -62,7 +76,7 @@ export function EditAccount() {
         ToastStyle({ message: error.response?.data.message, styleToast: "error" });
       }
     } finally {
-      setLoading(false);
+      setButtonLoading(false);
     }
   }
 
@@ -95,7 +109,11 @@ export function EditAccount() {
         <S.Header>
           <span>Dados da Empresa</span>
         </S.Header>
-        {
+        {loading ? (
+          <LoadingContainer>
+            <Loading type="spin" />
+          </LoadingContainer>
+        ) : (
           <>
             <FormProvider {...methods}>
               <S.Body id="BasicDataUpdate" onSubmit={methods.handleSubmit(handleOnSubmit)}>
@@ -193,17 +211,10 @@ export function EditAccount() {
               </S.Body>
             </FormProvider>
             <S.Footer>
-              <S.Button
-                type="submit"
-                form="BasicDataUpdate"
-                styleBnt="primary"
-                disabled={!methods.formState.isDirty}
-              >
-                <span>Editar</span>
-              </S.Button>
+              <Button loading={buttonLoading} text="Editar" form="BasicDataUpdate" type="submit" />
             </S.Footer>
           </>
-        }
+        )}
       </S.Container>
     </Page>
   );

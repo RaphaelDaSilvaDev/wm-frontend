@@ -174,3 +174,23 @@ export const ToolTip = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
+export const LoadingContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+
+  background-color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: fixed;
+
+  & > div {
+    width: 2.4rem !important;
+    height: 2.4rem !important;
+
+    fill: ${(props) => props.theme.primary} !important;
+  }
+`;

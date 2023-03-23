@@ -3,7 +3,9 @@ import axios from "axios";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import Loading from "react-loading";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Button } from "../../../../components/Button";
 import { InputSelect } from "../../../../components/InputSelect";
 import { InputLabel } from "../../../../components/InputWithLabel";
 import { Manager } from "../../../../components/Manager";
@@ -13,6 +15,7 @@ import { ToastStyle } from "../../../../components/Toast";
 import { ToolBar } from "../../../../components/ToolBar";
 import { IClientRequest } from "../../../Clients/interfaces";
 import { getAllClients } from "../../../Clients/services";
+import { LoadingContainer } from "../../../Login/styles";
 import { IVehicleRequest } from "../../../Vehicles/interfaces";
 import { IDropDown } from "../../interface";
 import { AddProduct } from "../AddProduct";
@@ -72,7 +75,7 @@ export function CreateService() {
   const [loadResponsible, setLoadResponsible] = useState<boolean>(false);
   const [loadVehicle, setLoadVehicle] = useState<boolean>(false);
   const [loadSubmit, setLoadSubmit] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [loadingProducts, setLoadingProducts] = useState<boolean>(false);
 
   async function loadingService() {
@@ -275,6 +278,9 @@ export function CreateService() {
     loadingServiceProduct();
     getResponsible();
     getClient();
+    if (!id) {
+      setLoading(false);
+    }
   }, []);
 
   const clientOptions =
@@ -307,130 +313,134 @@ export function CreateService() {
         <S.Header>
           <span>{id ? "Editar Serviço" : "Adicionar Serviço"}</span>
         </S.Header>
-        <FormProvider {...methods}>
-          <S.Body id="BasicDataUpdate" onSubmit={methods.handleSubmit(handleOnSubmit)}>
-            <S.LinesWithSpace>
-              <InputSelect
-                options={clientOptions}
-                setValue={setClient}
-                value={client}
-                label="Cliente"
-                disabled={id ? true : false}
-                placeHolder="Selecione o Cliente"
-              />
+        {loading ? (
+          <LoadingContainer>
+            <Loading type="spin" />
+          </LoadingContainer>
+        ) : (
+          <>
+            <FormProvider {...methods}>
+              <S.Body id="BasicDataUpdate" onSubmit={methods.handleSubmit(handleOnSubmit)}>
+                <S.LinesWithSpace>
+                  <InputSelect
+                    options={clientOptions}
+                    setValue={setClient}
+                    value={client}
+                    label="Cliente"
+                    disabled={id ? true : false}
+                    placeHolder="Selecione o Cliente"
+                  />
 
-              <InputSelect
-                options={vehiclesOptions}
-                setValue={setVehicle}
-                value={vehicle}
-                label="Veículo"
-                disabled={id ? true : false}
-                placeHolder="Selecione o Veículo"
-              />
-            </S.LinesWithSpace>
+                  <InputSelect
+                    options={vehiclesOptions}
+                    setValue={setVehicle}
+                    value={vehicle}
+                    label="Veículo"
+                    disabled={id ? true : false}
+                    placeHolder="Selecione o Veículo"
+                  />
+                </S.LinesWithSpace>
 
-            <S.LinesWithSpace>
-              <InputSelect
-                options={responsibleOptions}
-                setValue={setResponsible}
-                value={responsible}
-                label="Responsável"
-                placeHolder="Selecione o Responsável"
-              />
-              <InputLabel
-                registerText="delivery_date"
-                label="Data da Entrega"
-                placeholder="Insira a data da entrega"
-                type="date"
-                hasError={methods.formState.errors.delivery_date?.message ? true : false}
-                min={format(new Date(), "yyyy-MM-dd")}
-              />
-              <InputLabel
-                registerText="delivery_hour"
-                label="Hora da Entrega"
-                placeholder="Insira a hora da entrega"
-                type="time"
-                hasError={methods.formState.errors.delivery_hour?.message ? true : false}
-              />
-              <S.Row>
-                <label>Data da Entrada</label>
-                <S.InputDate
-                  type="datetime-local"
-                  value={
-                    service && service.createdAt
-                      ? format(new Date(service.createdAt), `yyyy-MM-dd'T'H:mm`)
-                      : format(new Date(), `yyyy-MM-dd'T'H:mm`)
-                  }
-                  disabled
-                />
-              </S.Row>
-            </S.LinesWithSpace>
+                <S.LinesWithSpace>
+                  <InputSelect
+                    options={responsibleOptions}
+                    setValue={setResponsible}
+                    value={responsible}
+                    label="Responsável"
+                    placeHolder="Selecione o Responsável"
+                  />
+                  <InputLabel
+                    registerText="delivery_date"
+                    label="Data da Entrega"
+                    placeholder="Insira a data da entrega"
+                    type="date"
+                    hasError={methods.formState.errors.delivery_date?.message ? true : false}
+                    min={format(new Date(), "yyyy-MM-dd")}
+                  />
+                  <InputLabel
+                    registerText="delivery_hour"
+                    label="Hora da Entrega"
+                    placeholder="Insira a hora da entrega"
+                    type="time"
+                    hasError={methods.formState.errors.delivery_hour?.message ? true : false}
+                  />
+                  <S.Row>
+                    <label>Data da Entrada</label>
+                    <S.InputDate
+                      type="datetime-local"
+                      value={
+                        service && service.createdAt
+                          ? format(new Date(service.createdAt), `yyyy-MM-dd'T'H:mm`)
+                          : format(new Date(), `yyyy-MM-dd'T'H:mm`)
+                      }
+                      disabled
+                    />
+                  </S.Row>
+                </S.LinesWithSpace>
 
-            <S.Lines>
-              <TextArea
-                hasError={methods.formState.errors.client_observation?.message ? true : false}
-                placeholder="Insira a observação do cliente"
-                registerText="client_observation"
-                label="Observação do cliente"
-                disabled={id ? true : false}
-              />
-            </S.Lines>
-
-            {id && (
-              <>
                 <S.Lines>
                   <TextArea
-                    hasError={
-                      methods.formState.errors.responsible_observation?.message ? true : false
-                    }
-                    placeholder="Insira a observação do responsável"
-                    registerText="responsible_observation"
-                    label="Observação do Responsável"
+                    hasError={methods.formState.errors.client_observation?.message ? true : false}
+                    placeholder="Insira a observação do cliente"
+                    registerText="client_observation"
+                    label="Observação do cliente"
+                    disabled={id ? true : false}
                   />
                 </S.Lines>
-                <S.Row>
-                  <label>Produtos e Serviços</label>
-                  <S.ProductManager>
-                    <ToolBar
-                      buttonText="Adicionar Produto"
-                      buttonOnClick={() =>
-                        setServiceModal(
-                          <AddProduct
-                            setModalOpen={setServiceModal}
-                            setServiceProduct={setServiceProductToManager}
-                            serviceProductToManager={serviceProductToManager}
-                          />
-                        )
-                      }
-                      searchPlaceHolder="Pesquisar Produto"
-                      searchState={setSearchProduct}
-                    />
-                    <Manager
-                      body={serviceProductToManager}
-                      header={ProductHeader}
-                      loading={loadingProducts}
-                    />
-                  </S.ProductManager>
-                </S.Row>
-              </>
-            )}
-          </S.Body>
-        </FormProvider>
-        <S.Footer>
-          <S.Button styleBnt="secondary" onClick={() => navigation("/service")}>
-            <span>Cancelar</span>
-          </S.Button>
-          <S.Button
-            type="submit"
-            form="BasicDataUpdate"
-            styleBnt="primary"
-            disabled={
-              !methods.formState.isDirty && serviceProduct.length === serviceProductToManager.length
-            }
-          >
-            <span>{id ? "Editar" : "Adicionar"}</span>
-          </S.Button>
-        </S.Footer>
+
+                {id && (
+                  <>
+                    <S.Lines>
+                      <TextArea
+                        hasError={
+                          methods.formState.errors.responsible_observation?.message ? true : false
+                        }
+                        placeholder="Insira a observação do responsável"
+                        registerText="responsible_observation"
+                        label="Observação do Responsável"
+                      />
+                    </S.Lines>
+                    <S.Row>
+                      <label>Produtos e Serviços</label>
+                      <S.ProductManager>
+                        <ToolBar
+                          buttonText="Adicionar Produto"
+                          buttonOnClick={() =>
+                            setServiceModal(
+                              <AddProduct
+                                setModalOpen={setServiceModal}
+                                setServiceProduct={setServiceProductToManager}
+                                serviceProductToManager={serviceProductToManager}
+                              />
+                            )
+                          }
+                          searchPlaceHolder="Pesquisar Produto"
+                          searchState={setSearchProduct}
+                        />
+                        <Manager
+                          body={serviceProductToManager}
+                          header={ProductHeader}
+                          loading={loadingProducts}
+                        />
+                      </S.ProductManager>
+                    </S.Row>
+                  </>
+                )}
+              </S.Body>
+            </FormProvider>
+            <S.Footer>
+              <S.Button styleBnt="secondary" onClick={() => navigation("/service")}>
+                <span>Cancelar</span>
+              </S.Button>
+              <Button
+                loading={loadSubmit}
+                text={id ? "Editar" : "Adicionar"}
+                form="BasicDataUpdate"
+                type="submit"
+              />
+            </S.Footer>
+          </>
+        )}
       </S.Container>
       {serviceModal}
     </Page>

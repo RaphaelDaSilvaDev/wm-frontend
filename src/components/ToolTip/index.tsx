@@ -13,7 +13,7 @@ export function ToolTip({ items, elements }: TooltipProps) {
         <>
           {items(elements).map((item, i) => {
             return item.divider ? (
-              <>
+              <div key={i}>
                 <S.Divider />
                 <S.Item
                   disabled={item.rules.some((rule) => rule === true)}
@@ -25,7 +25,7 @@ export function ToolTip({ items, elements }: TooltipProps) {
                 >
                   {item.element}
                 </S.Item>
-              </>
+              </div>
             ) : (
               <S.Item
                 disabled={item.rules.some((rule) => rule === true)}
