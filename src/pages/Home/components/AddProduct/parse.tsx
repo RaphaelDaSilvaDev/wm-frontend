@@ -58,7 +58,7 @@ export function AddParse(
           <Trash />
         </S.ToolTip>
       ),
-      quantity: <span>{item.quantity}</span>,
+      quantity: <span>{item.amount}</span>,
       product: <span>{item.name}</span>,
       value: <span>{item.valueToSell}</span>,
       total: <span>{item.valueToSell * item.amount}</span>,

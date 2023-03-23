@@ -14,6 +14,7 @@ export const Container = styled.div`
 export const Header = styled.div`
   width: 100%;
   height: 5.4rem;
+  min-height: 5.4rem;
 
   display: flex;
   align-items: center;
@@ -32,6 +33,9 @@ export const Header = styled.div`
     align-items: center;
     justify-content: center;
     cursor: pointer;
+  }
+  & > span {
+    font-size: 2.4rem;
   }
 `;
 
