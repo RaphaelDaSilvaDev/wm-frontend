@@ -1,27 +1,58 @@
+import axios from "axios";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Pencil } from "phosphor-react";
+import { ToastStyle } from "../../../components/Toast";
 import { IDropDown } from "../../Home/interface";
 import { StatusToolTip } from "./components/StatusToolTip";
 import { EmployeRequest, EmployeToManager } from "./interfaces";
 import { status } from "./labels";
+import { toggleStatus } from "./services";
 import * as S from "./styles";
 
 export function EmployeParse(
   data: EmployeRequest[],
-  editEmployee: (id: string) => void
+  editEmployee: (id: string) => void,
+  reload: () => void
 ): EmployeToManager[] {
-  const items = (): IDropDown[] => {
-    return [
-      {
-        element: <span>Aguardando Aprovação</span>,
-        onClick: async () => {},
-        rules: [],
-      },
-    ];
-  };
-
   return data.map((item) => {
+    const items = (): IDropDown[] => {
+      return [
+        {
+          element: <span>Ativar</span>,
+          onClick: async () => {
+            try {
+              await toggleStatus(item.id, "active");
+              ToastStyle({ message: "Alterado com sucesso", styleToast: "success" });
+              reload();
+            } catch (error) {
+              if (axios.isAxiosError(error)) {
+                console.log(error.message);
+                ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+              }
+            }
+          },
+          rules: [item.status === "active"],
+        },
+        {
+          onClick: async () => {
+            try {
+              await toggleStatus(item.id, "inactive");
+              ToastStyle({ message: "Alterado com sucesso", styleToast: "success" });
+              reload();
+            } catch (error) {
+              if (axios.isAxiosError(error)) {
+                console.log(error.message);
+                ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+              }
+            }
+          },
+          element: <span>Inativar</span>,
+          rules: [item.status === "inactive"],
+        },
+      ];
+    };
+
     return {
       id: item.id,
       edit: (
