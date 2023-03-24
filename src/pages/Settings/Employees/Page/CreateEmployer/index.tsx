@@ -234,12 +234,14 @@ export function CreateEmployer() {
               <S.Button styleBnt="secondary" onClick={() => navigate("/settings/employees")}>
                 <span>Cancelar</span>
               </S.Button>
-              <Button
-                loading={buttonLoading}
-                text={id ? "Editar" : "Adicionar"}
-                type="submit"
-                form="BasicDataUpdate"
-              />
+              <S.ButtonSize>
+                <Button
+                  loading={buttonLoading}
+                  text={id ? "Editar" : "Adicionar"}
+                  type="submit"
+                  form="BasicDataUpdate"
+                />
+              </S.ButtonSize>
             </S.Footer>
           </>
         )}

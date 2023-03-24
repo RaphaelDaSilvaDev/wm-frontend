@@ -79,7 +79,7 @@ export function Login() {
         setCookies("user", data, { path: "/" });
         setCookies("clientCode", data.clientCode, { path: "/" });
         AuthToken(data.token, clientCode);
-        navigation("/");
+        navigation("/service");
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {

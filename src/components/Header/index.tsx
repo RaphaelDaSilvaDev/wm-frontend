@@ -17,6 +17,13 @@ export function Header() {
   const [modal, setModal] = useState<JSX.Element>(<></>);
   const [title, setTitle] = useState<string | undefined>("");
 
+  function handleLogOut() {
+    const hasLogOut = handleSignOut();
+    if (hasLogOut) {
+      navigation("/login");
+    }
+  }
+
   useEffect(() => {
     const page = pages.find((page) =>
       page.options === undefined
@@ -55,14 +62,12 @@ export function Header() {
             <>
               <S.Item
                 onClick={() => {
-                  setModal(
-                    <ManagerUserModal setModalOpen={setModal} user={info.user} token={info.token} />
-                  );
+                  navigation("/settings/employees/create", { state: { id: info.user.id } });
                 }}
               >
                 <span>Meus Dados</span>
               </S.Item>
-              <S.Item onClick={handleSignOut}>
+              <S.Item onClick={handleLogOut}>
                 <span>Sair</span>
               </S.Item>
             </>

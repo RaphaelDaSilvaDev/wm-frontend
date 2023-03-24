@@ -211,7 +211,14 @@ export function EditAccount() {
               </S.Body>
             </FormProvider>
             <S.Footer>
-              <Button loading={buttonLoading} text="Editar" form="BasicDataUpdate" type="submit" />
+              <S.ButtonSize>
+                <Button
+                  loading={buttonLoading}
+                  text="Editar"
+                  form="BasicDataUpdate"
+                  type="submit"
+                />
+              </S.ButtonSize>
             </S.Footer>
           </>
         )}

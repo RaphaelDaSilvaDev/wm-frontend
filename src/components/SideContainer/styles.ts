@@ -39,13 +39,9 @@ export const LogoContainer = styled.div`
   z-index: 999;
 
   & > img {
-    width: 6.4rem;
-    height: 6.4rem;
-
-    border-radius: 100%;
+    width: 15rem;
+    height: 15rem;
     object-fit: cover;
-
-    background-color: white;
   }
 
   & > span {

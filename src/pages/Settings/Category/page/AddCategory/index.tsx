@@ -120,12 +120,14 @@ export function AddCategory() {
               <S.Button styleBnt="secondary" onClick={() => navigation("/settings/categories")}>
                 <span>Cancelar</span>
               </S.Button>
-              <Button
-                loading={buttonLoading}
-                text={id ? "Editar" : "Adicionar"}
-                form="BasicDataUpdate"
-                type="submit"
-              />
+              <S.ButtonSize>
+                <Button
+                  loading={buttonLoading}
+                  text={id ? "Editar" : "Adicionar"}
+                  form="BasicDataUpdate"
+                  type="submit"
+                />
+              </S.ButtonSize>
             </S.Footer>
           </>
         )}

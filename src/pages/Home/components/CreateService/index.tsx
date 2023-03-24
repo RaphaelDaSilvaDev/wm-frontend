@@ -136,7 +136,7 @@ export function CreateService() {
         clientId: client && client.value ? client.value : "",
         vehicleId: vehicle && vehicle.value ? vehicle.value : "",
         responsible: responsible && responsible.value ? responsible.value : "",
-        price: 250,
+        price: 0,
       };
 
       try {
@@ -152,10 +152,13 @@ export function CreateService() {
       }
     } else {
       const payload: IEditService = {};
-      const deliveryDate = methods.watch("delivery_date");
-      const deliveryHour = methods.watch("delivery_hour");
-      const responsibleObservation = methods.watch("responsible_observation");
+      const deliveryDate = methods.getValues("delivery_date");
+      const deliveryHour = methods.getValues("delivery_hour");
+      const responsibleObservation = methods.getValues("responsible_observation");
       const responsibleData = responsible;
+      const discountPercentage = methods.getValues("discountPercentage");
+      const discountValue = methods.getValues("discountValue");
+      const price = methods.getValues("price");
 
       if (deliveryDate || deliveryHour) {
         const date = deliveryDate.split("-");
@@ -176,6 +179,11 @@ export function CreateService() {
       if (responsibleData?.value !== service?.responsible) {
         payload.responsible = responsibleData?.value || "";
       }
+
+      payload.discountPercentage = discountPercentage;
+      payload.discountValue = discountValue;
+
+      payload.price = price;
 
       const productService: IProductServiceUpdate[] = serviceProductToManager.map((item) => {
         return { serviceId: id, productId: item.id, quantity: item.amount };
@@ -246,6 +254,34 @@ export function CreateService() {
   }
 
   useEffect(() => {
+    if (serviceProductToManager.length !== 0) {
+      const discountValue = methods.watch("discountValue");
+      const discountPercentage = methods.watch("discountPercentage");
+
+      let totalPrice = serviceProductToManager.reduce(
+        (acc, value) => (acc += Number(value.total.props.children)),
+        0
+      );
+
+      if (discountValue) {
+        totalPrice -= discountValue;
+      }
+
+      if (discountPercentage) {
+        totalPrice = totalPrice - (totalPrice * discountPercentage) / 100;
+      }
+
+      methods.setValue("price", Number(totalPrice.toFixed(2)));
+    } else {
+      methods.setValue("price", 0);
+    }
+  }, [
+    serviceProductToManager,
+    methods.watch("discountPercentage"),
+    methods.watch("discountValue"),
+  ]);
+
+  useEffect(() => {
     setServiceProductToManager(ProductParse(serviceProduct, handleRemoveProduct));
   }, [serviceProduct]);
 
@@ -256,6 +292,9 @@ export function CreateService() {
         responsible_observation: service.responsible_observation,
         delivery_date: format(new Date(service.delivery), "yyyy-MM-dd"),
         delivery_hour: format(new Date(service.delivery), "HH:mm"),
+        discountPercentage: service.discountPercentage || 0,
+        discountValue: service.discountValue || 0,
+        price: service.price || 0,
       });
 
       setResponsible({ value: service.user.id, label: service.user.name });
@@ -424,6 +463,39 @@ export function CreateService() {
                         />
                       </S.ProductManager>
                     </S.Row>
+                    <S.Lines>
+                      <S.Values>
+                        <InputLabel
+                          registerText="discountPercentage"
+                          label="Desconto em %"
+                          placeholder="Insira a porcentagem do Desconto"
+                          type="number"
+                          hasError={
+                            methods.formState.errors.discountPercentage?.message ? true : false
+                          }
+                          min={0}
+                          disabled={methods.watch("discountValue") !== 0}
+                        />
+                        <InputLabel
+                          registerText="discountValue"
+                          label="Desconto em Reais"
+                          placeholder="Insira a quantia do Desconto"
+                          type="number"
+                          hasError={methods.formState.errors.discountValue?.message ? true : false}
+                          min={0}
+                          disabled={methods.watch("discountPercentage") !== 0}
+                        />
+                        <InputLabel
+                          registerText="price"
+                          label="Valor Total"
+                          placeholder="Valor total do Serviço"
+                          type="number"
+                          hasError={methods.formState.errors.price?.message ? true : false}
+                          min={0}
+                          disabled
+                        />
+                      </S.Values>
+                    </S.Lines>
                   </>
                 )}
               </S.Body>
@@ -432,12 +504,14 @@ export function CreateService() {
               <S.Button styleBnt="secondary" onClick={() => navigation("/service")}>
                 <span>Cancelar</span>
               </S.Button>
-              <Button
-                loading={loadSubmit}
-                text={id ? "Editar" : "Adicionar"}
-                form="BasicDataUpdate"
-                type="submit"
-              />
+              <S.ButtonSize>
+                <Button
+                  loading={loadSubmit}
+                  text={id ? "Editar" : "Adicionar"}
+                  form="BasicDataUpdate"
+                  type="submit"
+                />
+              </S.ButtonSize>
             </S.Footer>
           </>
         )}

@@ -17,8 +17,8 @@ export function ProductParse(
       ),
       quantity: <span>{product.quantity}</span>,
       product: <span>{product.product.name}</span>,
-      value: <span>{product.product.valueToBuy}</span>,
-      total: <span>{product.product.valueToBuy * product.quantity}</span>,
+      value: <span>{product.product.valueToSell}</span>,
+      total: <span>{product.product.valueToSell * product.quantity}</span>,
     };
   });
 }

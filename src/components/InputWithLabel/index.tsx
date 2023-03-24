@@ -12,6 +12,7 @@ export interface InputProps {
   label?: string;
   min?: number | string;
   max?: number | string;
+  step?: number | string;
 }
 
 export function InputLabel({
@@ -24,6 +25,7 @@ export function InputLabel({
   label,
   min,
   max,
+  step = "any",
 }: InputProps) {
   const { register, watch } = useFormContext();
   const text = watch(registerText);
@@ -34,7 +36,7 @@ export function InputLabel({
         id={registerText}
         hasError={hasError}
         type={type}
-        step="any"
+        step={step}
         disabled={disabled}
         placeholder={placeholder}
         min={min}
@@ -51,7 +53,7 @@ export function InputLabel({
         hasError={hasError}
         value={text ? text.toUpperCase() : ""}
         type={type}
-        step="any"
+        step={step}
         disabled={disabled}
         placeholder={placeholder}
         min={min}
