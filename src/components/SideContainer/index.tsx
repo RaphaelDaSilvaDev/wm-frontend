@@ -5,6 +5,8 @@ import { useLocation } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import { IClientRequest } from "../../pages/Login/interfaces";
 
+import LogoImage from "../../assets/logo.png";
+
 import * as S from "./styles";
 
 export function SideContainer() {
@@ -20,8 +22,7 @@ export function SideContainer() {
     <S.Base>
       <S.Container>
         <S.LogoContainer>
-          <img src={client?.avatar} />
-          <span>{client?.name}</span>
+          <img src={LogoImage} />
         </S.LogoContainer>
         <S.ArrowDown>
           <HashLink to={`${path.pathname}/#content`} smooth>

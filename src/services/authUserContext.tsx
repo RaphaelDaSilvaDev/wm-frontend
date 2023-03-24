@@ -17,7 +17,7 @@ interface AuthUserInterface {
     };
   };
 
-  handleSignOut(): void;
+  handleSignOut(): boolean;
   setCookies: (name: "user", value: any) => void;
 }
 
@@ -38,12 +38,13 @@ export function AuthUserProvider({ children }: Props) {
       Cookies.remove("client");
       Cookies.remove("clientCode");
       AuthToken(undefined, undefined);
-      return <Navigate to="/login" />;
+      return true;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.message);
         ToastStyle({ message: error.response?.data.message, styleToast: "error" });
       }
+      return false;
     }
   }
 

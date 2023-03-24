@@ -23,6 +23,9 @@ export interface IEditService {
   delivery?: Date;
   responsible?: string;
   responsible_observation?: string;
+  price?: number;
+  discountValue?: number | null;
+  discountPercentage?: number | null;
 }
 
 export interface IServiceRequest {
@@ -31,6 +34,8 @@ export interface IServiceRequest {
   responsible_observation: string;
   delivery: string;
   price: number;
+  discountValue?: number;
+  discountPercentage?: number;
   status: string;
   responsible: string;
   createdAt: string;
@@ -77,7 +82,7 @@ export interface IServiceProductRequest {
     id: string;
     name: string;
     brand: string;
-    valueToBuy: number;
+    valueToSell: number;
     description: string;
   };
 }

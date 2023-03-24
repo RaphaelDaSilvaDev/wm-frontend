@@ -89,6 +89,10 @@ export const Footer = styled.div`
   border-top: 1px solid ${(props) => props.theme.border};
 `;
 
+export const ButtonSize = styled.div`
+  width: 20rem;
+`;
+
 interface ButtonProps {
   styleBnt: "primary" | "secondary";
 }

@@ -74,6 +74,13 @@ export const Lines = styled.div`
   justify-content: space-between;
 `;
 
+export const Values = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+`;
+
 export const Footer = styled.div`
   width: 100%;
   height: 7.2rem;
@@ -87,6 +94,10 @@ export const Footer = styled.div`
 
   background-color: ${(props) => props.theme.white};
   border-top: 1px solid ${(props) => props.theme.border};
+`;
+
+export const ButtonSize = styled.div`
+  width: 20rem;
 `;
 
 interface ButtonProps {
@@ -133,7 +144,7 @@ export const Button = styled.button<ButtonProps>`
 
 export const Row = styled.div`
   width: 100%;
-
+  max-height: 50rem;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -166,6 +177,10 @@ export const ProductManager = styled.div`
   width: 100%;
   height: min-content;
   max-height: 50rem;
+
+  & > * > table > div > div {
+    height: 100% !important;
+  }
 `;
 
 export const ToolTip = styled.div`

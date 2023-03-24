@@ -234,12 +234,14 @@ export function CreateUserPage() {
               <S.Button styleBnt="secondary" onClick={() => navigate("/clients")}>
                 <span>Cancelar</span>
               </S.Button>
-              <Button
-                loading={buttonLoading}
-                text={id ? "Editar" : "Adicionar"}
-                form="BasicDataUpdate"
-                type="submit"
-              />
+              <S.ButtonSize>
+                <Button
+                  loading={buttonLoading}
+                  text={id ? "Editar" : "Adicionar"}
+                  form="BasicDataUpdate"
+                  type="submit"
+                />
+              </S.ButtonSize>
             </S.Footer>
           </>
         )}

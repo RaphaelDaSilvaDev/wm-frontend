@@ -30,7 +30,7 @@ export function CreateVehicle() {
   const [clients, setClients] = useState<IClientRequest[]>([]);
   const [loadClients, setLoadClients] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const [buttonLoading, setButtonLoading] = useState<boolean>(true);
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
 
   async function getVehicle() {
     if (id) {
@@ -212,12 +212,14 @@ export function CreateVehicle() {
               <S.Button styleBnt="secondary" onClick={() => navigate("/vehicles")}>
                 <span>Cancelar</span>
               </S.Button>
-              <Button
-                loading={buttonLoading}
-                text={id ? "Editar" : "Adicionar"}
-                form="BasicDataUpdate"
-                type="submit"
-              />
+              <S.ButtonSize>
+                <Button
+                  loading={buttonLoading}
+                  text={id ? "Editar" : "Adicionar"}
+                  form="BasicDataUpdate"
+                  type="submit"
+                />
+              </S.ButtonSize>
             </S.Footer>
           </>
         )}

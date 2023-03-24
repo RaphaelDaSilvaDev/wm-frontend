@@ -246,12 +246,14 @@ export function CreateProduct() {
               <S.Button styleBnt="secondary" onClick={() => navigation("/products")}>
                 <span>Cancelar</span>
               </S.Button>
-              <Button
-                loading={buttonLoading}
-                text={id ? "Editar" : "Adicionar"}
-                form="BasicDataUpdate"
-                type="submit"
-              />
+              <S.ButtonSize>
+                <Button
+                  loading={buttonLoading}
+                  text={id ? "Editar" : "Adicionar"}
+                  form="BasicDataUpdate"
+                  type="submit"
+                />
+              </S.ButtonSize>
             </S.Footer>
           </>
         )}
