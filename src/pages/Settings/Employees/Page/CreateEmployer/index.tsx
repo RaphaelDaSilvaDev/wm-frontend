@@ -97,6 +97,10 @@ export function CreateEmployer() {
     }
   }
 
+  function failSubmit() {
+    console.log(methods.formState.errors);
+  }
+
   useEffect(() => {
     if (employee) {
       methods.reset({
@@ -136,7 +140,10 @@ export function CreateEmployer() {
         ) : (
           <>
             <FormProvider {...methods}>
-              <S.Body id="BasicDataUpdate" onSubmit={methods.handleSubmit(handleOnSubmit)}>
+              <S.Body
+                id="BasicDataUpdate"
+                onSubmit={methods.handleSubmit(handleOnSubmit, failSubmit)}
+              >
                 <S.LinesWithSpace>
                   <InputLabel
                     registerText="name"

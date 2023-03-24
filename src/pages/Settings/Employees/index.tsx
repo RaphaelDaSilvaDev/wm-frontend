@@ -22,6 +22,10 @@ export function Employees() {
     navigate("/settings/employees/create", { state: { id } });
   }
 
+  function reload() {
+    getData();
+  }
+
   const getData = useCallback(async () => {
     setLoading(true);
     try {
@@ -34,7 +38,7 @@ export function Employees() {
   }, [search]);
 
   useEffect(() => {
-    setDataToManager(EmployeParse(data, EditEmployee));
+    setDataToManager(EmployeParse(data, EditEmployee, reload));
   }, [data]);
 
   useEffect(() => {
