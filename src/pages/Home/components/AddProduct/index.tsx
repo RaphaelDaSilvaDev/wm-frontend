@@ -32,10 +32,10 @@ export function AddProduct({
   const [search, setSearch] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
 
-  const getData = useCallback(async () => {
+  const getData = async () => {
     setLoading(true);
     try {
-      const response = await GetProductsService(search);
+      const response = await GetProductsService();
       setData(response);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -45,7 +45,7 @@ export function AddProduct({
     } finally {
       setLoading(false);
     }
-  }, [search]);
+  };
 
   function handleSubmit() {
     event?.preventDefault();
@@ -80,12 +80,12 @@ export function AddProduct({
         }
       })
     );
-    setDataToManager(ProductParse(dataStorage, setData));
-  }, [data]);
+    setDataToManager(ProductParse(dataStorage, setData, search));
+  }, [data, search]);
 
   useEffect(() => {
     getData();
-  }, [getData]);
+  }, []);
 
   return (
     <Modal
@@ -96,7 +96,13 @@ export function AddProduct({
         <S.Content>
           <ToolBar searchState={setSearch} searchPlaceHolder="Pesquisar Produto" />
           <S.Form id="formModal" onSubmit={handleSubmit}>
-            <Manager header={AddProductHeader} body={dataToManager} loading={loading} />
+            <Manager
+              header={AddProductHeader}
+              body={dataToManager.filter((item) =>
+                search ? item.name.props.children.includes(search) : item
+              )}
+              loading={loading}
+            />
           </S.Form>
         </S.Content>
       }

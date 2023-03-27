@@ -182,22 +182,22 @@ export function CreateEmployer() {
                 <S.LinesWithSpace>
                   <InputLabel
                     registerText="cellphoneNumber"
-                    label="Celular do Cliente"
-                    placeholder="Insira o celular do Cliente"
+                    label="Celular do Funcionário"
+                    placeholder="Insira o celular do Funcionário"
                     hasError={methods.formState.errors.cellphoneNumber?.message ? true : false}
                     mask="(99) 9 9999-9999"
                   />
                   <InputLabel
                     registerText="phoneNumber"
-                    label="Telefone do Cliente"
-                    placeholder="Insira o telefone do Cliente"
+                    label="Telefone do Funcionário"
+                    placeholder="Insira o telefone do Funcionário"
                     hasError={methods.formState.errors.phoneNumber?.message ? true : false}
                     mask="(99) 9999-9999"
                   />
                   <InputLabel
                     registerText="email"
                     label="Email"
-                    placeholder="Insira o Email do Cliente"
+                    placeholder="Insira o Email do Funcionário"
                     hasError={methods.formState.errors.email?.message ? true : false}
                   />
                 </S.LinesWithSpace>
