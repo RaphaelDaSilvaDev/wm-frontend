@@ -18,7 +18,9 @@ export function ToolBar({
 }: ToolBarProps) {
   return (
     <S.Container>
-      {buttonText && <Button text={buttonText} loading={false} onClick={buttonOnClick} />}
+      {buttonText && (
+        <Button type="button" text={buttonText} loading={false} onClick={buttonOnClick} />
+      )}
       <S.FilterContent>
         <SearchInput onChange={searchState} placeholder={searchPlaceHolder} />
       </S.FilterContent>

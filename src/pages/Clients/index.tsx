@@ -56,9 +56,9 @@ export function Client() {
   return (
     <Page>
       <ToolBar
-        buttonText="Adicionar Usuário"
+        buttonText="Adicionar Cliente"
         buttonOnClick={() => navigate("/clients/create")}
-        searchPlaceHolder="Pesquisar Usuário"
+        searchPlaceHolder="Pesquisar cliente"
         searchState={setSearch}
       />
       <Manager header={headerUsers} body={usersManager} loading={loading} />
