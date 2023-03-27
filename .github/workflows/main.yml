@@ -44,3 +44,4 @@ jobs:
           script: |
             cd ~/app/wm
             yarn
+            yarn prisma:migrate
