@@ -25,9 +25,6 @@ jobs:
       - name: Build
         run: yarn build
         
-      - name: Migrations
-        run: yarn prisma:migrate
-        
       - uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
