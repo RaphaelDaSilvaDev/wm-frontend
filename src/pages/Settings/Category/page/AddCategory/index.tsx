@@ -86,6 +86,16 @@ export function AddCategory() {
   }, [category]);
 
   useEffect(() => {
+    const values = Object.values(methods.formState.errors);
+    values.map((value) => {
+      ToastStyle({
+        message: value.message ? value.message : "Fill in all fields!",
+        styleToast: "warning",
+      });
+    });
+  }, [methods.formState.errors]);
+
+  useEffect(() => {
     getCategory();
     if (!id) {
       setLoading(false);

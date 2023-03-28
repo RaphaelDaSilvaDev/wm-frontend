@@ -71,13 +71,13 @@ export function Product() {
     }
   }, [search]);
 
-  useEffect(() => {
-    setDataToManager(ProductParse(data));
-  }, [data]);
-
   function reload() {
     getData();
   }
+
+  useEffect(() => {
+    setDataToManager(ProductParse(data));
+  }, [data]);
 
   useEffect(() => {
     getData();

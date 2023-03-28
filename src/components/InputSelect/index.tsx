@@ -4,6 +4,7 @@ interface InputSelectProps {
   options: {
     value: string;
     label: string;
+    status?: string;
   }[];
   setValue: React.Dispatch<React.SetStateAction<any>>;
   value: any;

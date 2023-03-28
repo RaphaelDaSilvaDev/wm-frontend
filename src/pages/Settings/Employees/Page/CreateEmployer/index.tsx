@@ -97,10 +97,6 @@ export function CreateEmployer() {
     }
   }
 
-  function failSubmit() {
-    console.log(methods.formState.errors);
-  }
-
   useEffect(() => {
     if (employee) {
       methods.reset({
@@ -119,6 +115,16 @@ export function CreateEmployer() {
       });
     }
   }, [employee]);
+
+  useEffect(() => {
+    const values = Object.values(methods.formState.errors);
+    values.map((value) => {
+      ToastStyle({
+        message: value.message ? value.message : "Fill in all fields!",
+        styleToast: "warning",
+      });
+    });
+  }, [methods.formState.errors]);
 
   useEffect(() => {
     getEmployee();
@@ -140,10 +146,7 @@ export function CreateEmployer() {
         ) : (
           <>
             <FormProvider {...methods}>
-              <S.Body
-                id="BasicDataUpdate"
-                onSubmit={methods.handleSubmit(handleOnSubmit, failSubmit)}
-              >
+              <S.Body id="BasicDataUpdate" onSubmit={methods.handleSubmit(handleOnSubmit)}>
                 <S.LinesWithSpace>
                   <InputLabel
                     registerText="name"

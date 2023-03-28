@@ -6,6 +6,7 @@ export interface IResponsible {
 export interface IResponsibleRequest {
   id: string;
   name: string;
+  status?: string;
 }
 
 export interface ICreateService {

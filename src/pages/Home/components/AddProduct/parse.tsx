@@ -6,8 +6,7 @@ import * as S from "./styles";
 
 export function ProductParse(
   data: IProductsRequest[],
-  setData: React.Dispatch<React.SetStateAction<IProductsRequest[]>>,
-  search: string
+  setData: React.Dispatch<React.SetStateAction<IProductsRequest[]>>
 ): ProductToManager[] {
   function alterQuantity(id: string, e: React.ChangeEvent<HTMLInputElement>) {
     const storageData = Array.from(data);
@@ -21,13 +20,12 @@ export function ProductParse(
   }
 
   return data.map((product) => {
-    console.log({ product });
     return {
       id: product.id,
       amount: product.amount,
       valueToSell: product.valueToSell,
       quantity: (
-        <input
+        <S.Input
           type="number"
           value={product.amount || 0}
           onChange={(e) => alterQuantity(product.id, e)}

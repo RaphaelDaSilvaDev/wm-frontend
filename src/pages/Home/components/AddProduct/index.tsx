@@ -1,11 +1,11 @@
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Manager } from "../../../../components/Manager";
 import { Modal } from "../../../../components/Modal";
 import { ToastStyle } from "../../../../components/Toast";
 import { ToolBar } from "../../../../components/ToolBar";
 import { GetProductsService } from "../../../Product/services";
-import { IServiceProductRequest, IServiceProductToManager } from "../CreateService/interfaces";
+import { IServiceProductToManager } from "../CreateService/interfaces";
 import { AddProductHeader } from "./header";
 import { IProductsRequest, ProductToManager } from "./interface";
 import { AddParse, ProductParse } from "./parse";
@@ -80,7 +80,7 @@ export function AddProduct({
         }
       })
     );
-    setDataToManager(ProductParse(dataStorage, setData, search));
+    setDataToManager(ProductParse(dataStorage, setData));
   }, [data, search]);
 
   useEffect(() => {
@@ -99,7 +99,9 @@ export function AddProduct({
             <Manager
               header={AddProductHeader}
               body={dataToManager.filter((item) =>
-                search ? item.name.props.children.includes(search) : item
+                search
+                  ? item.name.props.children.toLowerCase().includes(search.toLowerCase())
+                  : item
               )}
               loading={loading}
             />

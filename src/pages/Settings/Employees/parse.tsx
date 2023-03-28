@@ -32,7 +32,7 @@ export function EmployeParse(
               }
             }
           },
-          rules: [item.status === "active"],
+          rules: [item.status === "active", item.permission === "master"],
         },
         {
           onClick: async () => {
@@ -48,7 +48,7 @@ export function EmployeParse(
             }
           },
           element: <span>Inativar</span>,
-          rules: [item.status === "inactive"],
+          rules: [item.status === "inactive", item.permission === "master"],
         },
       ];
     };
