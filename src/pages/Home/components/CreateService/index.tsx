@@ -313,6 +313,16 @@ export function CreateService() {
   }, [client]);
 
   useEffect(() => {
+    const values = Object.values(methods.formState.errors);
+    values.map((value) => {
+      ToastStyle({
+        message: value.message ? value.message : "Fill in all fields!",
+        styleToast: "warning",
+      });
+    });
+  }, [methods.formState.errors]);
+
+  useEffect(() => {
     loadingService();
     loadingServiceProduct();
     getResponsible();
