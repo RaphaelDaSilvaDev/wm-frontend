@@ -1,9 +1,7 @@
 import axios from "axios";
 
 const baseURL = import.meta.env.VITE_APISTATE ? "http://localhost:3333" : "/api/";
-const baseURLAccount = import.meta.env.VITE_APIACCOUNTAPI;
-
-console.log(import.meta.env.VITE_APIACCOUNTAPI);
+const baseURLAccount = "52.70.217.141/api";
 
 export const api = axios.create({
   baseURL,
