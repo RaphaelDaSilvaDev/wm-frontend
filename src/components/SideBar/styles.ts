@@ -60,6 +60,19 @@ export const Logo = styled.div`
     border-radius: 100%;
   }
 
+  & > strong {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 100%;
+    background-color: white;
+    color: black;
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+
   & > span {
     color: ${(props) => props.theme.white};
     white-space: nowrap;

@@ -28,13 +28,22 @@ export function SideBar() {
     setClient(cookies.client);
   }, [cookies]);
 
+  const name = client?.name
+    .split(" ")
+    .map((item) => item.charAt(0))
+    .reduce((acc, value) => (acc += value));
+
   return (
     <>
       {info && info.user && (
         <S.Container open={open}>
           <S.Content>
             <S.Logo onClick={() => setOpen((prev) => !prev)}>
-              <img src={client?.avatar ? client.avatar : ""} />
+              {client?.avatar ? (
+                <img src={client?.avatar ? client.avatar : ""} />
+              ) : (
+                <strong>{name}</strong>
+              )}
               <span>{client?.name}</span>
             </S.Logo>
 
