@@ -208,7 +208,7 @@ export function CreateService() {
     setLoadResponsible(true);
     try {
       const response = await GetResponsible();
-      setResponsibles(response);
+      setResponsibles(response.filter((item: any) => item.status !== "inactive"));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.message);

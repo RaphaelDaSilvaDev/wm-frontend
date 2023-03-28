@@ -1,5 +1,5 @@
 import { formatDistanceToNow } from "date-fns";
-import { Check, Clock, Handshake, Minus } from "phosphor-react";
+import { Check, Clock, Handshake, Minus } from "@phosphor-icons/react";
 
 export const status: {
   [key: string | number]: {
