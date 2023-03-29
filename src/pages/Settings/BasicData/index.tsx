@@ -2,9 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import { FormProvider, useForm } from "react-hook-form";
 import Loading from "react-loading";
 import { Button } from "../../../components/Button";
+import { InputAvatar } from "../../../components/InputAvatar";
 import { InputLabel } from "../../../components/InputWithLabel";
 import { Page } from "../../../components/Page";
 import { ToastStyle } from "../../../components/Toast";
@@ -20,10 +22,12 @@ export function EditAccount() {
     resolver: zodResolver(BasicDataSchema),
     mode: "onSubmit",
   });
+  const [cookies, setCookies] = useCookies(["client"]);
 
   const [data, setData] = useState<IBasicDataRequest>();
   const [loading, setLoading] = useState<boolean>(false);
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
+  const [avatar, setAvatar] = useState<File | undefined>(undefined);
 
   async function GetData() {
     setLoading(true);
@@ -66,9 +70,13 @@ export function EditAccount() {
     if (phoneNumber) payload.phoneNumber = phoneNumber;
     if (cellphoneNumber) payload.cellphoneNumber = cellphoneNumber;
     if (email) payload.email = email;
+    if (avatar) payload.avatar = avatar as File;
 
     try {
-      await UpdateBasicDataService(payload, data?.id);
+      const response = await UpdateBasicDataService(payload, data?.id);
+      const newCookie = { ...cookies.client, avatar: response.avatar_url };
+      setCookies("client", newCookie);
+      ToastStyle({ message: "Dados atualizados com sucesso", styleToast: "success" });
       GetData();
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -117,6 +125,9 @@ export function EditAccount() {
           <>
             <FormProvider {...methods}>
               <S.Body id="BasicDataUpdate" onSubmit={methods.handleSubmit(handleOnSubmit)}>
+                <S.Lines>
+                  <InputAvatar setAvatar={setAvatar} />
+                </S.Lines>
                 <S.Lines>
                   <InputLabel
                     label="Nome Fantasia"

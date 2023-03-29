@@ -45,7 +45,7 @@ export function Login() {
       const request = await getClientService(clientCode);
       setClient(request);
       const showClient = {
-        avatar: request?.avatar,
+        avatar: request?.avatar_url,
         clientCode: request.requestCode,
         name: request.name,
         paymentDate: request.paymentDate,
