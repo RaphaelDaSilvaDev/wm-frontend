@@ -3,7 +3,15 @@ import { IModalProps } from "./interface";
 
 import * as S from "./styles";
 
-export function Modal({ setModalOpen, content, title, confirmButtonText }: IModalProps) {
+export function Modal({
+  setModalOpen,
+  content,
+  title,
+  confirmButtonText,
+  hasCancelButton,
+  isForm = true,
+  reload,
+}: IModalProps) {
   return (
     <ReactModal
       isOpen={true}
@@ -16,12 +24,27 @@ export function Modal({ setModalOpen, content, title, confirmButtonText }: IModa
       </S.Header>
       <S.Content>{content}</S.Content>
       <S.Footer>
-        <S.Button styleBnt="secondary" onClick={() => setModalOpen(<></>)}>
-          <span>Cancelar</span>
-        </S.Button>
-        <S.Button type="submit" form="formModal" styleBnt="primary">
-          <span>{confirmButtonText}</span>
-        </S.Button>
+        {hasCancelButton !== false && (
+          <S.Button styleBnt="secondary" onClick={() => setModalOpen(<></>)}>
+            <span>Cancelar</span>
+          </S.Button>
+        )}
+        {isForm ? (
+          <S.Button type="submit" form="formModal" styleBnt="primary">
+            <span>{confirmButtonText}</span>
+          </S.Button>
+        ) : (
+          <S.Button
+            type="button"
+            styleBnt="primary"
+            onClick={() => {
+              reload();
+              setModalOpen(<></>);
+            }}
+          >
+            <span>{confirmButtonText}</span>
+          </S.Button>
+        )}
       </S.Footer>
     </ReactModal>
   );

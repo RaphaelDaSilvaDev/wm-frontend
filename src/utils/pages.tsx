@@ -1,3 +1,4 @@
+import { Wallet } from "@phosphor-icons/react";
 import {
   Car,
   Gear,
@@ -109,6 +110,13 @@ export const pages = [
         icon: <IdentificationBadge size={32} />,
         text: <span>Ajustes</span>,
         permission: "none",
+      },
+      {
+        name: "Pagamentos",
+        path: "/settings/payments",
+        icon: <Wallet size={32} />,
+        text: <span>Ajustes</span>,
+        permission: "master",
       },
     ],
   },

@@ -5,7 +5,7 @@ import "tippy.js/dist/tippy.css";
 import { IDropDown } from "../../interface";
 
 interface StatusToolTipProps {
-  items: (item: any) => IDropDown[];
+  items?: (item: any) => IDropDown[];
   status: {
     color: string;
     icon: JSX.Element;
@@ -18,10 +18,23 @@ export function StatusToolTip({ items, status }: StatusToolTipProps) {
       className="tooltip"
       content={
         <>
-          {items([]).map((item, i) => {
-            return item.divider ? (
-              <>
-                <S.Divider />
+          {items &&
+            items([]).map((item, i) => {
+              return item.divider ? (
+                <>
+                  <S.Divider />
+                  <S.Item
+                    disabled={item.rules.some((rule) => rule === true)}
+                    key={i}
+                    onClick={() => {
+                      item.onClick();
+                      hideAll();
+                    }}
+                  >
+                    {item.element}
+                  </S.Item>
+                </>
+              ) : (
                 <S.Item
                   disabled={item.rules.some((rule) => rule === true)}
                   key={i}
@@ -32,20 +45,8 @@ export function StatusToolTip({ items, status }: StatusToolTipProps) {
                 >
                   {item.element}
                 </S.Item>
-              </>
-            ) : (
-              <S.Item
-                disabled={item.rules.some((rule) => rule === true)}
-                key={i}
-                onClick={() => {
-                  item.onClick();
-                  hideAll();
-                }}
-              >
-                {item.element}
-              </S.Item>
-            );
-          })}
+              );
+            })}
         </>
       }
       placement="left"

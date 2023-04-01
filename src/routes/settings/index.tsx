@@ -5,6 +5,7 @@ import { AddCategory } from "../../pages/Settings/Category/page/AddCategory";
 import { Employees } from "../../pages/Settings/Employees";
 import { CreateEmployer } from "../../pages/Settings/Employees/Page/CreateEmployer";
 import { AuthAdminRoute } from "../authAdminRouter";
+import { Payments } from "../../pages/Settings/Payments";
 
 export const settingsRoutes = (
   <>
@@ -45,6 +46,14 @@ export const settingsRoutes = (
       element={
         <AuthAdminRoute>
           <CreateEmployer />
+        </AuthAdminRoute>
+      }
+    />
+    <Route
+      path="/settings/payments"
+      element={
+        <AuthAdminRoute>
+          <Payments />
         </AuthAdminRoute>
       }
     />

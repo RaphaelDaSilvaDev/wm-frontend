@@ -3,4 +3,7 @@ export interface IModalProps {
   title: string;
   content: string | JSX.Element;
   confirmButtonText: string;
+  hasCancelButton?: boolean;
+  isForm?: boolean;
+  reload: () => void;
 }
