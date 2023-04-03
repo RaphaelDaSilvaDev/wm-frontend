@@ -41,7 +41,7 @@ export function PaymentModal(data: Props) {
 
   console.log(
     differenceInMilliseconds(
-      new Date(data.data.paymentQRCodeDueDate ? data.data.paymentQRCodeDueDate : ""),
+      new Date(data.data.paymentQRCodeDueDate ? data.data.paymentQRCodeDueDate : new Date()),
       new Date()
     )
   );
