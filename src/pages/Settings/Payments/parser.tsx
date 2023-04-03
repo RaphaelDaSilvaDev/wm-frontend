@@ -28,7 +28,7 @@ export const parserPayment = (
             <></>
           ),
         planName: <span>{item.Plans.name}</span>,
-        price: <span>R${item.Plans.value}</span>,
+        price: <span>R${item.paymentQRCodePrice}</span>,
         dueDate: <span>{format(new Date(item.dueDate), "dd-MM-yyyy", { locale: ptBr })}</span>,
         status: (
           <S.SquareContent>
