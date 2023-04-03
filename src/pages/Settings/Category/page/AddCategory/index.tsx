@@ -14,6 +14,8 @@ import { CategorySchema, CategorySchemaType } from "./schemas";
 import { CreateCategoryService, GetCategoryService, UpdateCategoryService } from "./service";
 
 import * as S from "./styles";
+import { Modal } from "../../../../../components/Modal";
+import { UploadFileModal } from "../../components/uploadFileModal";
 export function AddCategory() {
   const navigation = useNavigate();
   const location = useLocation();
@@ -27,6 +29,7 @@ export function AddCategory() {
   const [category, setCategory] = useState<ICategoryRequest>();
   const [loading, setLoading] = useState<boolean>(true);
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
+  const [uploadFileModal, setUploadFileModal] = useState<JSX.Element>(<></>);
 
   async function getCategory() {
     if (id) {
@@ -77,6 +80,10 @@ export function AddCategory() {
     }
   }
 
+  function reload() {
+    getCategory();
+  }
+
   useEffect(() => {
     if (category) {
       methods.reset({
@@ -107,6 +114,23 @@ export function AddCategory() {
       <S.Container>
         <S.Header>
           <span>{id ? "Editar Categoria" : "Adicionar Categoria"}</span>
+          <S.SmallButton
+            styleBnt="secondary"
+            onClick={() =>
+              setUploadFileModal(
+                <S.ModalContainer>
+                  <Modal
+                    confirmButtonText="Adicionar"
+                    setModalOpen={setUploadFileModal}
+                    title="Adicionar categorias"
+                    content={<UploadFileModal reload={reload} setModalOpen={setUploadFileModal} />}
+                  />
+                </S.ModalContainer>
+              )
+            }
+          >
+            <span>Subir categorias por csv</span>
+          </S.SmallButton>
         </S.Header>
         {loading ? (
           <LoadingContainer>
@@ -142,6 +166,7 @@ export function AddCategory() {
           </>
         )}
       </S.Container>
+      {uploadFileModal}
     </Page>
   );
 }

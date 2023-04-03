@@ -5,5 +5,5 @@ export interface IModalProps {
   confirmButtonText: string;
   hasCancelButton?: boolean;
   isForm?: boolean;
-  reload: () => void;
+  reload?: () => void;
 }

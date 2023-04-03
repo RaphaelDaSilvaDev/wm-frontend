@@ -15,5 +15,10 @@ export const status: {
     name: "Reembolso Pendente",
     icon: <ArrowsCounterClockwise color="#fff" />,
   },
+  requested_refund: {
+    color: "#AACC00",
+    name: "Reembolso Pendente",
+    icon: <ArrowsCounterClockwise color="#fff" />,
+  },
   refunded: { color: "#4B8DF8", name: "Reembolsado", icon: <HandCoins color="#fff" /> },
 };
