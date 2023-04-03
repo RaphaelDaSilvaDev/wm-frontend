@@ -22,6 +22,8 @@ import {
 } from "./service";
 
 import * as S from "./style";
+import { Modal } from "../../../../components/Modal";
+import { UploadFileModal } from "../../../Settings/Category/components/uploadFileModal";
 
 export function CreateProduct() {
   const location = useLocation();
@@ -39,6 +41,7 @@ export function CreateProduct() {
   const [loadingCategory, setLoadingCategory] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
+  const [uploadFileModal, setUploadFileModal] = useState<JSX.Element>(<></>);
 
   const id = location.state?.id;
 
@@ -171,6 +174,23 @@ export function CreateProduct() {
       <S.Container>
         <S.Header>
           <span>{id ? "Editar Produto" : "Adicionar Produto"}</span>
+          <S.SmallButton
+            styleBnt="secondary"
+            onClick={() =>
+              setUploadFileModal(
+                <S.ModalContainer>
+                  <Modal
+                    confirmButtonText="Adicionar"
+                    setModalOpen={setUploadFileModal}
+                    title="Adicionar Produtos"
+                    content={<UploadFileModal page="product" />}
+                  />
+                </S.ModalContainer>
+              )
+            }
+          >
+            <span>Adicionar produtos por csv</span>
+          </S.SmallButton>
         </S.Header>
         {loading ? (
           <LoadingContainer>
@@ -268,6 +288,7 @@ export function CreateProduct() {
           </>
         )}
       </S.Container>
+      {uploadFileModal}
     </Page>
   );
 }
