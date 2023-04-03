@@ -298,7 +298,10 @@ export function CreateService() {
       });
 
       setResponsible({ value: service.user.id, label: service.user.name });
-      setClient({ value: service.vehicle.Client.id, label: service.vehicle.Client.name });
+      setClient({
+        value: service.vehicle.Client.id,
+        label: service.vehicle.Client.name + " - " + service.vehicle.Client.document,
+      });
       setVehicle({
         value: service.vehicle.id,
         label: service.vehicle.brand + " - " + service.vehicle.model,
@@ -337,7 +340,7 @@ export function CreateService() {
       ? clients.map((client) => {
           return {
             value: client.id,
-            label: client.name,
+            label: client.name + " - " + client.document,
           };
         })
       : [];

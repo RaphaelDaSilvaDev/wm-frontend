@@ -2,13 +2,14 @@ import { hideAll } from "tippy.js";
 
 import * as S from "./styles";
 import "tippy.js/dist/tippy.css";
-import { IDropDown } from "../../interface";
+import { IDropDown } from "../../pages/Home/interface";
 
 interface StatusToolTipProps {
   items?: (item: any) => IDropDown[];
   status: {
     color: string;
     icon: JSX.Element;
+    text?: string;
   };
 }
 
@@ -60,6 +61,7 @@ export function StatusToolTip({ items, status }: StatusToolTipProps) {
     >
       <S.SquareContent>
         <S.Square color={status.color || "gray"}>{status.icon}</S.Square>
+        {status.text && <span> - {status.text}</span>}
       </S.SquareContent>
     </S.TippyContent>
   );

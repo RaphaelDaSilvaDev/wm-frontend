@@ -70,6 +70,7 @@ export const Divider = styled.hr`
 `;
 
 export const SquareContent = styled.span`
+  width: 100%;
   position: relative;
   display: flex;
   align-items: center;
