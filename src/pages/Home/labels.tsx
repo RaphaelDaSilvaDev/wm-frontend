@@ -1,4 +1,3 @@
-import { formatDistanceToNow } from "date-fns";
 import { Check, Clock, Handshake, Minus } from "@phosphor-icons/react";
 
 export const status: {
@@ -12,4 +11,5 @@ export const status: {
   approved: { color: "#4B8DF8", name: "Em Andamento", icon: <Check color="#fff" /> },
   denied: { color: "#D84A38", name: "Finalizado", icon: <Minus color="#fff" /> },
   delivered: { color: "#35AA47", name: "Entregue", icon: <Handshake color="#fff" /> },
+  finished: { color: "#AACC00", name: "Finalizado", icon: <Check color="#fff" /> },
 };

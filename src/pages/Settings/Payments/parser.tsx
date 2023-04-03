@@ -2,7 +2,7 @@ import { differenceInDays, format } from "date-fns";
 import ptBr from "date-fns/locale/pt-BR";
 import { IPaymentManager, IPaymentsRequest } from "./interface";
 import { Receipt } from "phosphor-react";
-import { StatusToolTip } from "../../Home/components/ToolTip";
+import { StatusToolTip } from "../../../components/StatusToolTip";
 import { status } from "./labels";
 import * as S from "./styles";
 

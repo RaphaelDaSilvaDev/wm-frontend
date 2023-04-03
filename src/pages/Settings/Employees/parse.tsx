@@ -4,11 +4,11 @@ import { ptBR } from "date-fns/locale";
 import { Pencil } from "phosphor-react";
 import { ToastStyle } from "../../../components/Toast";
 import { IDropDown } from "../../Home/interface";
-import { StatusToolTip } from "./components/StatusToolTip";
 import { EmployeRequest, EmployeToManager } from "./interfaces";
 import { status } from "./labels";
 import { toggleStatus } from "./services";
 import * as S from "./styles";
+import { StatusToolTip } from "../../../components/StatusToolTip";
 
 export function EmployeParse(
   data: EmployeRequest[],
@@ -70,7 +70,11 @@ export function EmployeParse(
       createdAt: <span>{format(new Date(item.createdAt), "Pp", { locale: ptBR })}</span>,
       status: (
         <StatusToolTip
-          status={{ color: status[item.status].color, icon: status[item.status].icon }}
+          status={{
+            color: status[item.status].color,
+            icon: status[item.status].icon,
+            text: status[item.status].name,
+          }}
           items={items}
         />
       ),

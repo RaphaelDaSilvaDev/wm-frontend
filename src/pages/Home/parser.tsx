@@ -4,7 +4,7 @@ import ptBR from "date-fns/locale/pt-BR";
 import { Pencil } from "phosphor-react";
 import { Square } from "../../components/Square";
 import { ToastStyle } from "../../components/Toast";
-import { StatusToolTip } from "./components/ToolTip";
+import { StatusToolTip } from "../../components/StatusToolTip";
 import { IDropDown, IManagerShow, IServiceRequest } from "./interface";
 import { status } from "./labels";
 import { toggleStatus } from "./services";
@@ -113,7 +113,11 @@ export function Parse(
       ),
       status: (
         <StatusToolTip
-          status={{ color: status[service.status].color, icon: status[service.status].icon }}
+          status={{
+            color: status[service.status].color,
+            icon: status[service.status].icon,
+            text: status[service.status].name,
+          }}
           items={items}
         />
       ),
