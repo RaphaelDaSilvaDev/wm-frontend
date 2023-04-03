@@ -1,6 +1,6 @@
 import { useState } from "react";
 import * as S from "./styles";
-import { UploadCategoriesFileService } from "./service";
+import { UploadCategoriesFileService, UploadProductsFileService } from "./service";
 import axios from "axios";
 import { ToastStyle } from "../../../../../components/Toast";
 import { FormProvider, useForm } from "react-hook-form";
@@ -8,11 +8,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
-  reload: () => void;
-  setModalOpen: React.Dispatch<React.SetStateAction<JSX.Element>>;
+  page: "category" | "product";
 }
 
-export function UploadFileModal({ reload, setModalOpen }: Props) {
+export function UploadFileModal({ page }: Props) {
   const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
 
@@ -28,8 +27,13 @@ export function UploadFileModal({ reload, setModalOpen }: Props) {
   async function handleUploadCategories() {
     try {
       if (file) {
-        await UploadCategoriesFileService(file);
-        navigate("/settings/categories");
+        if (page === "category") {
+          await UploadCategoriesFileService(file);
+          navigate("/settings/categories");
+        } else {
+          await UploadProductsFileService(file);
+          navigate("/products");
+        }
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {

@@ -123,13 +123,13 @@ export function AddCategory() {
                     confirmButtonText="Adicionar"
                     setModalOpen={setUploadFileModal}
                     title="Adicionar categorias"
-                    content={<UploadFileModal reload={reload} setModalOpen={setUploadFileModal} />}
+                    content={<UploadFileModal page="category" />}
                   />
                 </S.ModalContainer>
               )
             }
           >
-            <span>Subir categorias por csv</span>
+            <span>Adicionar categorias por csv</span>
           </S.SmallButton>
         </S.Header>
         {loading ? (
