@@ -5,16 +5,6 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   define: {
-    define: { global: "window" },
-    "process.env": {},
+    global: "window",
   },
-  optimizeDeps: {
-    esbuildOptions: {
-      define: {
-        global: "globalThis",
-      },
-    },
-  },
-  envDir: "./",
-  envPrefix: "VITE_",
 });

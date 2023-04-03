@@ -1,11 +1,10 @@
 import { ThemeProvider } from "styled-components";
 import { defaultTheme } from "./styles/themes/default";
-import { GlobalStyles } from "./styles/global";
+import { GlobalStyles } from "./styles/globalStyle";
 import { Routes } from "./routes";
 import { CookiesProvider } from "react-cookie";
 import { AuthUserProvider } from "./services/authUserContext";
 import { Toaster } from "react-hot-toast";
-import { SideBar } from "./components/SideBar";
 
 function App() {
   return (
