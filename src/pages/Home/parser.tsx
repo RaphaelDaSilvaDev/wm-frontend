@@ -70,6 +70,22 @@ export function Parse(
           rules: [service.status === "denied"],
         },
         {
+          element: <span>Finalizado</span>,
+          onClick: async () => {
+            try {
+              await toggleStatus(service.id, "finished");
+              ToastStyle({ message: "Alterado com sucesso", styleToast: "success" });
+              reload();
+            } catch (error) {
+              if (axios.isAxiosError(error)) {
+                console.log(error.message);
+                ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+              }
+            }
+          },
+          rules: [service.status === "finished"],
+        },
+        {
           element: <span>Entregue</span>,
           onClick: async () => {
             try {

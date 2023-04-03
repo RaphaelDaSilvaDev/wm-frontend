@@ -135,6 +135,48 @@ export const Button = styled.button<ButtonProps>`
   }
 `;
 
+export const SmallButton = styled.button<ButtonProps>`
+  padding: 1rem 1rem;
+  border-radius: 4px;
+  border: 1px solid ${(props) => props.theme.primary};
+
+  cursor: pointer;
+
+  ${(props) =>
+    props.styleBnt === "primary"
+      ? css`
+          background-color: ${props.theme.primary};
+          color: ${props.theme.white};
+
+          :hover {
+            background-color: ${props.theme.primaryDark};
+            transition: background-color 175ms;
+          }
+        `
+      : css`
+          background-color: ${props.theme.white};
+          color: ${props.theme.primary};
+
+          :hover {
+            background-color: ${props.theme.background};
+            transition: background-color 175ms;
+          }
+        `}
+
+  & > span {
+    font-size: 1.8rem;
+  }
+`;
+
+export const ModalContainer = styled.form`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  position: fixed;
+`;
+
 export const Row = styled.div`
   width: 100%;
 
