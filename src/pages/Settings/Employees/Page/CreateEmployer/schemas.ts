@@ -13,6 +13,7 @@ export const CreateEmployerSchema = z.object({
   addressDistrict: z.string().nullable(),
   addressStreet: z.string().nullable(),
   addressNumber: z.string().nullable(),
+  password: z.string().nullable(),
 });
 
 export type CreateEmployerSchemaType = z.infer<typeof CreateEmployerSchema>;
