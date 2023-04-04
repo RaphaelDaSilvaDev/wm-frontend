@@ -39,8 +39,19 @@ export async function getServiceProduct(id: string) {
   return data;
 }
 
-export async function CreateProductService(payloadData: IProductServiceUpdate[]) {
+export async function CreateProductService(
+  payloadData: IProductServiceUpdate[],
+  serviceId: string
+) {
   const payload: IProductServiceUpdate[] = payloadData;
-  const { data } = await api.post(`/service-product`, { products: payload });
+  const { data } = await api.post(`/service-product/${serviceId}`, { products: payload });
+  return data;
+}
+
+export async function AlterQuantityProductService(id: string, quantity: number) {
+  const payload = { quantity };
+
+  const { data } = await api.patch(`/product/alter-quantity/${id}`, payload);
+
   return data;
 }

@@ -40,6 +40,7 @@ export function ProductParse(
       brand: <span>{product.brand}</span>,
       description: <span>{product.description}</span>,
       value: <span>{product.valueToSell}</span>,
+      availableQuantity: <span>{product.quantity}</span>,
       category: <span>{product.category.name}</span>,
     };
   });

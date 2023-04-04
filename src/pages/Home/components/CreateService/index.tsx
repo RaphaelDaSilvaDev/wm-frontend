@@ -34,6 +34,7 @@ import { ProductParse } from "./parse";
 import { ServiceSchema, ServiceSchemaType } from "./schemas";
 import {
   AddService,
+  AlterQuantityProductService,
   CreateProductService,
   EditService,
   GetResponsible,
@@ -43,6 +44,7 @@ import {
 } from "./services";
 
 import * as S from "./styles";
+import { EditProductService } from "../../../Product/components/CreateProduct/service";
 
 export function CreateService() {
   const navigation = useNavigate();
@@ -191,7 +193,10 @@ export function CreateService() {
 
       try {
         await EditService(payload, id);
-        await CreateProductService(productService);
+        await CreateProductService(productService, id);
+        productService.map(
+          async (product) => await AlterQuantityProductService(product.productId, -product.quantity)
+        );
         navigation("/service");
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -249,8 +254,18 @@ export function CreateService() {
     }
   }
 
-  function handleRemoveProduct(productId: string) {
-    setServiceProduct((prev) => [...prev.filter((product) => product.product.id !== productId)]);
+  async function handleRemoveProduct(productId: string) {
+    const product = serviceProductToManager.find((item) => item.id === productId);
+
+    try {
+      await AlterQuantityProductService(productId, product?.amount ? product.amount : 0);
+      setServiceProduct((prev) => [...prev.filter((product) => product.product.id !== productId)]);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        ToastStyle({ message: error.response?.data.message, styleToast: "error" });
+      }
+    }
   }
 
   useEffect(() => {

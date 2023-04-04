@@ -28,6 +28,7 @@ export interface ProductToManager {
   product: JSX.Element;
   responsible: JSX.Element;
   value: JSX.Element;
+  availableQuantity: JSX.Element;
   total: JSX.Element;
   status: JSX.Element;
 }

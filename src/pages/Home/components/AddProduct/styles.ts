@@ -5,6 +5,10 @@ export const Form = styled.form`
   height: 100%;
   display: flex;
   flex-direction: column;
+
+  & > div > table > div > div {
+    height: 50rem !important;
+  }
 `;
 
 export const ToolTip = styled.div`
@@ -20,6 +24,7 @@ export const Content = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 export const Input = styled.input`
