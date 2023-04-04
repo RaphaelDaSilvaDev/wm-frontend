@@ -27,6 +27,7 @@ export interface IEmployeeRequest {
   addressStreet: string;
   addressNumber: string;
   avatar: string | null;
+  status: string;
 }
 
 export interface IEmployeeUpdate {
@@ -39,4 +40,5 @@ export interface IEmployeeUpdate {
   addressStreet?: string;
   addressNumber?: string;
   avatar?: string | null;
+  password?: string;
 }

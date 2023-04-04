@@ -73,6 +73,7 @@ export function CreateEmployer() {
       const addressDistrict = methods.watch("addressDistrict");
       const addressStreet = methods.watch("addressStreet");
       const addressNumber = methods.watch("addressNumber");
+      const password = methods.watch("password");
 
       if (phoneNumber) payload.phoneNumber = phoneNumber;
       if (cellphoneNumber) payload.cellphoneNumber = cellphoneNumber;
@@ -82,6 +83,7 @@ export function CreateEmployer() {
       if (addressDistrict) payload.addressDistrict = addressDistrict;
       if (addressStreet) payload.addressStreet = addressStreet;
       if (addressNumber) payload.addressNumber = addressNumber;
+      if (password) payload.password = password;
 
       try {
         await UpdateEmployessService(payload, id);
@@ -162,6 +164,15 @@ export function CreateEmployer() {
                     hasError={methods.formState.errors.username?.message ? true : false}
                     disabled={id ? true : false}
                   />
+                  {employee && employee.status === "access" && (
+                    <InputLabel
+                      registerText="password"
+                      label="Senha do Funcionário"
+                      placeholder="Insira a senha do Funcionário"
+                      hasError={methods.formState.errors.password?.message ? true : false}
+                      type="password"
+                    />
+                  )}
                 </S.LinesWithSpace>
                 <S.LinesWithSpace>
                   <InputLabel
@@ -170,7 +181,7 @@ export function CreateEmployer() {
                     placeholder="Insira o CPF do Funcionário"
                     hasError={methods.formState.errors.document?.message ? true : false}
                     mask="999.999.999-99"
-                    disabled={id ? true : false}
+                    disabled={id && employee?.document !== null ? true : false}
                   />
                   <InputLabel
                     registerText="bornAt"
@@ -178,7 +189,7 @@ export function CreateEmployer() {
                     placeholder="Insira o nascimento do Funcionário"
                     hasError={methods.formState.errors.bornAt?.message ? true : false}
                     type="date"
-                    disabled={id ? true : false}
+                    disabled={id && employee?.bornAt !== null ? true : false}
                     max={subYears(new Date(), 14).toISOString().split("T")[0]}
                   />
                 </S.LinesWithSpace>
