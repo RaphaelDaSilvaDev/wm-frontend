@@ -73,7 +73,7 @@ export function SideBar() {
             </S.Options>
           </S.Content>
           <S.Version>
-            <span>v-0.4.4</span>
+            <span>v-0.4.5</span>
           </S.Version>
         </S.Container>
       )}
