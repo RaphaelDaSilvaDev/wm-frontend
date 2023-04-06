@@ -80,6 +80,10 @@ export function CreateProduct() {
   async function handleOnSubmit() {
     setButtonLoading(true);
     if (!id) {
+      if (!category) {
+        setButtonLoading(false);
+        return ToastStyle({ message: "Insira a categoria do Produto", styleToast: "warning" });
+      }
       const values: ProductPayload = {
         ...methods.getValues(),
         categoryId: category?.value ? category.value : "",
