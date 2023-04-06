@@ -67,6 +67,10 @@ export function CreateVehicle() {
   async function handleOnSubmit() {
     setButtonLoading(true);
     if (!id) {
+      if (!client) {
+        setLoading(false);
+        return ToastStyle({ message: "Insira o Cliente dono do Veículo", styleToast: "warning" });
+      }
       const values: VehiclePayload = {
         ...methods.getValues(),
         clientId: client?.value ? client.value : "",

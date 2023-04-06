@@ -118,6 +118,10 @@ export function CreateService() {
     setLoadSubmit(true);
 
     if (!id) {
+      if (!client || !vehicle || !responsible) {
+        setLoadSubmit(false);
+        return ToastStyle({ message: "Preencha todos os campos!", styleToast: "warning" });
+      }
       const values = methods.getValues();
 
       const date = values.delivery_date.split("-");
