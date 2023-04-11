@@ -129,11 +129,14 @@ export const Overlay = styled.div`
 export const Version = styled.div`
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  position: relative;
+  position: absolute;
   bottom: 2rem;
+
+  z-index: 9999;
 
   & > span {
     color: white;
