@@ -7,6 +7,8 @@ import { clientsRoutes } from "./clients";
 import { vehiclesRoutes } from "./vehicles";
 import { productsRoutes } from "./products";
 import { settingsRoutes } from "./settings";
+import { AuthAdminRoute } from "./authAdminRouter";
+import { FeedBack } from "../pages/FeedBack";
 
 export function Routes() {
   return (
@@ -19,6 +21,14 @@ export function Routes() {
           {vehiclesRoutes}
           {productsRoutes}
           {settingsRoutes}
+          <Route
+            path="/feedback"
+            element={
+              <AuthAdminRoute>
+                <FeedBack />
+              </AuthAdminRoute>
+            }
+          />
         </Route>
         <Route path="*" element={<NotFound />} />
       </RoutesReact>

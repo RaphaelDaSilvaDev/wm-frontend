@@ -4,6 +4,7 @@ import { Users, Wrench } from "phosphor-react";
 import * as S from "./styles";
 import { useLocation, useNavigate } from "react-router-dom";
 import { pages } from "../../utils/pages";
+import { servicePages } from "../../utils/servicePages";
 import { AuthUserContext } from "../../services/authUserContext";
 import { useCookies } from "react-cookie";
 import { IClientRequest } from "../../pages/Login/interfaces";
@@ -73,6 +74,22 @@ export function SideBar() {
             </S.Options>
           </S.Content>
           <S.Version>
+            <S.Options>
+              {servicePages.map((page) => {
+                return (
+                  (page.permission === "all" || page.permission === info.user.permission) && (
+                    <S.Option
+                      key={page.name}
+                      isSelected={path.pathname.includes(page.path)}
+                      onClick={() => navigateTo(page.path)}
+                    >
+                      {page.icon}
+                      {page.text}
+                    </S.Option>
+                  )
+                );
+              })}
+            </S.Options>
             <span>v-0.4.5</span>
           </S.Version>
         </S.Container>
